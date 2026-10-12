@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "shadcn": {
+      "source": "shadcn-ui/ui",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "da388f632cd83783c02967446e21941c9ee8291ccb43ba74c23f7d4e9b7c298c"
+    },
+    "vgpu": {
+      "source": "vercel-labs/vgpu",
+      "sourceType": "github",
+      "skillPath": "skills/vgpu/SKILL.md",
+      "computedHash": "1fec632b1dc4257c9dca23fd51a82d97bc52a5521215caf03a31e3a97f2ec2d8"
+    }
+  }
+}

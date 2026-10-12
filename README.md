@@ -6,6 +6,8 @@ Be here. We’ll take the notes. A private, botless notetaker for Apple silicon 
 
 For the current status, deployment setup, and where to start changing the design, see the [handoff](docs/handoff.md). The existing website design is not approved and is intended to be replaced.
 
+The original local commits and development branches are preserved in [the Git history bundle](archives/pre-github-history.bundle). See the handoff for restoration instructions.
+
 ## One app, one job
 
 Record microphone and application audio, or import an audio/video file. Stop, then transcribe and generate detailed notes locally. Edit notes and transcript, search recordings, jump to timestamps, and export Markdown, text, or SRT. No meeting bot, dictation, account, server, subscription, or analytics in the native app.

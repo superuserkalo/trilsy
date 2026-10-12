@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "../node_modules/tw-animate-css/dist/tw-animate.css";
+@import "../node_modules/@fontsource-variable/instrument-sans/index.css";
+
+:root {
+  color-scheme: light;
+  --background: #f8f7f3;
+  --foreground: #182e54;
+  --card: #ffffff;
+  --card-foreground: #182e54;
+  --popover: #ffffff;
+  --popover-foreground: #182e54;
+  --primary: #3159e8;
+  --primary-foreground: #ffffff;
+  --secondary: #edf1fb;
+  --secondary-foreground: #284fa5;
+  --muted: #efeee9;
+  --muted-foreground: #5f6d80;
+  --accent: #ed7752;
+  --accent-foreground: #231f28;
+  --destructive: #d55345;
+  --border: #1c37601a;
+  --input: #1c37602b;
+  --ring: #3159e8;
+  --sky: #dae9fd;
+  --ink: #183462;
+  --radius: 0.55rem;
+}
+@theme inline {
+  --color-sky: var(--sky);
+  --color-ink: var(--ink);
+  --font-sans: "Instrument Sans Variable", Arial, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --animate-meter: meter 1.25s ease-in-out infinite alternate;
+  --animate-enter: enter 0.7s ease-out both;
+  @keyframes meter {
+    from {
+      transform: scaleY(0.3);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply scroll-smooth scroll-pt-24;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  button:not(:disabled),
+  a {
+    @apply cursor-pointer;
+  }
+  ::selection {
+    @apply bg-accent/30 text-foreground;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-ring;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

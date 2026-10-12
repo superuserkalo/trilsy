@@ -1,0 +1,33 @@
+name: Check
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  mac:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: ./scripts/build-mac.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mac-test-results
+          path: build/Logs/Test/*.xcresult
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm exec --no -- vgpu install-software-renderer
+      - run: npm run check:shader

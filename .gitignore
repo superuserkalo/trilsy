@@ -1,0 +1,15 @@
+.DS_Store
+.build/
+build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+Config/
+*.xcuserstate
+web/node_modules/
+web/.next/
+web/.vercel/
+web/tsconfig.tsbuildinfo
+web/shader-frame.png
+.env*
