@@ -4,9 +4,7 @@ Be here. We’ll take the notes. A private, botless notetaker for Apple silicon 
 
 **Developer preview.** Native source is implemented but has not yet been compiled or exercised on a Mac. Do not use it as the only recorder for an important conversation until the [acceptance checks](docs/acceptance.md) pass. No signed download is available yet.
 
-For the current status, deployment setup, and where to start changing the design, see the [handoff](docs/handoff.md). The existing website design is not approved and is intended to be replaced.
-
-The original local commits and development branches are preserved in [the Git history bundle](archives/pre-github-history.bundle). See the handoff for restoration instructions.
+The existing website design is not approved; its replacement is specified in the [redesign brief](docs/redesign-brief/README.md). Agent guidance is in [CLAUDE.md](CLAUDE.md).
 
 ## One app, one job
 
@@ -23,6 +21,8 @@ open build/Build/Products/Debug/Trilsy.app
 
 Or run `xcodegen generate`, open `Trilsy.xcodeproj`, select your development team, and Run. The script makes an ad-hoc signed local debug build, not a distributable release. Enable model downloads in Settings, then generate notes. First use downloads Whisper small and Qwen2.5 3B 4-bit from Hugging Face. No audio is uploaded. Network may still be used for model resolution/cache checks; fully offline behavior must be verified on the target Mac.
 
+On a first build, resolve compiler or SDK API issues, then verify one complete recording-to-notes flow before anything else. The five native tests and the Mac CI job have not yet had an observed passing run. No code-signing credentials, model weights or recordings are included in the repo.
+
 System audio uses ScreenCaptureKit and needs macOS Screen & System Audio Recording permission. No screen video is stored. The microphone follows the system default. Use headphones when recording both sources. Recorded source labels are not speaker diarization.
 
 ## Run the website
@@ -33,7 +33,11 @@ npm ci
 npm run dev
 ```
 
-Next.js App Router, Tailwind 4, shadcn/ui, Motion, vgpu. `npm run build` checks production compilation and TypeScript. The original raymarched glass artwork caps at 30 FPS, responds to the pointer, and skips offscreen/hidden frames. Unsupported browsers play a seamless video rendered from the same shader; reduced-motion browsers show its poster. Regenerate both with `node scripts/render-shader.mjs --video` (requires ffmpeg). Brand constants live in `web/lib/brand.ts`. See [website design and verification](docs/website-design.md) for the Mobbin references and checks.
+Next.js App Router, Tailwind 4, shadcn/ui, Motion, vgpu. `npm run build` checks production compilation and TypeScript. The original raymarched glass artwork caps at 30 FPS, responds to the pointer, and skips offscreen/hidden frames. Unsupported browsers play a seamless video rendered from the same shader; reduced-motion browsers show its poster. Regenerate both with `node scripts/render-shader.mjs --video` (requires ffmpeg). Brand constants live in `web/lib/brand.ts`. See [website design and verification](docs/website-design.md) for the Mobbin references and checks of this first, rejected design.
+
+### Deployment
+
+The site is live at https://trilsy.com from the Vercel project `trilsy` (Next.js, Node.js 24), deployed by CLI from `web/`. It needs no environment variables or API keys, and has no mailing-list database or signup endpoint. Git auto-deploy is not connected; to add it, configure the Git connection on the existing project and do not create a second project for the domain. Vercel account permissions are separate from source-code access.
 
 ## Small on purpose
 
@@ -50,3 +54,13 @@ Detailed notes are generated in bounded sections and retained alongside an overv
 ## Scope and release gates
 
 No live transcription, individual speaker recognition, calendar integration, iPhone app, cloud AI, billing, notarization, updater, or signed installer yet. Optional paid processing is a future product decision, not a hidden API dependency. Third-party SDKs and model licenses apply independently; inspect them before distribution. See [acceptance](docs/acceptance.md) and [architecture](docs/architecture.md).
+
+## Original development history
+
+The public repository began as a snapshot. The original six local commits and four development branches are preserved in `archives/pre-github-history.bundle`, a historical backup and not a runtime dependency. Recover them as a separate checkout:
+
+```sh
+git clone archives/pre-github-history.bundle ../trilsy-original-history
+```
+
+Continue new development on `main`.

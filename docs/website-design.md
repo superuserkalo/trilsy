@@ -1,4 +1,6 @@
-# Trilsy website design
+# Trilsy website design (v1, rejected)
+
+**Status: historical.** This records the first design, which the owner rejected, and how it was verified. It is not direction for new work. The redesign is specified in [redesign-brief](redesign-brief/00-master.md); standing rules are in the root `CLAUDE.md`.
 
 ## Direction
 
