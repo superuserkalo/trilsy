@@ -2,6 +2,19 @@
 
 Read this file first in EVERY session. It never changes between phases. The work is split into phase files (`01a` to `05`). **Do only the phase file I point you to, then stop.** At the end of each phase, update `/docs/redesign/STATE.md` (decisions made, files produced, open questions, skills ledger) so the next session can continue from it. Read STATE.md at the start of every session if it exists.
 
+## Ending a session: hand me the next prompt
+
+Every session ends the same way, after STATE.md and the ledger are updated:
+
+1. Write a `Next session` line at the top of STATE.md naming the file or ticket that comes next. Take the order from the Phases list below; in Phase D it is the next unblocked ticket in `.scratch/redesign/issues/`.
+2. As the last thing in your final message, give me the exact prompt to paste into a fresh session, in a code block, in this shape:
+
+   ```
+   Read docs/redesign-brief/00-master.md, then do only docs/redesign-brief/<next file>. Follow the co-design rules. Stop at the gate.
+   ```
+
+   For a Phase D ticket, name `04-phase-d-build.md` and the ticket path. If a gate is waiting on my decision, say which decision first, then give the prompt for after I have made it. After Phase E, say the redesign is complete instead.
+
 ## Standing rules
 
 `CLAUDE.md` at the repo root holds the standing design rules, the co-design rules and the ask-me rule. They apply to every phase. Redesign-only additions:
