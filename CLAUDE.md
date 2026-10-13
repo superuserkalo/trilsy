@@ -41,7 +41,7 @@ Next.js App Router, Tailwind 4, shadcn/ui (`base-nova` style on Base UI), Motion
 
 **The current design is rejected and is being replaced.** Treat its palette, type, layout, logo and shader as disposable. `docs/website-design.md` records that old design; it is history, not direction.
 
-The redesign runs in gated phases, one per session. For any redesign work, read `docs/redesign-brief/00-master.md` first, then only the phase file the owner names, and stop at its gate. Product facts for copy live in the master; read them before writing or changing any site copy.
+The redesign runs in gated phases, one per session, each started with `./scripts/redesign`, which puts the session on the model its lane calls for (Sonnet 5.5 for design, Opus 5.5 at medium effort for logic). For any redesign work, read `docs/redesign-brief/00-master.md` first, then only the phase file the owner names, and stop at its gate. The owner makes the site's photographs: ask for one with an image request as the master describes, never source one. Product facts for copy live in the master; read them before writing or changing any site copy.
 
 The shadcn and vgpu skills are files in `.agents/skills/`, not registered skills: read `.agents/skills/shadcn/SKILL.md` and `.agents/skills/vgpu/SKILL.md` (and the files they link) before component or shader work. Read vgpu docs from the installed package version.
 

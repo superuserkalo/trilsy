@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Starts one redesign session on the model its lane calls for.
+#
+#   scripts/redesign                                        next session, from docs/redesign/STATE.md
+#   scripts/redesign 02                                     a phase
+#   scripts/redesign .scratch/redesign/issues/03-hero.md    a Phase D ticket
+#   scripts/redesign -n [target]                            print the route, launch nothing
+#   scripts/redesign --opus [target]                        rerun a design session on Opus when Sonnet fell short
+#
+# Anything after the target is passed to claude, e.g. `scripts/redesign 01a --chrome`.
+# The lanes are defined in docs/redesign-brief/00-master.md.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+SONNET=claude-sonnet-5-5
+SONNET_EFFORT=high
+OPUS=claude-opus-5-5
+OPUS_EFFORT=medium
+
+BRIEF=docs/redesign-brief
+STATE=docs/redesign/STATE.md
+
+die() { echo "redesign: $*" >&2; exit 1; }
+
+dry_run=0 force_opus=0
+while [[ "${1:-}" == -* ]]; do
+  case "$1" in
+    -n) dry_run=1 ;;
+    --opus) force_opus=1 ;;
+    *) die "unknown option '$1'; options for claude go after the target" ;;
+  esac
+  shift
+done
+
+target="${1:-}"
+[[ $# -gt 0 ]] && shift
+
+if [[ -z "$target" ]]; then
+  if [[ -f "$STATE" ]]; then
+    target=$(sed -n 's/^[*]*Next session:[*]*[[:space:]]*//p' "$STATE" | head -1 | tr -d '`' | awk '{print $1}')
+    [[ -n "$target" ]] || die "no 'Next session:' line in $STATE; name a phase or ticket"
+  else
+    target=01a
+  fi
+fi
+
+[[ "$target" == "done" ]] && { echo "redesign: the redesign is complete"; exit 0; }
+
+lane="" effort="" file="" model_line=""
+case "$target" in
+  01a) lane=logic;  file=01a-phase-a-references-copy.md ;;
+  01b) lane=logic;  file=01b-phase-a-behavior.md ;;
+  02)  lane=design; file=02-phase-b-concept.md ;;
+  03)  lane=design; file=03-phase-c-shader.md ;;
+  04)  lane=logic;  file=04-phase-d-build.md ;;
+  05)  lane=logic;  file=05-phase-e-seo-verify.md ;;
+  *)
+    [[ -f "$target" ]] || die "'$target' is not a phase (01a 01b 02 03 04 05) or a ticket file"
+    lane=$(sed -n 's/^Lane:[[:space:]]*//p' "$target" | head -1 | awk '{print $1}')
+    effort=$(sed -n 's/^Effort:[[:space:]]*//p' "$target" | head -1 | awk '{print $1}')
+    model_line=$(sed -n 's/^Model:[[:space:]]*//p' "$target" | head -1 | awk '{print $1}')
+    [[ -n "$lane" ]] || die "$target has no 'Lane:' line; add 'Lane: design' or 'Lane: logic'"
+    ;;
+esac
+
+case "$lane" in
+  design) model=$SONNET ;;
+  logic)  model=$OPUS ;;
+  *) die "$target: lane '$lane' is not design or logic" ;;
+esac
+
+case "$model_line" in
+  "") ;;
+  sonnet) model=$SONNET ;;
+  opus)   model=$OPUS ;;
+  *) die "$target: model '$model_line' is not sonnet or opus" ;;
+esac
+# --opus drops the ticket's Effort line, which was set for Sonnet.
+if [[ $force_opus -eq 1 ]]; then model=$OPUS; effort=""; fi
+
+if [[ -z "$effort" ]]; then
+  if [[ "$model" == "$OPUS" ]]; then effort=$OPUS_EFFORT; else effort=$SONNET_EFFORT; fi
+fi
+
+case "$effort" in
+  low|medium|high|xhigh) ;;
+  max) die "$target: max effort is not used in this redesign (see Lanes in $BRIEF/00-master.md)" ;;
+  *) die "$target: effort '$effort' is not one of low medium high xhigh" ;;
+esac
+
+if [[ -n "$file" ]]; then
+  prompt="Read $BRIEF/00-master.md, then do only $BRIEF/$file. Follow the co-design rules. Stop at the gate."
+else
+  prompt="Read $BRIEF/00-master.md, then do only $BRIEF/04-phase-d-build.md for the ticket $target. Follow the co-design rules. Stop when the ticket is built."
+fi
+prompt="$prompt Lane: $lane ($model, $effort effort)."
+
+if [[ $dry_run -eq 1 ]]; then
+  printf 'target  %s\nlane    %s\nmodel   %s\neffort  %s\nprompt  %s\n' "$target" "$lane" "$model" "$effort" "$prompt"
+  exit 0
+fi
+
+echo "redesign: $target -> $lane lane ($model, $effort effort)"
+exec claude --model "$model" --effort "$effort" --name "redesign $(basename "$target" .md)" "$prompt" "$@"
