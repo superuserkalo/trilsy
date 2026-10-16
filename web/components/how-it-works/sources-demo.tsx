@@ -17,7 +17,7 @@ import { MockWindow } from "./mock";
  * scrolls into view App audio switches on once, so the order reads "off until you
  * turn it on", and the Application picker and Refresh apps appear. The two
  * toggles are real buttons: the visitor can flip either one. Under reduced motion
- * it starts switched on. The pane keeps the height of the longest menu, so
+ * the switch flips without sliding. The pane keeps the height of the longest menu, so
  * nothing moves when the toggles do.
  */
 export function SourcesDemo() {
@@ -29,10 +29,6 @@ export function SourcesDemo() {
 
   useEffect(() => {
     if (!inView || touched.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setSystem(true);
-      return;
-    }
     const t = setTimeout(() => !touched.current && setSystem(true), 900);
     return () => clearTimeout(t);
   }, [inView]);

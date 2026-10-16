@@ -15,7 +15,7 @@ import {
   RecordingToolbar,
   SidebarRow,
 } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content: the last client meeting, open before the next one starts.
 // A new recording is titled "Recording" and the date and time (it follows the
@@ -42,8 +42,7 @@ const clock = (s: number) => `00:00:0${s}`;
  * what was agreed, then press New recording. The last meeting's notes are open;
  * after a beat New recording is pressed, a new recording starts at the top of the
  * list, the toolbar becomes the recording row and the pane turns to it. Plays
- * once, 40% in view. Under reduced motion the notes stay open with New recording
- * ready, which is the half that matters. The list keeps its height and the two
+ * once, 40% in view; under reduced motion with fades only. The list keeps its height and the two
  * panes share one grid cell, so nothing shifts.
  */
 export function ClientDemo() {
@@ -54,7 +53,7 @@ export function ClientDemo() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    if (!inView || prefersReducedMotion()) return;
+    if (!inView) return;
     const timers = [
       setTimeout(() => {
         setRecording(true);

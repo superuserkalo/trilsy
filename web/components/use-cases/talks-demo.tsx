@@ -14,7 +14,7 @@ import {
   SidebarRow,
 } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content. The app lists the apps that are running; "All apps" is
 // first. Every line is System: the microphone is off, so nothing else is
@@ -35,8 +35,8 @@ const lines = [
  * Talks, courses and webinars: record what a browser plays. The Audio sources
  * menu opens with the microphone off and App audio on; its Application picker
  * opens, Safari is chosen, and New recording is pressed. The recording that comes
- * of it is a transcript whose every line is System. Plays once, 40% in view; the
- * finished state at once under reduced motion. The menus open over the window, the
+ * of it is a transcript whose every line is System. Plays once, 40% in view;
+ * under reduced motion with fades only. The menus open over the window, the
  * empty pane and the recording share one cell, so nothing shifts.
  */
 export function TalksDemo() {
@@ -52,12 +52,6 @@ export function TalksDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setApp(SAFARI);
-      setDone(true);
-      setShown(lines.length);
-      return;
-    }
     const timers = [
       setTimeout(() => setMenuOpen(true), 800),
       setTimeout(() => {

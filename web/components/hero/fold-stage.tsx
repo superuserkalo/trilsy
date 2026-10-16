@@ -51,7 +51,8 @@ const bubbleStep = (line: { bx: number; bw: number }, fig: { x: number; w: numbe
  * one 1440 by 900 stage, scaled to the viewport by CSS (`--stage-s`).
  * `progress` folds it from the hero (0) to the pinned layout (1); `scrollY`
  * moves the parts that leave with the page. Under reduced motion nothing
- * travels: the two layouts swap by an opacity cross-fade at `layout`.
+ * travels: the two layouts swap by an opacity cross-fade at `layout`, and the
+ * demo keeps playing on its clock with fades only.
  *
  * The stage's top edge is the top of the page (the header included); its
  * container decides where that is (ticket 07 pins it).
@@ -189,7 +190,7 @@ export function FoldStage({
           const kin = beat(f.t, a, 0.6);
           const k = kin * (1 - beat(f.t, e + 0.3, 0.4));
           b.style.opacity = String(k * fold.current.bubbleFade);
-          b.style.scale = String(0.96 + 0.04 * kin);
+          b.style.scale = f.reduced ? "" : String(0.96 + 0.04 * kin);
         });
         const speaking = speakingFigure(s, f.t);
         figures.current.forEach((el, i) => {

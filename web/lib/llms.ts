@@ -18,7 +18,7 @@ const summary =
 const facts = [
   "Records the microphone, the Mac's sound or both. Recording the Mac's sound is one switch, off by default, and needs macOS's Screen & System Audio Recording permission.",
   "Can import an audio or video file instead of recording.",
-  "Works with any app that plays sound, and with in-person rooms through the microphone. App names on the site are examples, not a tested list.",
+  "Works with any app that plays sound, and with in-person rooms through the microphone. The apps named on the site have been tried with it on a Mac.",
   "Transcribes after the recording ends, on the Mac, with Whisper. It does not transcribe live.",
   "Writes notes section by section with a short overview on top, using a language model on the Mac. Notes are plain-text Markdown and can be edited.",
   "Every transcript line has a timestamp that plays the audio from that point.",

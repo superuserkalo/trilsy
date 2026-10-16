@@ -7,7 +7,7 @@ import { transition, transitionBase, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { AppBody, AudioSourcesButton, RecordingHeader, SidebarRow } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content. The app's search keeps a recording when the word is in
 // its title, transcript or notes and the sidebar lists the matches ("Matches"
@@ -58,8 +58,8 @@ const HOLD = 1500; // each call stays open this long before the next
  * Customer calls: search the word a customer used, then read the calls it comes
  * up in, one after another, to see how each customer put the same question. The
  * word is typed, the list narrows to the three calls, and the right pane steps
- * through their transcripts. Plays once, 40% in view; under reduced motion the
- * last call is shown at once. The three transcripts share one grid cell and the
+ * through their transcripts. Plays once, 40% in view; under reduced motion with
+ * fades only. The three transcripts share one grid cell and the
  * list keeps its height, so nothing shifts.
  */
 export function CustomerDemo() {
@@ -72,12 +72,6 @@ export function CustomerDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setTyped(word.length);
-      setFiltered(true);
-      setCurrent(opened.length - 1);
-      return;
-    }
     const timers: ReturnType<typeof setTimeout>[] = [];
     for (let i = 1; i <= word.length; i++) timers.push(setTimeout(() => setTyped(i), 400 + (i - 1) * TYPE_MS));
     timers.push(setTimeout(() => setFiltered(true), T_FILTER));

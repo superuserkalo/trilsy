@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { cn } from "@/lib/utils";
 import { RecordingHeader, RecordingMenu } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content. A subtitle file is what the app writes: a number, the
 // start and end as HH:MM:SS,mmm, the text, and a blank line, for every line of
@@ -23,8 +23,8 @@ const STEP_MS = 1700;
  * Podcasts and video: one export gives a subtitle file. The "…" menu is opened,
  * Export is chosen and then "SRT subtitles", the file appears beside a drawn video
  * frame, and the cues play in turn, each marked in the file and shown as the frame's caption
- * while a thin bar crosses the frame. Plays once, 40% in view; the finished
- * state at once under reduced motion. The file's cues and the frame are laid
+ * while a thin bar crosses the frame. Plays once, 40% in view; under
+ * reduced motion with fades only. The file's cues and the frame are laid
  * out from the start, the caption slot has a fixed height, and the menu opens
  * over the file, so nothing shifts.
  */
@@ -39,11 +39,6 @@ export function PodcastsDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setWritten(true);
-      setCue(cues.length);
-      return;
-    }
     const timers = [
       setTimeout(() => setOpen(true), 800),
       setTimeout(() => {

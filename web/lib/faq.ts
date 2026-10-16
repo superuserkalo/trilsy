@@ -30,7 +30,7 @@ export const faqs: Faq[] = [
     id: "which-apps",
     question: "Which apps does it work with?",
     answer:
-      "Any app that plays sound: one app or all of them, picked in a list. In a room it uses your microphone instead. Zoom, Google Meet, Microsoft Teams, Slack, FaceTime, Webex and a browser tab are examples of apps that make sound, not a tested list and not integrations.",
+      "Any app that plays sound: one app or all of them, picked in a list. In a room it uses your microphone instead. Zoom, Google Meet, Microsoft Teams, Slack, FaceTime, Webex and a browser tab have been tried with it. They are apps that play sound, not integrations.",
   },
   {
     id: "where-kept",

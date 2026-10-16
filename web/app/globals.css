@@ -205,6 +205,9 @@
   }
 }
 
+/* Reduced motion: fades, not moves. Keyframe loops stop, and a transition
+   keeps only its fade and colour change, so position, scale and size change at
+   once. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -214,6 +217,7 @@
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke,
+      box-shadow !important;
   }
 }

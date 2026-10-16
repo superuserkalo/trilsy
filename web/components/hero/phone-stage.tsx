@@ -42,7 +42,7 @@ export function PhoneStage({ chapter, className }: { chapter: Chapter; className
         if (i >= 0) setLineIndex(i); // React skips the render when it has not changed
         const k = i >= 0 ? Math.min(beat(f.t, SPEAK[i][0], 0.6), 1 - beat(f.t, SPEAK[i][1] + 0.3, 0.4)) : 0;
         el.style.opacity = String(live.current >= 0 ? 0 : k);
-        el.style.transform = `translateY(${(1 - k) * 4}px)`;
+        el.style.transform = f.reduced ? "" : `translateY(${(1 - k) * 4}px)`;
         const speaking = speakingFigure(f.setting, f.t);
         tiles.current.forEach((t, j) => t?.toggleAttribute("data-speaking", j === speaking));
       }),
@@ -59,7 +59,7 @@ export function PhoneStage({ chapter, className }: { chapter: Chapter; className
       <div className="absolute top-3.5 left-3 z-[4] flex gap-1.5">
         {setting.figures.map((fig, i) => {
           // Same scale as the stage's figures (500px tall there), so every figure keeps
-          // its own aspect ratio: the pack SVGs come out 76px wide, the professor (a narrower canvas) 46px.
+          // its own aspect ratio: every figure is on the pack's 280 by 520 canvas, 76px wide here.
           const tileW = Math.round((fig.w * TILE_FIGURE_H) / FIGURE_H);
           return (
             <span

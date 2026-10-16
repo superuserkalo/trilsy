@@ -6,7 +6,7 @@ import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { transitionBase, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { AppBody, AudioPlayer, NotesDoc, RecordingHeader, RecordingMenu, SidebarRow } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content: a study of where students work. Interviews are listed
 // newest first, as the app lists them. Delete recording is in the "…" menu; it
@@ -48,7 +48,7 @@ const T_GONE = 3950; // the sheet closes, the row collapses, the next recording 
  * happens to it. A participant's interview is open; the "…" menu is opened and
  * Delete recording chosen, the app asks once ("Permanently delete this recording,
  * audio, and notes?"), the interview leaves the list and the next one opens. Plays
- * once, 40% in view; the state after the delete at once under reduced motion. Both
+ * once, 40% in view; under reduced motion with fades only. Both
  * interviews are laid out in one grid cell, the list keeps the height of its rows,
  * and the menu and the sheet sit over the window, so nothing shifts.
  */
@@ -63,10 +63,6 @@ export function ResearchDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setGone(true);
-      return;
-    }
     const timers = [
       setTimeout(() => setMenu(true), T_MENU),
       setTimeout(() => setPicked(true), T_PICK),

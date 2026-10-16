@@ -6,7 +6,7 @@ import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { transition, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { TranscriptLine } from "./transcript-line";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content. The transcript is Trilsy's. The second window is the
 // reader's own document, which they write from the timestamps; Trilsy does not
@@ -31,7 +31,7 @@ const STEP_MS = 1000;
  * Incident calls: the timestamps become the order of events. The transcript is
  * read down line by line; as each line is marked, the matching line of the
  * reader's own postmortem document is written beside its timestamp. Plays once,
- * 40% in view; the finished state at once under reduced motion. Both windows lay
+ * 40% in view; under reduced motion with fades only. Both windows lay
  * out every line from the start, so nothing shifts.
  */
 export function IncidentDemo() {
@@ -41,10 +41,6 @@ export function IncidentDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setStep(lines.length);
-      return;
-    }
     const timers = lines.map((_, i) => setTimeout(() => setStep(i + 1), 700 + i * STEP_MS));
     return () => timers.forEach(clearTimeout);
   }, [inView]);

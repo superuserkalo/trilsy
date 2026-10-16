@@ -17,7 +17,6 @@ import {
   beat,
   chapterTime,
   order,
-  reducedFrame,
   settings,
   type Chapter,
   type Setting,
@@ -57,7 +56,8 @@ export function useStoryClock() {
  * Runs the hero's demo on its own clock. The window, the bubbles and the tiles
  * all paint from the same storyboard time, so speech, waveform, timer and
  * transcript can never disagree. Pauses when the section is more than 100px
- * off screen and resumes where it stopped.
+ * off screen and resumes where it stopped. Under reduced motion the clock runs
+ * the same; the painters swap moves for fades (`Frame.reduced`).
  */
 export function StoryClock({
   chapter,
@@ -94,40 +94,51 @@ export function StoryClock({
     });
     if (root) io.observe(root);
 
+    // The clock runs on elapsed time, not frame counts, so a browser that throttles
+    // requestAnimationFrame (battery savers, frame limiters) slows the painting but
+    // not the story. A step of more than a second (a tab that was hidden) is held to
+    // one second. If frames stop arriving while the page is visible, a slow timer
+    // keeps the story moving.
     let raf = 0;
     let last = performance.now();
-    const frame = (now: number) => {
+    const tick = (now: number) => {
       const s = live.current;
-      const dt = Math.min(0.05, (now - last) / 1000);
+      const dt = Math.min(1, Math.max(0, (now - last) / 1000));
       last = now;
-      if (s.visible) {
-        if (!s.reduced && s.freezeAt === undefined) {
-          if (s.chapter >= 0) s.chapterClock += dt;
-          else {
-            s.t += dt;
-            if (s.t >= T_END) {
-              if (s.manual) s.t = T_END - 0.01;
-              else {
-                s.t = 0;
-                const next = order[(order.indexOf(s.key) + 1) % order.length];
-                s.key = next;
-                setKey(next);
-              }
+      if (!s.visible) return;
+      if (s.freezeAt === undefined) {
+        if (s.chapter >= 0) s.chapterClock += dt;
+        else {
+          s.t += dt;
+          if (s.t >= T_END) {
+            if (s.manual) s.t = T_END - 0.01;
+            else {
+              s.t = 0;
+              const next = order[(order.indexOf(s.key) + 1) % order.length];
+              s.key = next;
+              setKey(next);
             }
           }
         }
-        const t =
-          s.freezeAt ?? (s.reduced ? reducedFrame(s.chapter) : chapterTime(s.chapter, s.chapterClock, s.t));
-        const still = s.chapter >= 0 || s.manual || s.reduced || s.freezeAt !== undefined;
-        const seam = still ? 1 : Math.min(beat(t, 0, 0.6), 1 - beat(t, T_END - 0.6, 0.6));
-        const f: Frame = { t, setting: settings[s.key], seam, manual: s.manual, chapter: s.chapter, reduced: s.reduced };
-        painters.current.forEach((paint) => paint(f));
       }
+      const t = s.freezeAt ?? chapterTime(s.chapter, s.chapterClock, s.t);
+      const still = s.chapter >= 0 || s.manual || s.freezeAt !== undefined;
+      const seam = still ? 1 : Math.min(beat(t, 0, 0.6), 1 - beat(t, T_END - 0.6, 0.6));
+      const f: Frame = { t, setting: settings[s.key], seam, manual: s.manual, chapter: s.chapter, reduced: s.reduced };
+      painters.current.forEach((paint) => paint(f));
+    };
+    const frame = (now: number) => {
+      tick(now);
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
+    const fallback = window.setInterval(() => {
+      const now = performance.now();
+      if (document.visibilityState === "visible" && now - last > 250) tick(now);
+    }, 250);
     return () => {
       cancelAnimationFrame(raf);
+      window.clearInterval(fallback);
       io.disconnect();
     };
   }, [rootRef]);

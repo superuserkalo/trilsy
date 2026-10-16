@@ -17,12 +17,9 @@ export const metadata: Metadata = pageMetadata({
   path: "/privacy",
 });
 
+// The controller and the route for data requests come from lib/site.ts
+// `operator` (owner, 2026-10-16): name, address and hello@withradian.com.
 // TODO: confirm, left off the page on purpose:
-// - the controller is named: Kaloyan Gantchev, Baslergasse 50-66 (lib/site.ts
-//   `operator`, given by the owner on 2026-10-16). Still missing, and not
-//   invented: postcode, city, country and a contact email, so the page points to
-//   GitHub issues. A private route for a data request (an email) is the one
-//   missing piece that matters here, because issues are public.
 // - an effective or "last updated" date: the owner has not set one, and a date
 //   would be a promise. The page says the history is in the repository.
 // - the Vercel project's settings: the page says the host keeps ordinary server
@@ -115,12 +112,15 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                {operator.name}, <span className="whitespace-nowrap">{operator.street}</span>, runs the Trilsy app and this website, and is responsible for the data
-                protection of what the website handles, described above. The app sends the provider nothing.
+                {operator.name}, <span className="whitespace-nowrap">{operator.street}</span>, {operator.postcode} {operator.city}, {operator.country}, runs the Trilsy app
+                and this website, and is responsible for the data protection of what the website handles, described above. The
+                app sends the provider nothing.
               </p>
               <p>
-                To ask about your data, <TextLink href={`${site.github}/issues`} external>open an issue on GitHub</TextLink>.
-                Issues there are public, so do not put personal details in one; ask for a private way to reply.
+                To ask about your data, or to have it corrected or deleted, write to{" "}
+                <TextLink href={`mailto:${operator.email}`}>{operator.email}</TextLink>. You can also complain to the Austrian
+                data protection authority (Datenschutzbehörde). Bug reports can go to{" "}
+                <TextLink href={`${site.github}/issues`} external>GitHub issues</TextLink>, which are public.
               </p>
             </>
           ),

@@ -5,7 +5,7 @@ import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { cn } from "@/lib/utils";
 import { AudioPlayer, RecordingHeader, RecordingMenu } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content: an interview by phone, so both sources are in the file.
 // The text export is exactly what the app writes: one line per transcript line,
@@ -25,8 +25,8 @@ const QUOTE = 1; // the line the reporter picks out
  * Journalism: the transcript as plain text, with its timestamps. The window is
  * the app with an interview open; the "…" menu is opened, Export is chosen, then
  * "Plain text transcript", and the file it writes appears below, where one line is
- * selected as the quote. Plays once, 40% in view; the finished state at once under
- * reduced motion. The file's lines are laid out from the start and fade in, and
+ * selected as the quote. Plays once, 40% in view; under reduced motion with fades
+ * only. The file's lines are laid out from the start and fade in, and
  * the menu opens over the transcript, so nothing shifts.
  */
 export function JournalismDemo() {
@@ -40,10 +40,6 @@ export function JournalismDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setWritten(true);
-      return;
-    }
     const timers = [
       setTimeout(() => setOpen(true), 800),
       setTimeout(() => {

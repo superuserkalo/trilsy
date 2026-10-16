@@ -36,7 +36,7 @@ const status = [
  * Block 4: the order the notes are made in. The parts appear one after another
  * (the bar under the notes counts them), then the overview is written into the
  * space kept for it above them. It plays once, when the window comes into view;
- * under reduced motion the finished notes are shown at once. The space for every
+ * under reduced motion with fades only. The space for every
  * part is laid out from the start, so nothing shifts.
  */
 export function NotesDemo() {
@@ -47,10 +47,6 @@ export function NotesDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setStep(5);
-      return;
-    }
     const timers = [1, 2, 3, 4, 5].map((s) => setTimeout(() => setStep(s), (s - 1) * STEP_MS + 300));
     return () => timers.forEach(clearTimeout);
   }, [inView]);

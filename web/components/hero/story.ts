@@ -56,11 +56,13 @@ export const settings: Record<SettingKey, Setting> = {
     title: "Biology 201, lecture 9",
     system: false,
     figures: [
-      // The professor is not in the SVG pack; this is a vector trace of the approved cast sheet's
-      // figure, drawn on its own 165 by 505 canvas (the pack's are 280 by 520), so its box is narrower.
-      { src: "/characters/professor.svg", w: 163, x: 249, alt: "A professor with grey hair and clasped hands, speaking" },
+      // The professor is the pack's own 12-mustard-gesture with one fill changed: its hair is grey
+      // (#bdbcb8, the hair-fill path only; no path is reshaped). Her open hand reaches 407px, short of the
+      // window at 430. Swap options (05 quiff, clasped hands) are in docs/redesign/prototypes/prof-hair-options/.
+      pack("professor", 166, "A professor with grey wavy hair, making a point with an open hand"),
       pack("04-blue-wave", 964, "A student with her hair in a bun, raising a hand to ask a question"),
-      pack("11-blue-headscarf", 1164, "A student in a headscarf, listening"),
+      // Mirrored so she faces the professor (owner, 2026-10-16).
+      pack("11-blue-headscarf", 1164, "A student in a headscarf, listening", true),
     ],
     lines: [
       { fig: 0, who: "Professor", src: "Microphone", text: "Mitosis has four stages. Prophase comes first.", bx: 90, bw: 300 },
@@ -165,13 +167,6 @@ export const T_END = 15;
 /** Compressed time: 7.4s of animation reads as 00:00 to 00:21. */
 export const REC_SECONDS = 21;
 export const LINE_GAP = 0.18;
-
-/** Storyboard time each chapter shows under reduced motion (its final frame). */
-export function reducedFrame(chapter: Chapter) {
-  if (chapter === 0) return 7.35;
-  if (chapter === 1) return 10.18;
-  return 13;
-}
 
 /** Storyboard time for a chapter after `c` seconds on it. */
 export function chapterTime(chapter: Chapter, c: number, heroT: number) {

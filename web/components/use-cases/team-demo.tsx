@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { cn } from "@/lib/utils";
 import { AudioPlayer, NoteBlock, RecordingHeader } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 const wrong = "Pryia"; // the same length as the right spelling, so the line does not rewrap
 const right = "Priya";
@@ -23,8 +23,8 @@ const hiring = "One open role, a second designer. The decision is to wait until 
  * The model has written one name wrong. Edit is pressed and the notes turn into
  * the editor, showing the "##" headings; the word is selected and replaced, the
  * caret stays where the edit ended; Done is pressed and the corrected notes are
- * rendered again. Plays once, 40% in view; the corrected rendered notes, with no
- * caret, at once under reduced motion. The reading view and the editor share one
+ * rendered again. Plays once, 40% in view; under reduced motion with fades only
+ * and a steady caret. The reading view and the editor share one
  * cell, and the wrong spelling is the same length as the right one, so nothing
  * shifts or rewraps.
  */
@@ -32,15 +32,9 @@ export function TeamDemo() {
   const { ref, inView } = usePlayOnce();
   // 0 as written, 1 Edit pressed, 2 the editor open, 3 word selected, 4 corrected with the caret, 5 Done pressed, 6 rendered again
   const [step, setStep] = useState(0);
-  const [still, setStill] = useState(false);
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setStill(true);
-      setStep(6);
-      return;
-    }
     const timers = [
       setTimeout(() => setStep(1), 900),
       setTimeout(() => setStep(2), 1300),
@@ -78,7 +72,7 @@ export function TeamDemo() {
             {overview(
               <span className="relative whitespace-nowrap">
                 <span className={cn("rounded-sm", step === 3 && "bg-primary/45")}>{name}</span>
-                {step === 4 && !still && (
+                {step === 4 && (
                   <span className="absolute top-[0.2em] -right-px h-[1.1em] w-px animate-blink bg-foreground" />
                 )}
               </span>,

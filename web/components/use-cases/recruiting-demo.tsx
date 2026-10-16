@@ -6,7 +6,7 @@ import { MockWindow } from "@/components/how-it-works/mock";
 import { transition, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { NoteBlock } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content: two interviews for the same role. The notes model picks
 // its own section headings, so only the shape is shared: an overview on top, then
@@ -40,7 +40,7 @@ const interviews = [
  * Both columns sit on the same three grid rows (a subgrid), so the overviews
  * line up whatever their length. The first interview is there; the second comes
  * in beside it, and a field-coloured band marks the two overviews as one row.
- * Plays once, 40% in view; the finished state at once under reduced motion.
+ * Plays once, 40% in view; under reduced motion with fades only.
  * Below 768px the two stack.
  */
 export function RecruitingDemo() {
@@ -51,11 +51,6 @@ export function RecruitingDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setSecond(true);
-      setBand(true);
-      return;
-    }
     const timers = [setTimeout(() => setSecond(true), 700), setTimeout(() => setBand(true), 1700)];
     return () => timers.forEach(clearTimeout);
   }, [inView]);

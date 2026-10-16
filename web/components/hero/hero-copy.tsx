@@ -25,7 +25,7 @@ export function HeroCopy() {
         >
           View on GitHub
         </Button>
-        <span className="text-sm text-muted-foreground">Apple silicon, macOS 15 or later</span>
+        <span className="text-sm text-balance text-muted-foreground">Apple silicon, macOS 15 or later. No signed download yet.</span>
       </div>
     </div>
   );

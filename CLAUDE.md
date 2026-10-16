@@ -51,7 +51,7 @@ The shadcn skill is a file in `.agents/skills/`, not a registered skill: read `.
 - **Icons:** one family at one stroke weight. Hugeicons first, Lucide only for a gap. No emoji.
 - **Shaders and 3D:** none. The site has no shader (Gate C); only the owner reopens that.
 - **One job per section.** An idea, visual or sentence appears once on the page.
-- **Motion** explains the product, guides attention or confirms an action. One easing token, 400 to 600ms.
+- **Motion** explains the product, guides attention or confirms an action. One easing token, 400 to 600ms. Under `prefers-reduced-motion`, in-window product demos keep playing with fades and colour changes; scroll-linked travel, sway, slides and other movement stop.
 - **Mockups show real-looking content** and carry no "preview", "demo" or "example" labels.
 - **Anti-slop:** reject a headline that could belong to any app, a background unrelated to audio or meetings, repeated card grids, gradient text, glow blobs, blanket glassmorphism, default AI fonts.
 - **References:** inspect Mobbin images (the actual visuals, not search metadata) before designing each section, and record the links and what they informed. Granola is the north star, with Superwhisper and Wispr Flow's notetaker page as secondary references; keep Trilsy's identity original.

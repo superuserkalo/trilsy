@@ -70,7 +70,7 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
       window.removeEventListener("resize", onResize);
     };
 
-    function paint({ t, setting: s, seam, manual }: Frame) {
+    function paint({ t, setting: s, seam, manual, reduced }: Frame) {
       const el = root.current;
       if (!el || el.offsetParent === null) return; // the other breakpoint's copy is hidden
       const set = (ref: { current: HTMLElement | null }, fn: (n: HTMLElement) => void) => ref.current && fn(ref.current);
@@ -114,7 +114,7 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
         if (!n) return;
         const k = beat(t, T_LINES + i * LINE_GAP, 0.4);
         n.style.opacity = String(k);
-        n.style.transform = `translateY(${(1 - k) * 4}px)`;
+        n.style.transform = reduced ? "" : `translateY(${(1 - k) * 4}px)`;
       });
 
       // Notes: laid out in full, uncovered by the travelling row, with a mustard pass per block.
@@ -130,16 +130,20 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
         const { tops, height } = blockTops.current;
         const raw = clamp((t - T_NOTES) / (T_DONE - T_NOTES));
         const k = raw * raw * (3 - 2 * raw);
-        notes.style.clipPath = `inset(0 0 ${(1 - k) * 100}% 0)`;
+        // Reduced motion: no travelling row. Each block fades in when the row would have
+        // reached it, and the row waits, still, at the foot of the notes.
+        notes.style.clipPath = reduced ? "none" : `inset(0 0 ${(1 - k) * 100}% 0)`;
         blocks.current.forEach((b, i) => {
           if (!b) return;
-          const pass = T_NOTES + (T_DONE - T_NOTES) * ((tops[i] ?? 0) / height) + 0.15;
+          const reach = T_NOTES + (T_DONE - T_NOTES) * ((tops[i] ?? 0) / height);
+          b.style.opacity = reduced ? String(beat(t, reach, 0.4)) : "";
+          const pass = reach + 0.15;
           const a = t > pass ? Math.max(0, 1 - (t - pass) / 0.6) : 0;
           b.style.backgroundColor = a ? `rgb(230 171 79 / ${0.45 * a})` : "";
         });
         set(r.writing, (n) => {
           n.style.opacity = String(t < T_NOTES ? 0 : t < T_DONE ? beat(t, T_NOTES, 0.4) : 1 - beat(t, T_DONE, 0.4));
-          n.style.transform = `translateY(${k * height}px)`;
+          n.style.transform = `translateY(${(reduced ? 1 : k) * height}px)`;
         });
       }
       set(r.notesHint, (n) => (n.hidden = t >= T_NOTES));

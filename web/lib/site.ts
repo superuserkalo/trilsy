@@ -8,17 +8,27 @@ export const site = {
 } as const;
 
 // The person who provides Trilsy and this website, as the owner gave them on
-// 2026-10-16: Kaloyan Gantchev, Baslergasse 50-66. Printed on /terms (the imprint)
-// and /privacy. That is all the owner has given.
-// TODO: confirm, left off the page on purpose (an Austrian or EU imprint usually
-// also names these; none is invented here):
-// - the postcode and city of Baslergasse 50-66, and the country
-// - a contact email (until then the contact route is GitHub issues)
-// - whether an imprint needs more for this kind of site (trade registration or
-//   VAT number, if one exists; a lawyer or the owner to confirm)
+// 2026-10-16: Kaloyan Gantchev, a sole proprietorship (Einzelunternehmen),
+// Baslergasse 50-66, 1230 Vienna, Austria, hello@withradian.com. Printed on
+// /terms (the imprint) and /privacy (the controller and the route for data
+// requests).
+// TODO: confirm, left off the page on purpose (an Austrian imprint under
+// § 5 ECG and § 25 MedienG may also need these; the owner has not given them and
+// none is invented here):
+// - the trade licence (Gewerbeberechtigung) or GISA number, and the trade
+//   authority that issued it (for 1230 Vienna, the Magistratisches Bezirksamt)
+// - a VAT number (UID-Nummer), if one has been issued
+// - a company register entry (Firmenbuchnummer and court), if the business is
+//   registered
+// - membership of the Austrian Economic Chamber (WKO), if a trade licence exists
 export const operator = {
   name: "Kaloyan Gantchev",
+  form: "Sole proprietorship (Einzelunternehmen)",
   street: "Baslergasse 50-66",
+  postcode: "1230",
+  city: "Vienna",
+  country: "Austria",
+  email: "hello@withradian.com",
 } as const;
 
 // Copy: docs/redesign/02-copy-deck.md section 7, word for word. `lead` is the

@@ -59,7 +59,7 @@ Change:
 
 The honesty rule is that there is no signed installer yet; the page now says it nowhere on the hero (it is in Terms and in llms.txt).
 
-Change:
+Change: applied 2026-10-16 (logic lane): restored to "Apple silicon, macOS 15 or later. No signed download yet."
 
 **H3. [claim] Hero window: recording states and hints, changed.** Hero window, `web/components/hero/demo-window.tsx` (still being edited). Describes how the app works.
 - Gate B prototype, button in the strip: "Stop". Now: "Stop & save", then a strip reading "00:21 recorded" with a button "Create notes", then "Transcribing", then "00:21 recorded". Title-bar state labels: Recording, Transcribing, Writing notes.
@@ -477,7 +477,7 @@ Change:
 **LC5. Window screen-reader description.** `lectures-demo.tsx`. Note: it says "Microeconomics lecture 6 and lecture 3", while the window's titles read "Economics, lecture 6" and "Economics, lecture 3". One of the two should change.
 > The recording list filtered by the search word elasticity. Two lectures match, Microeconomics lecture 6 and lecture 3, and the notes of lecture 6 are open: an overview, then a section on price elasticity of demand, one on what makes demand inelastic and one on revenue.
 
-Change:
+Change: applied 2026-10-16 (logic lane): the screen-reader text now names "Economics, lecture 6" and "Economics, lecture 3", as the window does.
 
 **LC6. Mock content.** Search word "elasticity"; recordings "Economics, lecture 8", "History, lecture 5", "Statistics, lecture 7", "Economics, lecture 6" (7 Oct, 52 min), "Economics, lecture 3". First line of notes: "Elasticity measures how far the quantity people buy moves when the price moves. Demand is elastic when buyers react a lot and inelastic when they barely react. The lecture ends on what that means for a seller’s revenue." Sections: Price elasticity of demand, What makes demand inelastic, Revenue and elasticity.
 
@@ -637,7 +637,7 @@ Change:
 
 ## Privacy (`/privacy`)
 
-All of it is new (`web/app/privacy/page.tsx`). Written from the code; the owner items (contact email, postcode, effective date, hosting log settings) are code comments and not on the page. Title and description are in the table.
+All of it is new (`web/app/privacy/page.tsx`). Written from the code; the remaining owner items (effective date, hosting log settings) are code comments and not on the page. The address and contact email were added on 2026-10-16. Title and description are in the table.
 
 **PV1. H1.**
 > Your recordings stay on your Mac.
@@ -682,7 +682,7 @@ Change:
 >
 > To ask about your data, open an issue on GitHub. Issues there are public, so do not put personal details in one; ask for a private way to reply.
 
-Change:
+Change: applied 2026-10-16 (logic lane), owner's facts: now "Kaloyan Gantchev, Baslergasse 50-66, 1230 Vienna, Austria, runs the Trilsy app and this website, and is responsible for the data protection of what the website handles, described above. The app sends the provider nothing. / To ask about your data, or to have it corrected or deleted, write to hello@withradian.com. You can also complain to the Austrian data protection authority (Datenschutzbehörde). Bug reports can go to GitHub issues, which are public."
 
 **PV8. [claim] "Changes."**
 > This page changes when the app or the site does, and its history is in the repository on GitHub, next to the code it describes.
@@ -693,7 +693,7 @@ Change:
 
 ## Terms (`/terms`), including the imprint
 
-All of it is new (`web/app/terms/page.tsx`). Open owner items, in code comments only: postcode, city and country, a contact email, any trade or VAT number, governing law and courts, an effective date, and whether the liability wording holds under Austrian and EU consumer law. Title and description are in the table.
+All of it is new (`web/app/terms/page.tsx`). Open owner items, in code comments only (updated 2026-10-16; address, email and governing law are now on the page): a trade licence or GISA number and its authority, a VAT number, a company register entry, an effective date, and whether the liability wording holds under Austrian and EU consumer law. Title and description are in the table.
 
 **T1. H1.**
 > Use Trilsy freely. Tell people you record.
@@ -742,7 +742,7 @@ Change:
 >
 > To reach the provider, open an issue on GitHub. Issues there are public, so do not put anything private in one.
 
-Change:
+Change: applied 2026-10-16 (logic lane), owner's facts: now "Trilsy and this website are provided by Kaloyan Gantchev, a sole proprietorship (Einzelunternehmen). This is the site’s imprint.", the address block (Kaloyan Gantchev / Baslergasse 50-66 / 1230 Vienna, Austria / hello@withradian.com, a mailto link), then "To reach the provider, write to that address. For bug reports, open an issue on GitHub. Issues there are public, so do not put anything private in one." New section after it, "Which law applies.": "Austrian law applies to these terms. If you use Trilsy as a consumer, you keep the protection of the mandatory law of the country where you live." (governing-law default, delegated by the owner). Still open, code comments only: trade licence or GISA number and authority, VAT number, company register entry.
 
 **T10. [claim] "Changes."**
 > If these terms change, the history of this page is in the repository on GitHub, next to the code.

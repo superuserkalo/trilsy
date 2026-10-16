@@ -60,7 +60,10 @@ export function LegalPage({
 const linkClass =
   "rounded-sm underline decoration-primary decoration-2 underline-offset-4 transition-colors duration-(--duration-base) ease-trilsy hover:decoration-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none";
 
-/** A link inside legal text: ink, a mustard underline. `external` opens a new tab. */
+/**
+ * A link inside legal text: ink, a mustard underline. `external` opens a new tab.
+ * A `mailto:` link is a plain anchor in the same tab.
+ */
 export function TextLink({
   href,
   external,
@@ -70,6 +73,13 @@ export function TextLink({
   external?: boolean;
   children: React.ReactNode;
 }) {
+  if (href.startsWith("mailto:")) {
+    return (
+      <a href={href} className={linkClass}>
+        {children}
+      </a>
+    );
+  }
   return external ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
       {children}

@@ -17,7 +17,7 @@ import {
   RecordingToolbar,
   SidebarRow,
 } from "./app-chrome";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content: a voice note recorded on a walk. The window follows the
 // app's order: New recording, Stop & save, then "Create notes", then the notes.
@@ -46,7 +46,7 @@ type Step = "idle" | "recording" | "recorded" | "working" | "notes";
  * the toolbar into the recording row (a red dot, the time, Pause, Stop & save),
  * which gives the menu button back after Stop & save. The app waits for Create
  * notes, shows its progress under the recording, and ends on the notes. Plays
- * once, 40% in view; the notes at once under reduced motion. The panes share one
+ * once, 40% in view; under reduced motion with fades only. The panes share one
  * cell, the progress bar floats over the foot of the window and the menu opens
  * over the pane, so nothing shifts.
  */
@@ -58,11 +58,6 @@ export function VoiceDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setMenuOpen(false);
-      setStep("notes");
-      return;
-    }
     const timers = [
       setTimeout(() => setMenuOpen(false), 2000),
       setTimeout(() => setPressed("new"), 2600),

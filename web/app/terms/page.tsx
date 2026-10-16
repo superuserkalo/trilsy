@@ -16,17 +16,18 @@ export const metadata: Metadata = pageMetadata({
   path: "/terms",
 });
 
+// The imprint is the "Who provides Trilsy" section, from lib/site.ts `operator`
+// (owner, 2026-10-16). The governing-law section is the usual default for a
+// provider in Austria, taken by the owner's delegation: Austrian law, with the
+// consumer's mandatory home-country protection kept (Rome I, Art. 6). No court is
+// named, because a consumer can always sue and be sued at home (Brussels Ia).
 // TODO: confirm, left off the page on purpose:
-// - the imprint is the "Who provides Trilsy" section: the owner gave a name and
-//   a street (lib/site.ts `operator`). Still missing, and not invented: postcode,
-//   city, country, a contact email, and any trade or VAT number an Austrian or EU
-//   imprint may need. Until an email is given the contact route is GitHub issues.
-// - governing law and courts: none is given, so none is printed.
+// - the trade licence or GISA number and its authority, a VAT number and a company
+//   register entry, if any exist (see lib/site.ts `operator`).
 // - an effective or "last updated" date, for the same reason as the privacy page.
-// - the exact liability wording and whether it holds in the owner's
-//   jurisdiction (consumer law in Austria and the EU limits what a disclaimer can
-//   exclude): "to the extent the law allows" is a stand-in until a lawyer or the
-//   owner reads it.
+// - the exact liability wording and whether it holds under Austrian consumer law
+//   (KSchG limits what a disclaimer can exclude): "to the extent the law allows"
+//   is a stand-in until a lawyer or the owner reads it.
 // - the licence: MIT, chosen by the owner on 2026-10-16 (LICENSE at the repo root,
 //   FAQ 6). The name and this site's drawings stay outside the grant; the page says so.
 export default function TermsPage() {
@@ -128,13 +129,34 @@ export default function TermsPage() {
           body: (
             <>
               <p>
-                Trilsy and this website are provided by {operator.name}, <span className="whitespace-nowrap">{operator.street}</span>. This is the site’s imprint.
+                Trilsy and this website are provided by {operator.name}, a sole proprietorship (Einzelunternehmen). This is the
+                site’s imprint.
               </p>
+              <address className="not-italic">
+                {operator.name}
+                <br />
+                {operator.street}
+                <br />
+                {operator.postcode} {operator.city}, {operator.country}
+                <br />
+                <TextLink href={`mailto:${operator.email}`}>{operator.email}</TextLink>
+              </address>
               <p>
-                To reach the provider, <TextLink href={`${site.github}/issues`} external>open an issue on GitHub</TextLink>. Issues there
-                are public, so do not put anything private in one.
+                To reach the provider, write to that address. For bug reports,{" "}
+                <TextLink href={`${site.github}/issues`} external>open an issue on GitHub</TextLink>. Issues there are public, so do
+                not put anything private in one.
               </p>
             </>
+          ),
+        },
+        {
+          id: "law",
+          title: "Which law applies.",
+          body: (
+            <p>
+              Austrian law applies to these terms. If you use Trilsy as a consumer, you keep the protection of the mandatory law of
+              the country where you live.
+            </p>
           ),
         },
         {

@@ -56,7 +56,7 @@ const T_OPEN = T_FILTER + 600; // the filter has finished closing the rows
  * Lectures page: the student's search before the exam. The word is typed into the
  * search field, the recording list narrows to the lectures that mention it, and
  * the first match opens on its notes. Plays once, when the window comes into
- * view; under reduced motion the finished state is shown at once. Every part is
+ * view; under reduced motion with fades only. Every part is
  * laid out from the start (the list keeps its full height, the notes keep their
  * space), so nothing shifts.
  */
@@ -71,12 +71,6 @@ export function LecturesDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTyped(word.length);
-      setFiltered(true);
-      setOpened(true);
-      return;
-    }
     const timers: ReturnType<typeof setTimeout>[] = [];
     for (let i = 1; i <= word.length; i++) timers.push(setTimeout(() => setTyped(i), 400 + (i - 1) * TYPE_MS));
     timers.push(setTimeout(() => setFiltered(true), T_FILTER));
@@ -89,7 +83,7 @@ export function LecturesDemo() {
       ref={ref}
       title="Trilsy"
       role="img"
-      aria-label={`The recording list filtered by the search word ${word}. Two lectures match, Microeconomics lecture 6 and lecture 3, and the notes of lecture 6 are open: an overview, then a section on price elasticity of demand, one on what makes demand inelastic and one on revenue.`}
+      aria-label={`The recording list filtered by the search word ${word}. Two lectures match, “Economics, lecture 6” and “Economics, lecture 3”, and the notes of lecture 6 are open: an overview, then a section on price elasticity of demand, one on what makes demand inelastic and one on revenue.`}
       toolbar={<AudioSourcesButton />}
     >
       <div aria-hidden>

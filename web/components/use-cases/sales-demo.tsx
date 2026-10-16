@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { AudioPlayer } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
-import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
+import { usePlayOnce } from "./use-play-once";
 
 // Illustration content. The labels are the app's: audio sources, not people.
 const lines = [
@@ -27,8 +27,8 @@ const LENGTH = 32 * 60 + 10; // 00:32:10
  * starts with the player idle, its button a play icon and the slider at the start;
  * after a beat the second line's timestamp is pressed, the line is marked, the
  * button becomes the stop icon and the slider moves to 00:14:32, as the app does.
- * Plays once, when the window is 40% in view; the finished state at once under
- * reduced motion. Nothing in the window changes size.
+ * Plays once, when the window is 40% in view; under reduced motion with fades
+ * only. Nothing in the window changes size.
  */
 export function SalesDemo() {
   const { ref, inView } = usePlayOnce();
@@ -37,11 +37,6 @@ export function SalesDemo() {
 
   useEffect(() => {
     if (!inView) return;
-    if (prefersReducedMotion()) {
-      setPressed(true);
-      setPlaying(true);
-      return;
-    }
     const timers = [setTimeout(() => setPressed(true), 900), setTimeout(() => setPlaying(true), 1250)];
     return () => timers.forEach(clearTimeout);
   }, [inView]);
