@@ -32,7 +32,7 @@ Deploy: Vercel project `trilsy`, deployed by CLI from `web/` (Git auto-deploy is
 
 `AppModel` coordinates one recording or processing job at a time. Capture callbacks copy PCM into serial file writers; each source (microphone, system, import) keeps its own roughly 60-second CAF chunks and timeline. WhisperKit transcribes each completed chunk and persisted chunk IDs are the checkpoints, so a retry skips finished chunks. The speech model is released before the MLX notes model loads, to bound peak memory. Notes are written per bounded transcript section, then reduced to an overview. Storage is plain JSON and files under `~/Library/Application Support/Trilsy/Recordings/<UUID>/`, with no backend.
 
-Status: the native code is a first pass. It builds and its five unit tests pass on the macOS 15 CI runner, but no test exercises recording, transcription or notes and no real run of the app is on record, so expect behavior bugs there. Known limits are in `docs/architecture.md`; release gates are in `docs/acceptance.md`. Read both before changing capture, persistence or processing.
+Status: the native code is a first pass. It builds and its unit tests pass on the macOS 26 CI runner (Xcode 26), but no test exercises recording, transcription or notes and no real run of the app is on record, so expect behavior bugs there. Known limits are in `docs/architecture.md`; release gates are in `docs/acceptance.md`. Read both before changing capture, persistence or processing.
 
 ## Website
 

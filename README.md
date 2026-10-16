@@ -2,7 +2,7 @@
 
 Be here. We’ll take the notes. A private notetaker for Apple silicon Macs.
 
-**Developer preview.** Native source builds and its five unit tests pass on the macOS 15 CI runner, but recording, transcription and notes have not yet been exercised on a real Mac. Do not use it as the only recorder for an important conversation until the [acceptance checks](docs/acceptance.md) pass. No signed download is available yet.
+**Developer preview.** Native source builds and its unit tests pass on the macOS 26 CI runner (Xcode 26), but recording, transcription and notes have not yet been exercised on a real Mac. Do not use it as the only recorder for an important conversation until the [acceptance checks](docs/acceptance.md) pass. No signed download is available yet.
 
 The existing website design is not approved; its replacement is specified in the [redesign brief](docs/redesign-brief/README.md). Agent guidance is in [CLAUDE.md](CLAUDE.md).
 
@@ -12,7 +12,7 @@ Record microphone and application audio, or import an audio/video file. Stop, th
 
 ## Run the Mac app
 
-Requires Apple silicon, macOS 15+, Xcode 16.4 or later (the project builds in Swift 5 language mode), and XcodeGen (`brew install xcodegen`). 16 GB RAM recommended; reserve several GB for models and recording storage.
+Requires Apple silicon, macOS 15+, Xcode 26 (the project builds in Swift 5 language mode; Xcode 16.4 still builds it, with standard buttons in place of the macOS 26 glass styles), and XcodeGen (`brew install xcodegen`). 16 GB RAM recommended; reserve several GB for models and recording storage.
 
 ```sh
 ./scripts/build-mac.sh
@@ -54,6 +54,10 @@ Detailed notes are generated in bounded sections and retained alongside an overv
 ## Scope and release gates
 
 Not in the app yet: live transcription, individual speaker recognition, any calendar or app integration, an MCP server, an iPhone app, sync, cloud or hosted AI, an account, billing, notarization, an updater or a signed installer. Direction decided with the site redesign (2026-10-15), none of it built: the free app stays local with no account; a paid Pro layer would add sync of transcripts and notes (audio stays on the Mac), a read-and-write MCP server and connections to apps. Third-party SDKs and model licenses apply independently; inspect them before distribution. See [acceptance](docs/acceptance.md) and [architecture](docs/architecture.md).
+
+## Licence
+
+MIT, see [LICENSE](LICENSE): Copyright (c) 2026 Kaloyan Gantchev. The Trilsy name and the drawings on the website are not part of the grant. The Whisper and Qwen models the app downloads, and its third-party SDKs, keep their own licences.
 
 ## Original development history
 

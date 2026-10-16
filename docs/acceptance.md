@@ -1,6 +1,6 @@
 # Mac acceptance gate
 
-Run on real Apple silicon before offering a binary to customers. The build and the five unit tests in check 1 pass on the macOS 15 CI runner (Xcode 16.4); checks 2 to 10 remain **not run**.
+Run on real Apple silicon before offering a binary to customers. The build and the five unit tests in check 1 pass on the macOS 26 CI runner (Xcode 26); checks 2 to 10 remain **not run**.
 
 1. Run `scripts/build-mac.sh`; resolve any compiler/API or signing errors. Keep the xcresult. Pin the resolved transitive packages after the first successful Xcode resolution.
 2. Fresh permission state: deny microphone and screen/audio permission independently; verify a clear error, no fake recording state, and successful retry after granting access.
