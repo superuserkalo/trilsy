@@ -12,6 +12,8 @@ struct TrilsyApp: App {
                 .frame(minWidth: 880, minHeight: 600)
                 .onAppear { delegate.model = model }
         }
+        .defaultSize(width: 1080, height: 760)
+        .windowToolbarStyle(.unifiedCompact(showsTitle: false))
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New Recording") { model.start() }

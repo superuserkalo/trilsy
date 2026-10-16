@@ -1,0 +1,232 @@
+<!doctype html>
+<!--
+  Hero motion prototype, lecture setting, beats 1 to 3. Throwaway.
+  How the motion explains the product:
+  1. The sentence exists once at a time. As it types into the transcript, it fades out of the speech bubble,
+     so the eye follows the words from the speaker into the window with no arrow or caption.
+  2. Everything in the window is driven by the same clock as the typing: the waveform pulses once per word
+     and dips at the full stop, and the timer runs up to 00:21, the timestamp the line carries, then stops.
+  3. Nothing else moves. The bubble grows from its tail, at the speaker's head; the window, the figures and
+     the notes headings stay put, with the space for later lines already reserved so nothing shifts.
+  One easing token (--ease-trilsy), 400ms for small things, 600ms for the bubble. The typing and the
+  marquee are the only linear motion. Reduced motion shows the end of beat 3, still.
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilsy hero, beats 1 to 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet"><link rel="stylesheet" href="../../hero-kit.css">
+<style>
+  :root{--paper:#fbf7ee;--acc:#f2c14e;--ease-trilsy:cubic-bezier(0.22,1,0.36,1)}
+  body{background:#FBF7EE;height:960px;position:relative;font-family:Figtree,system-ui,sans-serif}
+  h1,.win .doc,.island .logo{font-family:Fraunces,serif!important;font-optical-sizing:auto}
+  .win{font-family:Figtree,sans-serif}
+  .island{position:relative;z-index:20;max-width:912px;margin:16px auto 0;background:#FBF7EE;border:3px solid #DCE6F2;border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+  .island .logo{font:700 24px/1 Fraunces,serif;letter-spacing:-.02em;margin-right:auto}
+  .island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+  .island .dd{display:flex;align-items:center;gap:5px}.island .dd svg{width:12px;height:12px}
+  .island .go{background:var(--acc);border:2px solid var(--ink);border-radius:999px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink)}
+  .coolband{position:absolute;left:0;right:0;top:436px;bottom:-60px;background:#DCE6F2;z-index:0;border-top:1.5px dotted #241E18;border-bottom:1.5px dotted #241E18}
+  .hero{text-align:center;padding-top:52px;position:relative;z-index:1}
+  .hero h1{font-size:52px;line-height:1.06;max-width:15em;margin:0 auto}
+  .hero h1 em{font-style:normal;color:#A4472D;background:linear-gradient(transparent 62%,#E6AB4F 62%,#E6AB4F 92%,transparent 92%);padding:0 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .hero .sub{margin:14px auto 0;max-width:36em;font-size:19px;text-wrap:balance}
+  .hero .cta{justify-content:center;margin-top:18px}
+  .btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:999px;font-family:inherit}
+  .scene{position:relative;z-index:1;height:416px;margin-top:14px;overflow:hidden}
+  .stage{position:absolute;top:0;left:50%;width:1440px;height:416px;margin-left:-720px}
+  .stage svg{position:absolute;left:0;top:0}
+  .scene .win{position:absolute;left:430px;top:10px;text-align:left;border-width:2px}
+  .win .dots i:nth-child(1){background:#ff5f57}.win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
+  .win .bar{padding:9px 14px}
+  .win .bar strong{display:flex;justify-content:center}
+  .tabs{display:inline-flex;background:#ece4d3;border-radius:7px;padding:2px;gap:2px;font-weight:600;font-size:12.5px}
+  .tabs button{font:inherit;border:0;background:none;cursor:pointer;padding:3px 12px;border-radius:5px;color:#4a3f33;position:relative;overflow:hidden}
+  .tabs button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+  .tabs .on{background:#fffdf8;color:var(--ink);box-shadow:0 1px 2px rgba(43,33,24,.25)}
+  .tabs .on::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:62%;background:var(--acc)}
+  .win .doc{padding:10px 16px 0;font:600 14.5px/1.2 Fraunces,serif;border-bottom:0}
+  .make,.chip[style*="2f6f73"]{background:#4A6784!important}
+  .make{font-family:inherit}
+  .trust{position:absolute;left:0;right:0;top:826px;z-index:1;background:#DCE6F2;border-top:1.5px dotted #241E18}
+  .trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute)}
+  .trust .tm{font-size:11px;padding:0 0 8px;margin-top:-10px;opacity:.75}
+  .marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:16px 0 20px}
+  .marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+  .marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+  .marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+  .marquee-track li img{width:20px;height:20px;opacity:.6;filter:grayscale(1)}
+  @keyframes marquee-loop{to{transform:translateX(-50%)}}
+
+  /* ---- motion: beats are states on .scene[data-beat]; 0 is the cross-fade back to rest ---- */
+  .bub{transition:opacity .6s var(--ease-trilsy),transform .6s var(--ease-trilsy)}
+  [data-beat="1"] .bub{opacity:0;transform:scale(.96)}
+  [data-beat="0"] .bub{opacity:0;transition:opacity .4s var(--ease-trilsy)}
+  .words,.live,.wave i{transition:opacity .4s var(--ease-trilsy),height .4s var(--ease-trilsy)}
+  [data-beat="3"] .words,[data-beat="0"] .words{opacity:0}
+  [data-beat] .live{opacity:0}[data-beat="3"] .live{opacity:1}
+  .later{visibility:hidden}
+  .rec .tm{display:inline-grid}.rec .tm b{grid-area:1/1;font-weight:inherit}
+  [data-beat] .tm .l,[data-beat="3"] .tm .z{opacity:0}[data-beat="3"] .tm .l{opacity:1}
+  [data-beat="0"] .tm b{transition:opacity .4s var(--ease-trilsy)}
+  .noanim *{transition:none!important}
+  @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+
+  /* ---- narrow: the people step out, the window takes the width ---- */
+  @media (max-width:899px){
+    body{height:auto}
+    .island{margin:12px 16px 0;gap:12px}.island ul{display:none}
+    .hero{padding-top:36px}
+    .hero h1{font-size:34px;padding:0 16px}.hero h1 em{padding:0 4px}
+    .hero .sub{font-size:17px;padding:0 20px}
+    .coolband{display:none}
+    .scene{height:auto;overflow:visible;margin-top:24px;padding:0 16px 30px}
+    .scene::before{content:"";position:absolute;left:0;right:0;top:48px;bottom:0;background:#DCE6F2;border-top:1.5px dotted #241E18}
+    .stage{position:relative;left:auto;width:auto;height:auto;margin:0}.stage svg{display:none}
+    .scene .win{position:relative;left:auto;top:auto;width:auto!important;max-width:580px;margin:0 auto}
+    .win .bar{gap:8px;padding:9px 10px}.tabs button{padding:3px 8px}
+    .cols{grid-template-columns:1fr}.cols .nt{border-left:0;border-top:1px solid var(--line)}
+    .trust{position:static}.trust p{padding:18px 16px 0}.trust .tm{padding:0 16px 10px}
+  }
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul><li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul>
+  <span class="go">View on GitHub</span>
+</header>
+<div class="coolband"></div>
+<section class="hero">
+  <h1>Be in the conversation. <em>Trilsy writes the notes.</em></h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="scene" id="scene"></div>
+</section>
+<section class="trust"><p>Trilsy records whatever your Mac plays, from the apps you already use.</p><div class="marquee-mask"><div class="marquee-track" id="track"></div></div><p class="tm">App names and marks belong to their owners; no affiliation or endorsement is implied.</p></section>
+<script src="../../hero-kit.js"></script><script src="../../hero-kit-ink.js"></script>
+<script>
+const K = Ink, INK = '#2b2118';
+const MK=[['Zoom','zoom'],['Google Meet','googlemeet'],['Microsoft Teams','microsoftteams'],['Slack','slack'],['Discord','discord'],['Webex','webex'],['YouTube','youtube'],['Safari','safari'],['Google Chrome','googlechrome'],['FaceTime',null]];
+const row = '<ul>' + MK.map(m=>`<li>${m[1]?`<img src="../../logos/${m[1]}.svg" alt="">`:''}<span>${m[0]}</span></li>`).join('') + '</ul>';
+document.getElementById('track').innerHTML = row + row + row + row;
+
+const SZ={r1c3:[195,500],r1c4:[190,500],r1c5:[165,505],r1c6:[190,505],r2c1:[190,470],r2c2:[175,470],r2c4:[155,470],r2c5:[170,470],r2c6:[240,470]};
+const FH=310;
+const fig = (key, x, flip) => {
+  const [cw,ch]=SZ[key], w=Math.round(cw*FH/ch), y=416-FH;
+  return `<image href="../../cast-cut-t/${key}.png" width="${w}" height="${FH}" transform="${flip ? `translate(${x + w} ${y}) scale(-1 1)` : `translate(${x} ${y})`}"/>`;
+};
+// The bubble's transform origin is the tip of its tail, so it grows from the speaker's head.
+const say = (x, y, w, who, col, lines, tailX) => {
+  const h = 18 + lines.length * 23 + 16, ty = y + h;
+  const text = lines.map((l,i)=>`<text x="${x+16}" y="${y+50+i*23}" font-family="'Bradley Hand','Segoe Print',cursive" font-size="19.5" fill="${INK}">${l}</text>`).join('');
+  return `<g class="bub" style="transform-origin:${tailX+4}px ${ty+24}px"><g filter="url(#inkwob)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>` +
+    `<path d="M${tailX-9} ${ty} Q${tailX-2} ${ty+14} ${tailX+4} ${ty+24} Q${tailX+8} ${ty+10} ${tailX+14} ${ty}" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>` +
+    `<path d="M${tailX-7} ${ty+1.2} H${tailX+12}" stroke="#fffdf8" stroke-width="4.5"/></g>` +
+    `<rect x="${x+14}" y="${y+10}" width="${who.length*7.4+16}" height="19" rx="9.5" fill="${col}"/><text x="${x+22}" y="${y+24}" font-family="-apple-system,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff">${who}</text><g class="words">${text}</g></g>`;
+};
+const BLUE='#4A6784';
+const scenes = {
+  lecture: {
+    svg:
+      `<g filter="url(#inkwob)"><rect x="1040" y="8" width="360" height="82" rx="6" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>
+         <text x="1058" y="34" font-family="'Bradley Hand','Segoe Print',cursive" font-size="22" fill="${INK}">Mitosis</text>
+         ${['P','M','A','T'].map((c,i)=>`<g transform="translate(${1190+i*52} 52)"><ellipse rx="19" ry="14" fill="none" stroke="${INK}" stroke-width="2"/><path d="${['M-3 -4 q3 4 0 8','M0 -13 V13','M-15 0 H15','M-12 0 q12 -7 24 0'][i]}" fill="none" stroke="${INK}" stroke-width="1.6" stroke-dasharray="${i==0?'0':'3 3'}" stroke-linecap="round"/><text y="29" text-anchor="middle" font-family="'Bradley Hand',cursive" font-size="12" fill="${INK}">${c}</text></g>`).join('')}</g>` +
+      fig('r1c5',280) + fig('r1c4',1040) + fig('r2c5',1180) +
+      say(90,8,300,'Professor','#2f6f73',['Mitosis has four stages.','Prophase comes first.'],330),
+    win:{title:'Biology 201, lecture 9',time:'00:34',transcript:[
+      {who:'Professor',c:BLUE,t:'00:21',text:'Mitosis has four stages. Prophase comes first.'},
+      {who:'Student',c:'#c8553d',t:'00:34',text:'Is prophase the longest?'},
+      {who:'Professor',c:BLUE,t:'00:38',text:'Usually, yes. The chromosomes condense there.'}],
+      notes:{overview:'Mitosis has four stages. Prophase comes first and is usually the longest.',t2:'Key terms',decisions:['Prophase: chromosomes condense','Metaphase: chromosomes line up'],t3:'To review',actions:['Read chapter 7 before Thursday']}}
+  },
+  meeting: {
+    svg: fig('r2c6',130) + fig('r1c3',300) + fig('r1c6',1040) + fig('r2c1',1170,true) +
+      say(60,8,290,'Priya','#c8553d',['Can we move the launch','to the 14th?'],200) +
+      say(1090,8,290,'Marcus','#6b3f5a',['Legal needs two more','days on the review.'],1235),
+    win:{title:'Product sync',time:'00:52',transcript:[
+      {who:'Priya',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'Marcus',c:'#6b3f5a',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Priya',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+      notes:{overview:'The launch moves to the 14th so legal can finish its review.',decisions:['Launch date is the 14th','Legal gets two more days'],actions:['Dev: send revised timeline by Friday']}}
+  },
+  interview: {
+    svg: fig('r2c4',290) + fig('r2c2',1050,true) +
+      say(70,8,310,'Ana','#c8553d',['We moved the whole team','to Lisbon in March.'],330) +
+      say(1030,8,250,'Sam','#2f6f73',['What changed first?'],1112),
+    win:{title:'Ana Ribeiro, product designer',time:'12:15',transcript:[
+      {who:'Ana',c:'#c8553d',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Sam',c:BLUE,t:'12:11',text:'What changed first?'},
+      {who:'Ana',c:'#c8553d',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+      notes:{overview:"Ana's team moved to Lisbon in March. The first change was meeting times.",t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}}
+  }
+};
+const labels = {lecture:'Lecture',meeting:'Meeting',interview:'Interview'};
+const scene = document.getElementById('scene');
+const still = matchMedia('(prefers-reduced-motion: reduce)');
+const LINE = scenes.lecture.win.transcript[0].text, END = 21;
+// Reading pace: one unit per character, a breath after the first full stop.
+const COST = [...LINE].map((c,i)=> c===' ' && LINE[i-1]==='.' ? 6 : 1), TOTAL = COST.reduce((a,b)=>a+b,0);
+const REST = i => 6 + Math.abs(Math.sin(i*1.7)*14 + Math.sin(i*.6)*8);   // the kit's resting wave, the end of beat 3
+let run = 0, bars, typed, rest, clock;
+
+const wait = (ms, id) => new Promise(r => setTimeout(() => id === run && r(), ms));
+const beat = n => scene.dataset.beat = n;
+const wave = f => bars.forEach((b,i) => b.style.height = f(i) + 'px');
+function show(n){ typed.textContent = LINE.slice(0,n); rest.textContent = LINE.slice(n); }
+function rest1(){                       // beat 1, set without animation
+  scene.classList.add('noanim'); beat(1); show(0); clock.textContent = '00:00'; wave(()=>3);
+  void scene.offsetWidth; scene.classList.remove('noanim');
+}
+function type(ms, id){
+  return new Promise(done => {
+    const t0 = performance.now(); let n = -1, word = -1;
+    (function frame(now){
+      if (id !== run) return;
+      const p = Math.min(1, (now - t0) / ms);
+      let k = 0, acc = 0; while (k < LINE.length && acc + COST[k] <= p * TOTAL + 1e-6) acc += COST[k++];
+      if (k !== n) {
+        n = k; show(n);
+        const w = LINE.slice(0,n).split(' ').length, pause = LINE[n-1] === '.' && n < LINE.length;
+        if (pause) { word = -1; wave(i => 3 + REST(i)*.12); }
+        else if (w !== word) { word = w; wave(i => Math.min(30, 4 + Math.abs(Math.sin(i*1.7 + w*2.1)*15 + Math.sin(i*.6 + w)*9))); }
+      }
+      clock.textContent = '00:' + String(Math.floor(p*END)).padStart(2,'0');
+      if (p < 1) requestAnimationFrame(frame); else { wave(REST); done(); }
+    })(t0);
+  });
+}
+async function loop(id){
+  while (id === run) {
+    rest1();                 await wait(600, id);    // beat 1, at rest
+    beat(2);                 await wait(1400, id);   // beat 2, the bubble draws in over 600ms
+    beat(3);                 await type(1400, id);   // beat 3, the words move into the transcript
+                             await wait(3000, id);   // hold
+    beat(0); wave(()=>3);    await wait(400, id);    // cross-fade back to rest
+  }
+}
+function render(state){
+  run++;
+  const S = scenes[state], lec = state === 'lecture';
+  const tabs = '<span class="tabs" role="group" aria-label="Setting">' + Object.keys(labels).map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===state}" class="${k===state?'on':''}">${labels[k]}</button>`).join('') + '</span>';
+  const o = Object.assign({w:580,live:!lec,tabs}, S.win);
+  if (lec) o.time = '<span class="tm"><b class="z">00:00</b><b class="l">00:00</b></span>';
+  scene.innerHTML = '<div class="stage">' + K.svg(1440,416,S.svg) + K.win(o) + '</div>';
+  if (!lec) { delete scene.dataset.beat; return; }
+  const ln = scene.querySelectorAll('.ln');
+  ln[0].classList.add('live'); ln[1].classList.add('later'); ln[2].classList.add('later');
+  scene.querySelectorAll('.nt p,.nt ul').forEach(e => e.classList.add('later'));
+  ln[0].querySelector('p').innerHTML = '<span></span><i class="caret"></i><span class="later"></span>';
+  [typed,,rest] = ln[0].querySelector('p').children;
+  bars = [...scene.querySelectorAll('.wave i')]; clock = scene.querySelector('.tm .l');
+  if (still.matches) { scene.classList.add('noanim'); beat(3); show(LINE.length); clock.textContent = '00:' + END; wave(REST); }
+  else { scene.classList.remove('noanim'); loop(run); }
+}
+let current = labels[location.hash.slice(1)] ? location.hash.slice(1) : 'lecture';
+scene.addEventListener('click', e => {
+  const b = e.target.closest('[data-k]'); if (!b) return;
+  current = b.dataset.k; history.replaceState(null,'','#'+current); render(current);
+  scene.querySelector(`[data-k="${current}"]`).focus();
+});
+still.addEventListener('change', () => render(current));
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => render(current));
+</script>
+</body></html>

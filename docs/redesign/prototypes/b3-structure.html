@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B3 page structure: chosen home</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf7ee;--mute:#7a6f60;--acc:#f2c14e}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:13.5px/1.4 -apple-system,system-ui,sans-serif}
+main{max-width:1440px;margin:0 auto;padding:24px 30px 30px}
+h1{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+.lead{margin:0 0 14px;color:#4a3f33;max-width:80em}
+.grid{display:grid;grid-template-columns:560px 1fr;gap:20px}
+.col{background:#fffdf8;border:1.5px solid var(--ink);border-radius:12px;padding:14px;box-shadow:4px 5px 0 var(--ink)}
+.col h2{margin:0 0 8px;font:700 17px/1.2 ui-sans-serif}
+.sec{border:1.5px solid var(--ink);border-radius:8px;padding:8px 11px;margin-bottom:7px;background:#fff}
+.sec b{display:block;font-size:14px}.sec span{color:#4a3f33;font-size:12.5px}
+.sec.pho{background:repeating-linear-gradient(135deg,#fffdf8 0 8px,#f3e6c8 8px 16px)}.sec.pho::after{content:"TODO: image";display:block;margin-top:3px;font:700 10px/1 ui-sans-serif;color:#9a3b25;letter-spacing:.04em}
+.sec.trust{border-style:dashed}
+.sec.end{background:linear-gradient(180deg,#f3e6c8,#e9d3a2);min-height:96px}
+.sec.end::after{content:"TODO: image, full width";display:block;margin-top:3px;font:700 10px/1 ui-sans-serif;color:#9a3b25;letter-spacing:.04em}
+.side{display:grid;gap:12px;align-content:start}
+.box{background:#fffdf8;border:1.5px solid rgba(43,33,24,.3);border-radius:12px;padding:14px}
+.box h2{margin:0 0 6px;font:700 15px/1.2 ui-sans-serif}.box p,.box li{font-size:12.5px;color:#4a3f33;margin:4px 0}
+.pg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.p{border:1.5px solid var(--ink);border-radius:8px;padding:7px 10px;background:#fff}.p b{display:block}.p span{font-size:12px;color:#4a3f33}.p i{display:block;font-style:normal;font-size:11px;color:var(--mute)}
+</style></head><body><main>
+<h1>B3 home page: decided structure (owner: C, with B's closing band) and the pages around it</h1>
+<p class="lead">Wireframe, no styling. Home carries four jobs and a closing band; everything else lives on its own page.</p>
+<div class="grid">
+<div class="col"><h2>Home</h2>
+ <div class="sec"><b>1 Hero</b><span>What it is, in three settings (lecture, meeting, interview). Island header above, no eyebrow.</span></div>
+ <div class="sec trust"><b>2 Trust band</b><span>One line and the logo marquee with faded edges. Own topic, next.</span></div>
+ <div class="sec pho"><b>3 From sound to notes</b><span>Pinned scroll story: record, transcribe, notes. The photograph effect: one frame that changes shape, a photograph per chapter.</span></div>
+ <div class="sec"><b>4 Questions</b><span>Six real questions with a link to the rest.</span></div>
+ <div class="sec end"><b>5 Closing band</b><span>The call to action over one full-width photograph (B's ending).</span></div>
+ <div class="sec" style="border-style:dashed"><b>Footer</b><span>Rounded card, a few short columns, the use-case list and legal links.</span></div>
+</div>
+<div class="side">
+ <div class="box"><h2>Pages around it</h2><div class="pg">
+  <div class="p"><b>Use cases (13 pages)</b><span>Specific audiences and industries, proposed in the next question. A dropdown panel of four groups, and an index page for crawlers.</span><i>/use-cases/&hellip;</i></div>
+  <div class="p"><b>Pricing</b><span>Placeholders until B8 decides what can be said.</span><i>/pricing, TODO: confirm</i></div>
+  <div class="p"><b>How it works</b><span>The detail the short home leaves out: what is recorded, where files live, how notes are written, export, requirements, open source.</span><i>/how-it-works</i></div>
+  <div class="p"><b>Students</b><span>The offer page, linked from the Learning use cases.</span><i>/students, TODO: confirm</i></div>
+ </div></div>
+ <div class="box"><h2>Where the photographs go (image requests are open, drafted in STATE.md)</h2>
+  <ul><li>Section 3, the pinned story: one wide photograph that survives a wide and a tall crop, and one portrait photograph per further chapter.</li><li>Section 5, the closing band: one wide photograph with a quiet dark area for the heading and button.</li><li>Nowhere else. The hero carries no photograph.</li></ul></div>
+ <div class="box"><h2>What moved because of the choice</h2><ul><li>The audio-location paragraph, the use-case list, the student band and the open-source block are gone from the home page. Audio location and open source live on How it works; the offer on Students; use cases in the dropdown, the index page and the footer.</li><li>Open source and the GitHub star count stay in the header button and the footer.</li></ul></div>
+</div></div></main></body></html>

@@ -1,78 +1,182 @@
 @import "tailwindcss";
 @import "../node_modules/tw-animate-css/dist/tw-animate.css";
-@import "../node_modules/@fontsource-variable/instrument-sans/index.css";
+
+/*
+  Tokens and base rules only. Palette is B4 treatment 3 (docs/redesign/01-concept.md):
+  warm paper page, pale blue field, ink, mustard for actions and the marker,
+  deep terracotta for emphasis, dusty blue secondary. Terracotta, sage, dusty
+  blue and the skin tones are fills only, never small text.
+  Contrast ratios are listed on app/scratch/page.tsx (development only).
+*/
+
+@custom-variant dark (&:is(.dark, .dark *));
 
 :root {
   color-scheme: light;
-  --background: #f8f7f3;
-  --foreground: #182e54;
-  --card: #ffffff;
-  --card-foreground: #182e54;
-  --popover: #ffffff;
-  --popover-foreground: #182e54;
-  --primary: #3159e8;
-  --primary-foreground: #ffffff;
-  --secondary: #edf1fb;
-  --secondary-foreground: #284fa5;
-  --muted: #efeee9;
-  --muted-foreground: #5f6d80;
-  --accent: #ed7752;
-  --accent-foreground: #231f28;
-  --destructive: #d55345;
-  --border: #1c37601a;
-  --input: #1c37602b;
-  --ring: #3159e8;
-  --sky: #dae9fd;
-  --ink: #183462;
-  --radius: 0.55rem;
+
+  /* Surfaces */
+  --background: #fbf7ee; /* warm paper */
+  --foreground: #241e18; /* ink */
+  --card: #fffdf8;
+  --card-foreground: #241e18;
+  --popover: #fffdf8;
+  --popover-foreground: #241e18;
+  --field: #dce6f2; /* pale blue band, from the cast sheet's dusty blue */
+  --field-foreground: #241e18;
+  --dusk: #1c2a35; /* deep teal-blue of the dusk photographs: the closing band's stand-in and its fill while the photo loads */
+  --dusk-foreground: #fffdf8; /* 14.4:1 on dusk */
+
+  /* Actions and emphasis */
+  --primary: #e6ab4f; /* mustard: actions and the marker */
+  --primary-foreground: #241e18; /* ink on mustard, 8.1:1 */
+  --secondary: #4a6784; /* dusty blue, deepened for white text */
+  --secondary-foreground: #ffffff; /* 5.9:1 */
+  --accent: #a4472d; /* deep terracotta: emphasis */
+  --accent-foreground: #fffdf8;
+  --destructive: #a4472d;
+
+  /* Neutrals */
+  --muted: #f4ecdd;
+  --muted-foreground: #6e6354; /* 5.5:1 on paper */
+  --border: #d9cfbd;
+  --input: #d9cfbd;
+  --ring: #4a6784;
+
+  /* Cast sheet hues: fills only */
+  --ink: #241e18;
+  --mustard: #e6ab4f;
+  --terracotta: #bf6a4e; /* 3.6:1, fill only */
+  --sage: #8d9f8b;
+  --dusty-blue: #7f99b3;
+  --skin-light: #edc4a3;
+  --skin-mid: #a7775b;
+  --skin-deep: #5f3b25;
+
+  /* Product mockups: the macOS window controls and the recording dot */
+  --mac-close: #ff5f57;
+  --mac-minimize: #febc2e;
+  --mac-zoom: #28c840;
+  --recording: #d6402f;
+
+  --radius: 0.75rem;
+
+  /* Motion durations; the easing is --ease-trilsy in @theme static below. */
+  --duration-base: 400ms;
+  --duration-slow: 600ms;
 }
+
+/* Dark: B4 values, untested. Nothing switches this on yet. */
+.dark {
+  color-scheme: dark;
+  --background: #1c1713;
+  --foreground: #f4eee2; /* 15.4:1 */
+  --card: #26201a;
+  --card-foreground: #f4eee2;
+  --popover: #26201a;
+  --popover-foreground: #f4eee2;
+  --field: #243241; /* deeper blue band; not in B4, chosen to sit beside #1c1713 */
+  --field-foreground: #f4eee2;
+  --primary: #e6ab4f; /* 8.7:1 */
+  --primary-foreground: #241e18;
+  --secondary: #7f99b3;
+  --secondary-foreground: #241e18;
+  --accent: #e08a6c; /* 6.8:1 */
+  --accent-foreground: #241e18;
+  --destructive: #e08a6c;
+  --muted: #2e261e;
+  --muted-foreground: #a99c88; /* 6.6:1 */
+  --border: #4a3f33;
+  --input: #4a3f33;
+  --ring: #7f99b3;
+  --ink: #f4eee2;
+}
+
 @theme inline {
-  --color-sky: var(--sky);
-  --color-ink: var(--ink);
-  --font-sans: "Instrument Sans Variable", Arial, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-field: var(--field);
+  --color-field-foreground: var(--field-foreground);
+  --color-dusk: var(--dusk);
+  --color-dusk-foreground: var(--dusk-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-ink: var(--ink);
+  --color-mustard: var(--mustard);
+  --color-terracotta: var(--terracotta);
+  --color-sage: var(--sage);
+  --color-dusty-blue: var(--dusty-blue);
+  --color-skin-light: var(--skin-light);
+  --color-skin-mid: var(--skin-mid);
+  --color-skin-deep: var(--skin-deep);
+  --color-mac-close: var(--mac-close);
+  --color-mac-minimize: var(--mac-minimize);
+  --color-mac-zoom: var(--mac-zoom);
+  --color-recording: var(--recording);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --animate-meter: meter 1.25s ease-in-out infinite alternate;
-  --animate-enter: enter 0.7s ease-out both;
-  @keyframes meter {
-    from {
-      transform: scaleY(0.3);
-    }
-    to {
-      transform: scaleY(1);
-    }
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+/* One easing for the whole site: `ease-trilsy`, or var(--ease-trilsy). */
+@theme static {
+  --ease-trilsy: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hero (ticket 04): the bubbles' handwriting and three loops. All stop under
+   reduced motion through the base rule at the end of this file. */
+@theme {
+  --font-hand: "Bradley Hand", "Segoe Print", "Chalkboard SE", cursive;
+
+  /* A person standing in a room: a slow sway and a nod, on its own loop per figure. */
+  --animate-idle: idle 7s ease-in-out infinite;
+  /* The three dots in the "Writing notes" row. */
+  --animate-blink: blink 1s ease-in-out infinite;
+  /* The headline marker, revealed left to right at its final geometry. */
+  --animate-marker: marker 600ms var(--ease-trilsy) both;
+  /* The trust band: one row, duplicated once, slid by half its width. */
+  --animate-marquee: marquee 70s linear infinite;
+
+  @keyframes idle {
+    0%,
+    100% { transform: rotate(0) translateY(0); }
+    22% { transform: rotate(-0.9deg) translateY(-1.5px); }
+    40% { transform: rotate(0.3deg) translateY(0); }
+    58% { transform: rotate(0) translateY(-0.8px); }
+    74% { transform: rotate(1.3deg) translateY(1px); }
+    86% { transform: rotate(0) translateY(0); }
   }
-  @keyframes enter {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  @keyframes blink {
+    50% { opacity: 0.25; }
+  }
+  @keyframes marker {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
   }
 }
+
 @layer base {
   * {
     @apply border-border;
@@ -83,17 +187,24 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    font-optical-sizing: auto;
+  }
   button:not(:disabled),
   a {
     @apply cursor-pointer;
   }
   ::selection {
-    @apply bg-accent/30 text-foreground;
+    @apply bg-primary/40 text-foreground;
   }
   :focus-visible {
     @apply outline-2 outline-offset-4 outline-ring;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

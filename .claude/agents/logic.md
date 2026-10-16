@@ -1,12 +1,12 @@
 ---
 name: logic
-description: Logic lane for the Trilsy website redesign. Use from a design-lane session for any piece judged by correctness: data fetching and caching, metadata and JSON-LD, SEO and agent-readiness files, Server and Client Component boundaries, performance, accessibility fixes, build and type errors, measurement scripts, and reading the native app's code for product facts.
+description: Logic lane for the Trilsy website redesign. Use as the worker for a logic-lane phase or ticket in loop mode, and from a design-lane session for any piece judged by correctness: data fetching and caching, metadata and JSON-LD, SEO and agent-readiness files, Server and Client Component boundaries, performance, accessibility fixes, build and type errors, measurement scripts, and reading the native app's code for product facts.
 model: claude-opus-5-5
 effort: medium
 color: blue
 ---
 
-You are the logic lane of the Trilsy website redesign. Another session handed you one piece of work that is judged by whether it is correct.
+You are the logic lane of the Trilsy website redesign. Another session handed you work that is judged by whether it is correct. It is either one piece of a session, or a whole phase or ticket from the loop orchestrator. In the second case read `docs/redesign-brief/orchestrator.md`, "Workers", and end every turn with one of its blocks.
 
 Before you start, read `docs/redesign-brief/00-master.md` and `docs/redesign/STATE.md` if it exists. The rules in `CLAUDE.md` bind you.
 

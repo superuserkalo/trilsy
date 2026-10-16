@@ -1,0 +1,59 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marker: chisel band, fixed SVG and Rough.js, left to right</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@500;600&display=block" rel="stylesheet">
+<style>
+:root{--ease-trilsy:cubic-bezier(0.22,1,0.36,1)}
+*{box-sizing:border-box}body{margin:0;background:#FBF7EE;color:#241E18;font-family:Figtree,sans-serif}
+.wrap{position:relative;max-width:900px;margin:0 auto;padding:16px 16px 40px}
+.card{position:relative;isolation:isolate;border:1.5px solid #241E18;border-radius:14px;background:#FBF7EE;margin-bottom:14px;overflow:hidden}
+.lab{font:700 11px/1.35 Figtree;letter-spacing:.05em;text-transform:uppercase;color:#7a6f60;padding:12px 18px 0}.lab b{background:#241E18;color:#fff;border-radius:99px;padding:2px 8px;margin-left:6px}
+.hero{position:relative;z-index:1;text-align:center;padding:10px 18px 24px}
+h1{position:relative;z-index:1;font:600 52px/1.12 Fraunces,serif;margin:6px auto 0;letter-spacing:-.01em;max-width:15em}
+.sub{margin:14px auto 0;max-width:30em;font-size:18px;line-height:1.45;color:#4a3f33}
+.btn{display:inline-block;margin-top:16px;background:#F2C14E;border:2px solid #241E18;border-radius:999px;padding:11px 22px;font-weight:600}
+.band{background:#DCE6F2;border-top:1.5px dotted #241E18;height:58px;position:relative;z-index:1}
+.rp{position:absolute;right:16px;top:12px;font:600 12px Figtree;border:1.5px solid #241E18;background:#E6AB4F;border-radius:99px;padding:5px 12px;cursor:pointer}
+.fx .ln{position:relative;padding:0 .3em;margin:0 -.15em}
+.fx .ln::before{content:"";position:absolute;left:0;right:0;top:-9%;bottom:-9%;z-index:-1;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cfilter%20id%3D%22r%22%20x%3D%22-3%25%22%20y%3D%22-20%25%22%20width%3D%22106%25%22%20height%3D%22140%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.035%200.09%22%20numOctaves%3D%222%22%20seed%3D%224%22%20result%3D%22n%22%2F%3E%3CfeDisplacementMap%20in%3D%22SourceGraphic%22%20in2%3D%22n%22%20scale%3D%223%22%20xChannelSelector%3D%22R%22%20yChannelSelector%3D%22G%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url%28%23r%29%22%3E%3Cpath%20d%3D%22M16%2019%20L598%2015%20L586%2055%20L3%2058%20Z%22%20fill%3D%22%23E6AB4F%22%20fill-opacity%3D%22.74%22%2F%3E%3Cpath%20d%3D%22M16%2019%20L11%2038%20L3%2058%22%20stroke%3D%22%23E6AB4F%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-opacity%3D%22.5%22%20vector-effect%3D%22non-scaling-stroke%22%2F%3E%3Cpath%20d%3D%22M598%2015%20L592%2036%20L586%2055%22%20stroke%3D%22%23E6AB4F%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-opacity%3D%22.5%22%20vector-effect%3D%22non-scaling-stroke%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center/100% 100%;clip-path:inset(0 100% 0 0);animation:reveal 600ms var(--ease-trilsy) calc(300ms + var(--i)*650ms) forwards}
+@keyframes reveal{to{clip-path:inset(0 0 0 0)}}
+@media(prefers-reduced-motion:reduce){.fx .ln::before{animation:none;clip-path:inset(0)}}
+/* previous approach, kept only to verify the cause: scales the image while it grows */
+.oldmode .fx .ln::before{display:none}
+.oldmode .fx .ln{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cfilter%20id%3D%22r%22%20x%3D%22-3%25%22%20y%3D%22-20%25%22%20width%3D%22106%25%22%20height%3D%22140%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.035%200.09%22%20numOctaves%3D%222%22%20seed%3D%224%22%20result%3D%22n%22%2F%3E%3CfeDisplacementMap%20in%3D%22SourceGraphic%22%20in2%3D%22n%22%20scale%3D%223%22%20xChannelSelector%3D%22R%22%20yChannelSelector%3D%22G%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url%28%23r%29%22%3E%3Cpath%20d%3D%22M16%2019%20L598%2015%20L586%2055%20L3%2058%20Z%22%20fill%3D%22%23E6AB4F%22%20fill-opacity%3D%22.74%22%2F%3E%3Cpath%20d%3D%22M16%2019%20L11%2038%20L3%2058%22%20stroke%3D%22%23E6AB4F%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-opacity%3D%22.5%22%20vector-effect%3D%22non-scaling-stroke%22%2F%3E%3Cpath%20d%3D%22M598%2015%20L592%2036%20L586%2055%22%20stroke%3D%22%23E6AB4F%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-opacity%3D%22.5%22%20vector-effect%3D%22non-scaling-stroke%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat left center/0 118%;animation:draw 600ms var(--ease-trilsy) calc(300ms + var(--i)*650ms) forwards}
+@keyframes draw{to{background-size:100% 118%}}
+.fx .ln.static::before{animation:none;clip-path:inset(0)}
+.rj{position:absolute;left:0;top:0;pointer-events:none;z-index:0;overflow:visible}
+@media(max-width:700px){h1{font-size:34px}.sub{font-size:15px}}
+</style></head><body><div class="wrap"><button class="rp" onclick="location.reload()">Replay</button>
+<div class="lab" style="padding:0 0 8px">Chisel band, two ways. Both draw left to right, line by line.</div>
+<div class="card" id="ca"><div class="lab">A. Fixed SVG with a turbulence filter<b>no library</b><span id="ma"></span></div><div class="hero"><h1 class="fx" id="ha">Be in the conversation.<br><em id="ea" style="font-style:normal">Trilsy writes the notes.</em></h1><p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p><span class="btn">View on GitHub</span></div><div class="band"></div></div>
+<div class="card" id="cb"><div class="lab">B. Rough.js 4.6.1, drawn directly<b>library from a CDN</b><span id="mb"></span></div><div class="hero"><h1 id="hb">Be in the conversation.<br><em id="eb" style="font-style:normal">Trilsy writes the notes.</em></h1><p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p><span class="btn">View on GitHub</span></div><div class="band"></div></div>
+</div>
+<script src="https://unpkg.com/roughjs@4.6.1/bundled/rough.js"></script>
+<script>
+if(location.search.includes('old'))document.body.classList.add('oldmode');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,EASE='cubic-bezier(0.22, 1, 0.36, 1)',WORDS='Trilsy writes the notes.'.split(' ');
+const T0=performance.now();window.__log={};
+function splitLines(){const em=document.getElementById('ea');em.innerHTML=WORDS.map(w=>'<span class="w">'+w+'</span>').join(' ');const ws=[...em.querySelectorAll('.w')];const lines=[];let top=null;
+  ws.forEach(w=>{const t=Math.round(w.getBoundingClientRect().top);if(top===null||Math.abs(t-top)>8){lines.push([]);top=t}lines[lines.length-1].push(w.textContent)});
+  em.innerHTML=lines.map((l,i)=>'<span class="ln" style="--i:'+i+'">'+l.join(' ')+'</span>').join(' ');document.getElementById('ma').textContent=' '+lines.length+' line'+(lines.length>1?'s':'');}
+(document.fonts&&document.fonts.ready||Promise.resolve()).then(splitLines);
+let lastA=0;new ResizeObserver(()=>{const w=document.getElementById('ca').offsetWidth;if(lastA&&w!==lastA){splitLines();document.querySelectorAll('.fx .ln').forEach(n=>{n.classList.add('static')})}lastA=w}).observe(document.getElementById('ca'));
+const NS='http://www.w3.org/2000/svg',card=document.getElementById('cb'),h=document.getElementById('hb'),em=document.getElementById('eb');
+let svgs=[];
+function drawRough(animate){svgs.forEach(s=>s.remove());svgs=[];const cb=card.getBoundingClientRect();
+  const rs=[...em.getClientRects()].map(r=>({l:r.left,t:r.top,w:r.width,h:r.height})).sort((a,b)=>a.t-b.t||a.l-b.l);document.getElementById('mb').textContent=' '+rs.length+' line'+(rs.length>1?'s':'');
+  rs.forEach((r,i)=>{const x=r.l-cb.left-4,y=r.t-cb.top,w=r.w+8,hh=r.h;
+    const svg=document.createElementNS(NS,'svg');svg.setAttribute('class','rj');svg.setAttribute('width',cb.width);svg.setAttribute('height',cb.height);const rc=rough.svg(svg);
+    // chisel band: one translucent solid polygon, angled ends, near-straight edges (bowing 0), a slight tilt, no outline
+    const band=rc.polygon([[x+10,y+hh*.30],[x+w,y+hh*.24],[x+w-9,y+hh*.86],[x,y+hh*.92]],{seed:5+i*13,roughness:1.1,bowing:0,stroke:'none',fill:'#E6AB4F',fillStyle:'solid'});band.setAttribute('opacity','.74');
+    // ink pooling at each end: two short thicker strokes along the angled cut
+    const s1=rc.line(x+10,y+hh*.30,x,y+hh*.92,{seed:9+i,roughness:1,bowing:0,strokeWidth:4,stroke:'#E6AB4F'});s1.setAttribute('opacity','.5');
+    const s2=rc.line(x+w,y+hh*.24,x+w-9,y+hh*.86,{seed:19+i,roughness:1,bowing:0,strokeWidth:4,stroke:'#E6AB4F'});s2.setAttribute('opacity','.5');
+    [band,s1,s2].forEach(n=>svg.appendChild(n));svg.querySelectorAll('path').forEach(p=>{p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round')});
+    card.insertBefore(svg,card.querySelector('.hero'));svgs.push(svg);
+    if(animate&&!reduce){svg.style.clipPath='inset(0 100% 0 0)';svg.style.transition='clip-path 600ms '+EASE+' '+(300+i*650)+'ms';requestAnimationFrame(()=>requestAnimationFrame(()=>{svg.style.clipPath='inset(0 0 0 0)'}))}});}
+(document.fonts&&document.fonts.ready||Promise.resolve()).then(()=>{window.__log.rough0=Math.round(performance.now()-T0);drawRough(true)});
+let lastB='';new ResizeObserver(()=>{const k=Math.round(card.offsetWidth)+':'+em.getClientRects().length;if(lastB&&k!==lastB)drawRough(false);lastB=k}).observe(card);
+// measure frame cost while both animations run
+const fr=[];let last=performance.now();function f(t){fr.push(t-last);last=t;if(fr.length<80)requestAnimationFrame(f);else{fr.sort((a,b)=>a-b);window.__log.frames={n:fr.length,median:+fr[40].toFixed(1),p95:+fr[75].toFixed(1),max:+fr[79].toFixed(1)}}}requestAnimationFrame(f);
+</script></body></html>

@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B3 trust band: three directions</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf7ee;--mute:#7a6f60;--line:rgba(43,33,24,.3)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 -apple-system,system-ui,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:18px 0 24px}
+h1{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 30px 12px}
+.dir{margin-bottom:14px;background:#fffdf8;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.dir .tag{padding:8px 30px 0;font:700 11px/1 ui-sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
+.dir .tag b{color:#fff;background:var(--ink);padding:3px 7px;border-radius:99px;margin-left:6px}
+.band{border-top:1px solid var(--line);margin-top:8px}
+.band .line{margin:0;padding-top:22px;text-align:center;font-size:16px;color:#4a3f33}
+.mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:18px 0 22px}
+.track{display:flex;width:max-content;animation:loop 70s linear infinite}
+.track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+.track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.6);font-weight:600;font-size:16px;letter-spacing:-.01em}
+.track img{width:20px;height:20px;opacity:.6}
+@keyframes loop{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.track{animation:none}}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:6px 30px 14px;font-size:12.5px;color:#4a3f33}
+.why b{color:var(--ink)}
+</style></head><body><div class="wrap" id="w"></div>
+<script>
+const L=(n,l)=>({n,l});
+const D=[
+ {t:'A. What it records',rec:true,line:'Trilsy records whatever your Mac plays, from the apps you already use.',
+  items:[L('Zoom','zoom'),L('Google Meet','googlemeet'),L('Microsoft Teams','microsoftteams'),L('Slack','slack'),L('Discord','discord'),L('Webex','webex'),L('YouTube','youtube'),L('Safari','safari'),L('Google Chrome','googlechrome'),L('FaceTime')],
+  true:'Every one of these plays sound on a Mac, and Trilsy records system audio and the microphone, so the line is true of any app without any deal with it. It must be tried on each app on a real Mac before launch: the native app has had no successful build or test run yet (TODO: confirm).',
+  risk:'Implied partnership or endorsement. A visitor can read a row of logos as "integrates with". Mitigations: the verb is "records whatever your Mac plays", a footnote says the names are trademarks of their owners and Trilsy is not affiliated, and the marks stay grey. FaceTime has no public mark in the set I used, so it shows as a name only. Integrations are undecided (B7), so no wording says "integrates".'},
+ {t:'B. What it is built on',line:'Trilsy is built with open tools from',
+  items:[L('Apple','apple'),L('Swift','swift'),L('Hugging Face','huggingface'),L('GitHub','github'),L('Argmax WhisperKit'),L('MLX'),L('Qwen')],
+  true:'Read from the repo: project.yml pulls WhisperKit from Argmax and MLX from Apple; the README says the first run downloads Whisper small and Qwen2.5 3B from Hugging Face; the app is Swift; the code is on GitHub. Every name is a thing the app genuinely uses.',
+  risk:'Implied endorsement, and brand rules. Using a maker\'s logo to say "built with" is common but each owner has its own brand guidelines (Apple and Hugging Face are strict). Argmax, MLX and Qwen have no mark in the set, so they show as names; their logos need permission. The line also states which models are used, which the master says never to present as the only way (cloud and API stay undecided, B8): it says "built with", not "runs on".'},
+ {t:'C. What opens its files',line:'Exports Markdown, text and subtitles that open in',
+  items:[L('Notion','notion'),L('Obsidian','obsidian'),L('Visual Studio Code','visualstudiocode'),L('Google Drive','googledrive'),L('DaVinci Resolve','davinciresolve'),L('Adobe Premiere Pro','adobepremierepro'),L('VLC','vlcmediaplayer')],
+  true:'The app exports plain Markdown, text and SRT. Notion, Obsidian and VS Code open Markdown; DaVinci Resolve, Premiere Pro and VLC load SRT subtitles; Google Drive stores any file. The line says only that the files open there, which is a property of the formats (TODO: confirm each on a real export).',
+  risk:'The strongest risk of implying an integration, since "opens in Notion" sounds like a Notion feature. It is also the weakest on "biggest names" for a visitor who does not use any of them. There is no sync, plugin or connector, and B7 has not decided any. Mitigation: the word is "open in", never "works with" or "connects to", and the same footnote on trademarks.'}
+];
+let h='<h1>Trust band: three directions (each a line, then the faded marquee from forwardpass-web trust-band.tsx; marks are the owners\' own, shown grey at 60% like the reference)</h1>';
+D.forEach(d=>{
+ const row='<ul>'+d.items.map(i=>`<li>${i.l?`<img src="logos/${i.l}.svg" alt="">`:''}<span>${i.n}</span></li>`).join('')+'</ul>';
+ h+=`<section class="dir"><div class="tag">${d.t}${d.rec?'<b>recommended</b>':''}</div><div class="band"><p class="line">${d.line}</p><div class="mask"><div class="track">${row}${row}${row}${row}</div></div></div><div class="why"><div><b>Why every logo is true:</b> ${d.true}</div><div><b>Risk:</b> ${d.risk}</div></div></section>`;
+});
+document.getElementById('w').innerHTML=h;
+</script></body></html>

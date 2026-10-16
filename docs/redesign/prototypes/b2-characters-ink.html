@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Character shape directions</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>body{background:#fbf7ee}main{max-width:1340px;margin:0 auto;padding:28px 36px}h1{font:600 13px/1 ui-sans-serif,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#7a6f60;margin:0 0 14px}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.c{background:#fffdf8;border:1.5px solid rgba(43,33,24,.3);border-radius:12px;padding:12px 14px 16px}.c h2{margin:6px 0 4px;font:700 17px/1.2 ui-sans-serif,system-ui}.c p{margin:0;font-size:13.5px;color:#4a3f33}svg{display:block;width:100%;height:auto}</style></head><body><main>
+<h1>Three shape directions: placeholder sample, made by code</h1><div class="row" id="r"></div>
+<script src="hero-kit.js"></script><script src="hero-kit-ink.js"></script>
+<script>
+const K=Ink,A=K.ACC;
+const D=[
+ ['engraved','A. Engraved (recommended)','Closest to Notion\'s own pen-and-ink people: thin line, hatched cloth, three-quarter faces with a long nose and arched brows, sloped shoulders, a collar on every shirt.'],
+ ['spare','B. Spare','Heavier single stroke and almost no detail: a head with a hooked nose, two dots and a brow, a plain shoulder line, arms as two lines. Quietest, but the least face.'],
+ ['long','C. Long-limbed','Small heads, long necks and long thin arms, tall and gestural, like the Amplemarket tabs. Most movement, and the most unlike a conversation around a table.']];
+D.forEach(([dir,t,d])=>{
+ const inner =
+  K.person({dir,x:120,y:112,s:.95,hair:'bun',hatch:true,talk:true,gesture:true,pocket:true,accent:A.mustard}) +
+  K.person({dir,x:300,y:122,s:.95,hair:'curly',glasses:true,chin:true,mug:A.terra}) +
+  K.table(0,320,420,30);
+ const el=document.createElement('div');el.className='c';
+ el.innerHTML=K.svg(420,340,inner)+'<h2>'+t+'</h2><p>'+d+'</p>';document.getElementById('r').appendChild(el);
+});
+</script></main></body></html>

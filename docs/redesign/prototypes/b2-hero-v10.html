@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero v10: waist-up figures, pack SVG characters, owner-approved composition</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet"><link rel="stylesheet" href="hero-kit.css">
+<style>
+  :root{--paper:#fbf7ee;--acc:#f2c14e}
+  body{background:var(--paper);height:960px;position:relative}
+  .island{position:relative;z-index:20;max-width:912px;margin:16px auto 0;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+  .island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+  .island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+  .island .dd{display:flex;align-items:center;gap:5px}.island .dd svg{width:12px;height:12px}
+  .island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink)}
+  .hero{text-align:center;padding-top:52px}
+  .hero h1{font-size:52px;line-height:1.06;max-width:15em;margin:0 auto}
+  .hero .sub{margin:14px auto 0;max-width:36em;font-size:19px;text-wrap:balance}
+  .hero .cta{justify-content:center;margin-top:18px}
+  .btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:8px}
+  .scene{position:relative;height:416px;margin-top:6px;overflow:hidden}
+  .scene svg{position:absolute;left:0;top:0}
+  .scene .win{position:absolute;left:430px;top:10px;text-align:left}
+  .win .dots i:nth-child(1){background:#ff5f57}.win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
+  .win .bar{padding:9px 14px}
+  .win .bar strong{display:flex;justify-content:center}
+  .tabs{display:inline-flex;background:#ece4d3;border-radius:7px;padding:2px;gap:2px;font-weight:600;font-size:12.5px}
+  .tabs span{padding:3px 12px;border-radius:5px;color:#4a3f33;position:relative;overflow:hidden}
+  .tabs .on{background:#fffdf8;color:var(--ink);box-shadow:0 1px 2px rgba(43,33,24,.25)}
+  .tabs .on::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:62%;background:var(--acc)}
+  .win .doc{padding:10px 16px 0;font:600 14.5px/1.2 "Iowan Old Style",Georgia,serif;border-bottom:0}
+  .trust{position:absolute;left:0;right:0;top:796px;border-top:1px solid rgba(43,33,24,.25)}
+  .trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute)}
+  .marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:16px 0 20px}
+  .marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+  .marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+  .marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+  .marquee-track li i{width:20px;height:20px;border:1.5px dashed rgba(43,33,24,.4);border-radius:5px;display:block}
+  @keyframes marquee-loop{to{transform:translateX(-50%)}}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right}
+  .tag{position:absolute;left:12px;top:70px;font:700 11px/1.3 ui-sans-serif,system-ui;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);z-index:30;max-width:200px}
+</style>
+<style>
+body{font-family:Figtree,system-ui,sans-serif}
+h1,.logo,.win .doc,.island .logo{font-family:Fraunces,serif!important;font-optical-sizing:auto}
+.win,.bubtext{font-family:Figtree,sans-serif}
+/* ---- T1: a colour field, after Wispr ---- */
+body.t1{background:#FBF7EE}
+.t1 .scene{background:#2E4459;border-radius:48px 48px 0 0;margin-top:14px;height:430px}
+.t1 .scene svg{top:14px}.t1 .scene .win{top:24px;border-color:#FBF7EE;box-shadow:none;border-width:2px}
+.t1 .scene text{fill:#241E18}
+.t1 .trust{background:#2E4459;top:812px;border-top:0}.t1 .trust p{color:#C7D3DF}.t1 .marquee-track li{color:rgba(251,247,238,.75)}.t1 .marquee-track li img{filter:grayscale(1) brightness(0) invert(1);opacity:.7!important}.t1 .trust p{color:#C7D3DF}.t1 .marquee-track li i{border-color:rgba(251,247,238,.45)}
+.t1 .island{border-color:#241E18}
+/* ---- T2: layered tones and a long ribbon, after Wispr's taupe card ---- */
+body.t2{background:#FFFDF3}
+.t2 .scene{background:#E6EADA;border-radius:56px;margin:14px 24px 0;height:430px;overflow:hidden}
+.t2 .scene::before{content:"";position:absolute;left:-60px;right:-60px;top:150px;height:120px;border-radius:50%;border:34px solid #F3EFDD;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(-6deg);z-index:0}
+.t2 .scene svg{left:-24px;top:14px;z-index:1}.t2 .scene .win{z-index:2;top:24px;border-color:#241E18;box-shadow:5px 6px 0 #241E18}
+.t2 .win .cols>div+div{background:#E9EFE0}.t2 .win .bar{background:#EDE6D2}
+.t2 .trust{top:826px;background:#F1EBD6;border-top:0}.t2 .trust p{color:#6E6354}
+.t2 .island{background:#FFFDF3;border-color:#241E18}
+/* ---- T3: two temperatures, after myrly: warm paper with a cool full-bleed band and ink borders ---- */
+body.t3{background:#FBF7EE}
+.t3 .scene{margin-top:14px}
+.t3 .coolband{position:absolute;left:0;right:0;top:436px;bottom:-60px;background:#DCE6F2;z-index:0;border-top:1.5px dotted #241E18;border-bottom:1.5px dotted #241E18}
+.t3 .hero,.t3 .scene{position:relative;z-index:1}.t3 .trust{background:#DCE6F2;border-top:1.5px dotted #241E18;top:826px;z-index:1}
+.t3 .island{border:3px solid #DCE6F2;background:#FBF7EE}
+.t3 h1 em.hl{display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.t3 h1 emX{font-style:normal;color:#A4472D;background:linear-gradient(transparent 62%,#E6AB4F 62%,#E6AB4F 92%,transparent 92%);padding:0 4px}
+.t3 .btn,.t3 .go{border-radius:999px}
+.t3 .win{border-width:2px}
+.make{background:#4A6784!important}.chip[style*="2f6f73"]{background:#4A6784!important}
+.marquee-track li img{filter:grayscale(1)}.t1 .marquee-track li img{filter:grayscale(1) brightness(0) invert(1)}.t1 .trust p.tm{color:#C7D3DF}
+.h-quiet h1 em{background:linear-gradient(transparent 86%,#E6AB4F 86%,#E6AB4F 100%)!important;color:#A4472D}
+
+
+.t3 h1 em.hl{font-style:normal;background:none;color:#241E18;padding:0 .35em;margin:0 -.2em;box-decoration-break:clone;-webkit-box-decoration-break:clone;background-repeat:no-repeat;background-size:100% 92%;background-position:center}
+.h-A h1 em.hl{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-14%200%20628%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M-1.9%2010.3%20C9.5%206.6%2041.9%2011.2%2062.7%2010.7%20C83.5%2010.2%20103.4%207.0%20122.9%207.2%20C142.4%207.5%20160.2%2012.0%20179.7%2012.2%20C199.1%2012.3%20219.4%208.7%20239.8%208.3%20C260.2%207.9%20281.9%209.6%20302.0%209.8%20C322.1%2010.1%20341.1%2010.2%20360.5%209.8%20C380.0%209.5%20399.4%207.3%20419.0%207.8%20C438.6%208.2%20458.5%2011.7%20478.1%2012.4%20C497.8%2013.0%20516.3%2012.4%20536.9%2011.5%20C557.5%2010.7%20589.8%203.4%20601.5%207.2%20C613.1%2011.0%20606.7%2026.5%20606.8%2034.4%20C606.9%2042.3%20613.8%2051.8%20602.0%2054.6%20C590.2%2057.3%20556.5%2051.1%20536.0%2051.0%20C515.5%2050.9%20498.5%2052.9%20479.1%2053.8%20C459.6%2054.7%20439.1%2055.9%20419.3%2056.4%20C399.4%2056.9%20380.0%2056.8%20360.1%2056.7%20C340.1%2056.6%20319.5%2055.9%20299.6%2055.9%20C279.7%2055.9%20260.0%2057.5%20240.6%2056.8%20C221.2%2056.0%20203.1%2052.2%20183.1%2051.4%20C163.2%2050.7%20140.6%2051.8%20120.9%2052.2%20C101.3%2052.6%2085.3%2053.5%2065.1%2053.6%20C44.9%2053.7%2011.6%2056.2%20-0.2%2052.7%20C-12.1%2049.2%20-5.6%2039.6%20-5.9%2032.5%20C-6.2%2025.4%20-13.3%2013.9%20-1.9%2010.3%20Z%22%20fill%3D%22%23E6AB4F%22%2F%3E%3Cpath%20d%3D%22M11.6%2019.2%20C22.2%2016.2%2051.6%2018.3%2070.9%2017.4%20C90.2%2016.6%20107.8%2014.8%20127.1%2014.2%20C146.5%2013.7%20168.0%2013.7%20187.2%2014.0%20C206.4%2014.2%20223.7%2015.4%20242.2%2015.7%20C260.6%2016.0%20279.3%2015.5%20297.8%2016.0%20C316.3%2016.4%20334.6%2018.6%20353.2%2018.3%20C371.7%2018.0%20390.5%2014.8%20409.2%2014.1%20C427.8%2013.5%20446.3%2013.6%20465.3%2014.4%20C484.3%2015.1%20503.5%2019.0%20523.2%2018.8%20C543.0%2018.6%20572.8%209.9%20583.8%2013.3%20C594.9%2016.7%20589.2%2030.8%20589.6%2039.1%20C590.0%2047.5%20597.8%2059.8%20586.5%2063.4%20C575.2%2067.1%20541.8%2061.2%20521.9%2060.8%20C501.9%2060.5%20485.3%2061.0%20466.7%2061.1%20C448.1%2061.2%20428.9%2061.4%20410.2%2061.3%20C391.4%2061.3%20372.8%2061.2%20354.4%2061.0%20C336.0%2060.9%20318.6%2061.3%20299.6%2060.6%20C280.6%2059.9%20258.9%2057.1%20240.2%2057.0%20C221.4%2056.8%20205.7%2058.9%20187.0%2059.9%20C168.2%2060.9%20146.6%2062.8%20127.6%2063.1%20C108.5%2063.4%2092.4%2062.4%2072.7%2061.6%20C53.0%2060.8%2020.4%2062.8%209.5%2058.5%20C-1.4%2054.2%206.8%2042.1%207.2%2035.6%20C7.6%2029.0%201.0%2022.3%2011.6%2019.2%20Z%22%20fill%3D%22%23E6AB4F%22%20fill-opacity%3D%22.55%22%2F%3E%3C%2Fsvg%3E");color:#241E18}
+.h-B h1 em.hl{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-14%200%20628%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M5.7%2035.3%20C19.7%2033.4%2057.5%2034.5%2082.0%2034.3%20C106.6%2034.2%20129.3%2034.6%20153.0%2034.4%20C176.8%2034.3%20200.0%2033.6%20224.6%2033.6%20C249.2%2033.6%20276.4%2034.8%20300.8%2034.5%20C325.2%2034.1%20347.1%2031.7%20371.1%2031.5%20C395.0%2031.4%20419.4%2033.9%20444.5%2033.5%20C469.6%2033.2%20496.3%2029.2%20521.7%2029.2%20C547.1%2029.2%20583.5%2031.2%20596.9%2033.3%20C610.3%2035.5%20602.3%2038.6%20602.0%2042.0%20C601.7%2045.4%20608.8%2052.1%20594.9%2053.6%20C581.0%2055.1%20543.1%2051.4%20518.4%2051.1%20C493.8%2050.8%20471.6%2051.4%20447.2%2051.8%20C422.7%2052.2%20396.6%2052.7%20371.6%2053.2%20C346.6%2053.7%20321.4%2054.2%20297.2%2054.8%20C272.9%2055.5%20250.2%2056.9%20226.1%2057.2%20C202.1%2057.5%20177.6%2056.7%20153.1%2056.7%20C128.7%2056.7%20104.1%2057.4%2079.5%2057.3%20C54.9%2057.2%2019.3%2057.8%205.7%2055.9%20C-7.8%2054.0%20-2.0%2049.4%20-2.0%2046.0%20C-2.0%2042.6%20-8.3%2037.2%205.7%2035.3%20Z%22%20fill%3D%22%23F2C766%22%20fill-opacity%3D%22.95%22%2F%3E%3Cpath%20d%3D%22M-8.0%2046.9%20C6.2%2046.5%2045.8%2046.2%2071.3%2046.5%20C96.9%2046.8%20119.6%2048.5%20145.3%2048.7%20C171.0%2048.9%20199.6%2048.2%20225.3%2047.9%20C251.1%2047.7%20275.3%2047.1%20300.0%2047.2%20C324.7%2047.3%20347.9%2048.4%20373.5%2048.5%20C399.1%2048.5%20427.2%2047.5%20453.5%2047.6%20C479.8%2047.7%20506.1%2048.9%20531.3%2049.0%20C556.4%2049.2%20590.6%2047.8%20604.4%2048.7%20C618.2%2049.6%20613.2%2052.8%20614.0%2054.5%20C614.8%2056.2%20622.7%2058.6%20609.0%2059.2%20C595.3%2059.8%20558.2%2058.5%20531.8%2058.0%20C505.3%2057.4%20476.1%2056.5%20450.2%2055.9%20C424.3%2055.3%20401.1%2054.4%20376.5%2054.2%20C351.9%2054.0%20328.6%2054.5%20302.7%2054.8%20C276.9%2055.2%20247.8%2056.2%20221.4%2056.5%20C195.1%2056.7%20170.0%2056.8%20144.7%2056.4%20C119.5%2056.0%2095.5%2054.5%2070.2%2053.9%20C44.9%2053.3%207.1%2053.7%20-6.9%2052.9%20C-21.0%2052.2%20-13.8%2050.5%20-14.0%2049.5%20C-14.2%2048.5%20-22.2%2047.4%20-8.0%2046.9%20Z%22%20fill%3D%22%23E6AB4F%22%20fill-opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E");color:#8A3A24}
+.nt .todo{list-style:disc!important;padding-left:16px!important}.nt .todo li{display:list-item!important}.nt .todo b{display:none!important}
+@media(max-width:700px){
+ body{height:auto}
+ .island{margin:10px 10px 0;gap:12px;padding:8px 10px}.island ul{display:none}
+ .copy,.hero{padding-top:30px}
+ .hero h1{font-size:34px}.hero .sub{font-size:16px;padding:0 14px}
+ .scene{height:auto;overflow:visible;padding:0 12px}
+ .scene>svg{display:none}
+ .scene .win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;margin:14px 0}
+ .scene .win .cols{grid-template-columns:1fr}.scene .win .cols>div+div{border-left:0;border-top:1px solid #D9CFBD}
+ .coolband{display:none}
+ .trust{position:relative!important;top:auto!important;margin-top:8px;background:#DCE6F2;border-top:1.5px dotted #241E18}
+ .fold,.tag{display:none}
+}
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul><li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul>
+  <span class="go">View on GitHub</span>
+</header>
+<section class="hero">
+  <h1>Be in the conversation. <em class="hl">Trilsy writes the notes.</em></h1>
+  <p class="sub">Record your microphone, your Mac's sound or both. Trilsy transcribes it and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="scene" id="scene"></div>
+</section>
+<section class="trust" aria-label="Trust band placeholder"><p>Trilsy records whatever your Mac plays, from the apps you already use.</p><div class="marquee-mask"><div class="marquee-track" id="track"></div></div><p class="tm" style="font-size:11px;padding:0 0 8px;margin-top:-10px;opacity:.75">App names and marks belong to their owners; no affiliation or endorsement is implied.</p></section>
+<div class="fold">900px fold (marker only)</div>
+<script>document.body.className='t'+(new URLSearchParams(location.search).get('t')||'1')+' h-'+(new URLSearchParams(location.search).get('h')||'full');if(document.body.className.startsWith('t3')){document.querySelector('.hero').insertAdjacentHTML('beforebegin','<div class=coolband></div>');}</script><script src="hero-kit.js"></script><script src="hero-kit-ink.js"></script>
+<script>
+const K = Ink, INK = '#2b2118';
+const q = new URLSearchParams(location.search);
+const state = (location.hash || '#lecture').slice(1);
+const MK=[['Zoom','zoom'],['Google Meet','googlemeet'],['Microsoft Teams','microsoftteams'],['Slack','slack'],['Discord','discord'],['Webex','webex'],['YouTube','youtube'],['Safari','safari'],['Google Chrome','googlechrome'],['FaceTime',null]];
+const row = '<ul>' + MK.map(m=>`<li>${m[1]?`<img src="logos/${m[1]}.svg" alt="" style="width:20px;height:20px;opacity:.6">`:''}<span>${m[0]}</span></li>`).join('') + '</ul>';
+document.getElementById('track').innerHTML = row + row + row + row;
+
+
+const SZ={r1c1:[190,500],r1c2:[160,500],r1c3:[195,500],r1c4:[190,500],r1c5:[165,505],r1c6:[190,505],r2c1:[190,470],r2c2:[175,470],r2c3:[160,470],r2c4:[155,470],r2c5:[170,470],r2c6:[240,470]};
+const FH=310;
+// Placeholder figure, cut from the owner's cast sheet for the prototype only. White is made see-through with multiply, so the white trousers take the page colour.
+const SVGID={r1c1:'01-mustard-curls',r1c2:'02-terracotta-bob',r1c3:'03-sage-glasses',r1c4:'04-blue-wave',r1c6:'06-terracotta-beard',r2c1:'07-sage-curls',r2c2:'08-blue-crop',r2c3:'09-terracotta-ponytail',r2c4:'10-sage-long-hair',r2c5:'11-blue-headscarf',r2c6:'12-mustard-gesture'};
+// r1c5 (the grey-haired professor) is not in the pack: its slot 5 is a different person there. Kept as the cut-out from the approved sheet.
+const FHB=500;      // one scale for everyone; only the upper 60 percent shows above the floor line
+const fig = (key, x, flip) => {
+  const svgId=SVGID[key];
+  const [cw,ch]=svgId?[280,520]:SZ[key];
+  const wOld=Math.round(cw*FH/ch), w=Math.round(cw*FHB/ch), h=FHB;
+  const xx = x - Math.round((w-wOld)/2);          // keep the figure's centre where the standing layout had it
+  const y = 416 - Math.round(h*0.60);              // waist on the floor line
+  const t = flip ? `translate(${xx + w} ${y}) scale(-1 1)` : `translate(${xx} ${y})`;
+  const href = svgId ? `../refs/characters-owner/svg-pack/optimised/${svgId}.svg` : `cast-cut-t/${key}.png`;
+  return `<image href="${href}" x="0" y="0" width="${w}" height="${h}" transform="${t}"/>` +
+    `<text x="${xx+Math.round(w*.18)}" y="408" font-family="-apple-system,system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#9a3b25" opacity=".85">TODO: character${svgId?'':' (cut-out; not in pack)'}</text>`;
+};
+// A speech bubble whose tail points at the speaker's head, with the speaker's chip so the eye can pair it with the transcript line.
+const say = (x, y, w, who, col, lines, tailX) => {
+  const h = 18 + lines.length * 23 + 16, ty = y + h;
+  const text = lines.map((l,i)=>`<text x="${x+16}" y="${y+50+i*23}" font-family="'Bradley Hand','Segoe Print',cursive" font-size="19.5" fill="${INK}">${l}</text>`).join('');
+  return `<g filter="url(#inkwob)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>` +
+    `<path d="M${tailX-9} ${ty} Q${tailX-2} ${ty+14} ${tailX+4} ${ty+24} Q${tailX+8} ${ty+10} ${tailX+14} ${ty}" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>` +
+    `<path d="M${tailX-7} ${ty+1.2} H${tailX+12}" stroke="#fffdf8" stroke-width="4.5"/></g>` +
+    `<rect x="${x+14}" y="${y+10}" width="${who.length*7.4+16}" height="19" rx="9.5" fill="${col}"/><text x="${x+22}" y="${y+24}" font-family="-apple-system,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff">${who}</text>${text}`;
+};
+const scenes = {
+  lecture: {
+    svg:
+      `<g filter="url(#inkwob)"><rect x="1040" y="8" width="360" height="82" rx="6" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>
+         <text x="1058" y="34" font-family="'Bradley Hand','Segoe Print',cursive" font-size="22" fill="${INK}">Mitosis</text>
+         ${['P','M','A','T'].map((c,i)=>`<g transform="translate(${1190+i*52} 52)"><ellipse rx="19" ry="14" fill="none" stroke="${INK}" stroke-width="2"/><path d="${['M-3 -4 q3 4 0 8','M0 -13 V13','M-15 0 H15','M-12 0 q12 -7 24 0'][i]}" fill="none" stroke="${INK}" stroke-width="1.6" stroke-dasharray="${i==0?'0':'3 3'}" stroke-linecap="round"/><text y="29" text-anchor="middle" font-family="'Bradley Hand',cursive" font-size="12" fill="${INK}">${c}</text></g>`).join('')}</g>` +
+      fig('r1c5',280) + fig('r1c4',1015) + fig('r2c5',1215) +
+      say(90,8,300,'Professor','#2f6f73',['Mitosis has four stages.','Prophase comes first.'],330),
+    win:{title:'Biology 201, lecture 9',time:'00:34',transcript:[
+      {who:'Microphone',c:'#c8553d',t:'00:21',text:'Mitosis has four stages. Prophase comes first.'},
+      {who:'Microphone',c:'#c8553d',t:'00:34',text:'Is prophase the longest?'},
+      {who:'Microphone',c:'#c8553d',t:'00:38',text:'Usually, yes. The chromosomes condense there.'}],
+      notes:{overview:'Mitosis has four stages. Prophase comes first and is usually the longest.',t2:'Key terms',decisions:['Prophase: chromosomes condense','Metaphase: chromosomes line up'],t3:'To review',actions:['Read chapter 7 before Thursday']}}
+  },
+  meeting: {
+    svg: fig('r2c6',75) + fig('r1c3',245) + fig('r1c6',1040) + fig('r2c1',1170,true) +
+      say(60,8,290,'Priya','#c8553d',['Can we move the launch','to the 14th?'],160) +
+      say(1090,8,290,'Marcus','#6b3f5a',['Legal needs two more','days on the review.'],1235),
+    win:{title:'Product sync',time:'00:52',transcript:[
+      {who:'Microphone',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'System',c:'#4A6784',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Microphone',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+      notes:{overview:'The launch moves to the 14th so legal can finish its review.',decisions:['Launch date is the 14th','Legal gets two more days'],actions:['Dev: send revised timeline by Friday']}}
+  },
+  interview: {
+    svg: fig('r2c4',290) + fig('r2c2',1050,true) +
+      say(70,8,310,'Ana','#c8553d',['We moved the whole team','to Lisbon in March.'],330) +
+      say(1030,8,250,'Sam','#2f6f73',['What changed first?'],1112),
+    win:{title:'Ana Ribeiro, product designer',time:'12:15',transcript:[
+      {who:'System',c:'#4A6784',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Microphone',c:'#c8553d',t:'12:11',text:'What changed first?'},
+      {who:'System',c:'#4A6784',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+      notes:{overview:"Ana's team moved to Lisbon in March. The first change was meeting times.",t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}}
+  }
+};
+const S = scenes[state] || scenes.lecture;
+const labels = {lecture:'Lecture',meeting:'Meeting',interview:'Interview'};
+document.getElementById('scene').innerHTML = K.svg(1440,416,S.svg) + K.win(Object.assign({w:580,live:true,tabs:'<span class="tabs">' + Object.keys(labels).map(k=>`<span class="${k===state?'on':''}">${labels[k]}</span>`).join('') + '</span>'},S.win));
+</script>
+</body></html>

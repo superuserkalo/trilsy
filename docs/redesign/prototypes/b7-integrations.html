@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B7 integrations and MCP</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+:root{--ink:#241E18;--paper:#FBF7EE;--mute:#6E6354;--line:#D9CFBD;--mustard:#E6AB4F;--blue:#DCE6F2}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:13px/1.45 Figtree,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:20px 28px 30px}
+h1{font:600 12px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+h2{font:600 19px/1.2 Fraunces,serif;margin:0 0 6px}
+table{width:100%;border-collapse:collapse;background:#FFFDF8;border:1.5px solid var(--ink);font-size:12px}
+th{text-align:left;font:700 10.5px/1.2 Figtree;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding:8px 10px;background:#F4ECDD;border-bottom:1.5px solid var(--ink)}
+td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}td b{display:block}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr 1.15fr;gap:12px;margin-top:16px}
+.card{background:#FFFDF8;border:1.5px solid var(--ink);border-radius:12px;padding:12px 14px}
+.card.rec{box-shadow:4px 5px 0 var(--ink)}
+.tag{font:700 10px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:99px;padding:3px 7px;margin-left:6px;vertical-align:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 8px}.chip{border:1.5px solid var(--ink);border-radius:99px;padding:3px 10px;font-weight:600;font-size:12px;background:var(--paper)}
+.chip i{font-style:normal;font-weight:500;color:var(--mute);font-size:10.5px;margin-left:5px}
+p{margin:4px 0}.m{color:var(--mute)}
+code{font:600 11.5px ui-monospace,monospace;background:#F4ECDD;border-radius:5px;padding:1px 5px}
+ul{margin:4px 0 0;padding-left:16px}li{margin:2px 0}
+.note{margin-top:12px;font-size:12px;color:#4a3f33}
+</style></head><body><div class="wrap">
+<h1>B7. Integrations and MCP: what the five offer, three candidate launch sets, and a proposed MCP surface (nothing here is built or decided)</h1>
+<table>
+<tr><th style="width:11%">Product</th><th style="width:22%">Integrations they show</th><th style="width:20%">MCP and AI assistants</th><th style="width:18%">API and files</th><th>What to take, what to leave</th></tr>
+<tr><td><b>Otter</b></td><td>Slack, Zoom, Salesforce, HubSpot, Notion, Google Drive, Google Calendar (to schedule a meeting agent that joins calls), "countless integrations"; basic tier lists Zoom, Meet, Teams, Slack.</td><td>An MCP server so ChatGPT, Claude and others can read meeting knowledge; a Claude integration.</td><td>Not stated on the page.</td><td>Leave: CRM push and a bot joining calls. Take: one clear MCP line.</td></tr>
+<tr><td><b>Fireflies</b></td><td>CRM auto-fill (5+), Slack alerts, dialers (Aircall, RingCentral), video conferencing, storage, collaboration.</td><td>"Fireflies MCP Server" into Claude, Devin, ChatGPT; a FAQ "Does Fireflies connect with Claude or other AI tools?"</td><td>An API to process audio files.</td><td>Leave: the breadth and the CRM. Take: the plain FAQ question about AI tools.</td></tr>
+<tr><td><b>Granola</b></td><td>Calendar sync (detects upcoming meetings); works with Zoom, Meet, Teams.</td><td>"Granola MCP Connector": "No more copy-pasting meeting transcripts into AI tools".</td><td>Not stated on the page.</td><td>Take: MCP framed as saving a copy-paste, one sentence.</td></tr>
+<tr><td><b>Wispr Flow</b> (Notetaker)</td><td>Reads the calendar invite and connected Gmail and Slack to spell names correctly; works with any meeting app with "no integrations to set up".</td><td>"Notetaker plugs into Claude, ChatGPT, Gemini and any tool that speaks MCP"; on the free plan.</td><td>Not stated on the page.</td><td>Take: MCP on the free plan, and the "no setup" principle. Leave: Gmail and Slack reading.</td></tr>
+<tr><td><b>Superwhisper</b></td><td>Types into any app; named: Slack, Cursor, Notion; agentic coding tools (Claude Code, Codex and others); clipboard.</td><td>No MCP on the captured page; supports cloud and local models, including your own API keys.</td><td>A CLI.</td><td>Take: "works anywhere you can type". Leave: the coding-agent angle.</td></tr>
+</table>
+<p class="note">Read from the pages captured on 2026-10-13 (`refs/text/`); this is what each says about itself, not a test of it. Pattern: all but Superwhisper now offer an MCP server or connector, always framed as "use your meeting notes in the AI you already use", and the real integration lists are CRM, Slack, Notion and the calendar. Trilsy today has none of these. It saves plain JSON and files on your Mac and exports Markdown, text and SRT, so anything below is <b>Coming soon</b>.</p>
+<div class="row">
+<div class="card rec"><h2>Set 1: Your notes, where you write<span class="tag">recommended</span></h2><p class="m">Business and students. Files first: nothing to sign in to, true to a local app.</p>
+<div class="chips"><span class="chip">Obsidian<i>folder of Markdown</i></span><span class="chip">Notion<i>import</i></span><span class="chip">Apple Notes</span><span class="chip">Google Docs</span></div>
+<p>One "Send to" action that writes the Markdown note (and SRT or text) to a chosen folder or opens it in the app. Needs only the exports that exist; no accounts, no network. Students use Obsidian and Notion for study notes; teams use Notion and Docs.</p><p class="m">Cost: it is a share action, not a sync. Each app needs its own check.</p></div>
+<div class="card"><h2>Set 2: Your AI assistants<span class="tag">recommended</span></h2><p class="m">Business and students. The strongest signal in the research.</p>
+<div class="chips"><span class="chip">Claude</span><span class="chip">ChatGPT</span><span class="chip">Cursor</span><span class="chip">any MCP client</span></div>
+<p>A local MCP server (below) so an assistant can search and read your recordings on your Mac. It fits a local-first app, where the data never has to leave the machine, and matches what four of five competitors lead with.</p><p class="m">Cost: the app has no server today, so this is new work, and "ChatGPT" depends on its MCP support being available to you.</p></div>
+<div class="card"><h2>Set 3: Work tools</h2><p class="m">Business first.</p>
+<div class="chips"><span class="chip">Google Calendar<i>title recordings</i></span><span class="chip">Slack<i>post a summary</i></span><span class="chip">Notion</span></div>
+<p>Name a recording from the calendar event, and share a note to a channel. These are the most used in the research, and each needs sign-in and a network call, which the app does not have.</p><p class="m">Cost: the largest build, accounts and tokens, and the point where "no server, no account" stops being true. CRM sync is deliberately not on the list.</p></div>
+<div class="card"><h2>A proposed MCP surface<span class="tag">proposal</span></h2><p class="m">A local server the app runs, over stdio, read-only to start. Mirrors what is already on disk.</p>
+<ul><li><code>search_recordings</code> text and date range, returns ids, titles, snippets</li><li><code>get_notes</code> the overview and sections for one recording</li><li><code>get_transcript</code> the full transcript with timestamps and the mic or system label</li><li><code>list_recordings</code> recent first, with duration</li><li>Resources: each recording as a URI the assistant can attach</li></ul>
+<p class="m">Not included: start or stop recording (consent and safety), delete, edit, anything over the network. Open: whether to ever allow writing a note back. Whether it ships with the free app is yours to decide.</p></div>
+</div>
+<p class="note"><b>Not proposing a roadmap list</b> unless you want one; if you do, I would draft it from the sets you choose, each item marked Coming soon. Nothing above is called an "integration" on the site until it exists (B8 and the master apply).</p>
+</div></body></html>

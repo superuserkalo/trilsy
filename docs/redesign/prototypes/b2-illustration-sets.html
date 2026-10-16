@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Illustration sets, side by side</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf7ee;--line:#d9cfbd;--mute:#7a6f60}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+main{max-width:1600px;margin:0 auto;padding:26px 32px 40px}
+h1{font:600 13px/1 ui-sans-serif,system-ui;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+.lead{margin:0 0 18px;color:#4a3f33;max-width:70em}
+.set{display:grid;grid-template-columns:440px 1fr;gap:22px;background:#fffdf8;border:1.5px solid rgba(43,33,24,.3);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.set h2{margin:0 0 4px;font:700 18px/1.2 ui-sans-serif,system-ui}
+.set .tag{font:700 11px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:99px;background:var(--ink);color:#fff;margin-left:8px;vertical-align:2px}
+dl{margin:8px 0 0;display:grid;grid-template-columns:92px 1fr;gap:4px 10px;font-size:12.5px}
+dt{font-weight:700;color:var(--ink)}dd{margin:0;color:#4a3f33}
+.gap{color:#9a3b25}
+.art{align-self:center;display:grid;grid-template-columns:2.5fr 0.8fr 1.2fr;gap:14px;align-items:end}
+.cell{position:relative;height:300px;border:1px dashed rgba(43,33,24,.25);border-radius:8px;background:#fffdf8;overflow:hidden}
+.cell>b{position:absolute;left:8px;top:6px;font:700 11px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);z-index:3}
+.cell{display:flex;align-items:flex-end;justify-content:space-evenly;padding:0 6px 34px}.cell img{flex:0 1 auto;min-width:0;max-width:24%;max-height:185px;width:auto;height:auto}.cell.l img{max-width:80%}.cell.i img{max-width:46%}.cell.d img{max-width:32%;max-height:200px}.cell img.tall{max-height:236px;max-width:60%;margin:0 36px -34px 0}.cell .board{z-index:1}
+.tbl{position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--paper);border-top:2.5px solid var(--ink);z-index:2}
+.board{position:absolute;right:8px;top:30px;width:84px;height:70px;border:2.5px solid var(--ink);border-radius:5px;background:#fffdf8}
+.flip{transform:scaleX(-1)}
+.none{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px;color:#9a3b25;font-size:13px}
+.out{margin-top:8px;font-size:12.5px;color:#4a3f33}.out b{color:var(--ink)}
+</style></head><body><main>
+<h1>Character sets, real artwork, same three moments (placeholder tables and board drawn by me; every person is the set's own file)</h1>
+<p class="lead">Licences read from each set's own page on 2026-10-13. Nothing here is in <code>web/</code>; the files are kept under <code>docs/redesign/refs/illustration-sets/</code> for comparison only.</p>
+
+<section class="set"><div>
+ <h2>Notionists <span class="tag">recommended</span></h2>
+ <dl><dt>By</dt><dd>Zoish (heyzoish.gumroad.com/l/notionists), served as an avatar style by DiceBear</dd>
+ <dt>Licence</dt><dd>CC0 1.0, as stated on dicebear.com/styles/notionists (read 2026-10-13). Commercial use and modification: allowed under CC0. Attribution: not required (the page credits the creator as a courtesy).</dd>
+ <dt>Poses</dt><dd>Busts only: 25 bodies, 64 hair styles, 13 brows, 30 lips, 20 noses, 11 glasses, 12 beards, and 10 hand gestures (point, ok, wave, hand, hand on phone, long arms). Over a million combinations, so the faces vary a great deal and every one has an expression.</dd>
+ <dt>Files</dt><dd>SVG from a URL (<code>api.dicebear.com/9.x/notionists/svg?seed=&amp;gesture=</code>), black and white, transparent. About 11 to 22 KB each.</dd>
+ <dt>Motion</dt><dd>Each SVG is split into 12 to 13 groups (body, face, hair, glasses, hand), so Motion can move a hand, tilt a head or swap lips between two variants. Static files should be saved into the repo rather than called live.</dd>
+ <dt class="gap">Gaps</dt><dd class="gap">No seated or standing full bodies, no table, no lectern; the table is our own line. Hands exist for ten gestures only, so a hand at the chin or on a laptop is not available. Dicebear's own code is MIT; the CC0 grant is for the artwork.</dd></dl>
+</div><div class="art">
+ <div class="cell"><b>Around a table</b><img src="../refs/illustration-sets/notionists/Priya-ok.svg"><img src="../refs/illustration-sets/notionists/Dana-point.svg"><img src="../refs/illustration-sets/notionists/Omar-hand.svg" class="flip"><img src="../refs/illustration-sets/notionists/Marcus-handPhone.svg" class="flip"><div class="tbl"></div></div>
+ <div class="cell l"><b>Lecture</b><div class="board"></div><img src="../refs/illustration-sets/notionists/Okafor-pointLongArm.svg"><div class="tbl"></div></div>
+ <div class="cell i"><b>Interview</b><img src="../refs/illustration-sets/notionists/Ana-okLongArm.svg"><img src="../refs/illustration-sets/notionists/Sam-hand.svg" class="flip"><div class="tbl"></div></div>
+</div></section>
+
+<section class="set"><div>
+ <h2>Open Peeps</h2>
+ <dl><dt>By</dt><dd>Pablo Stanley (openpeeps.com)</dd>
+ <dt>Licence</dt><dd>CC0, "Free for commercial and personal use under CC0 License" (openpeeps.com, read 2026-10-13). Commercial use and modification allowed; no attribution required.</dd>
+ <dt>Poses</dt><dd>93 ready-made figures on the site: 49 busts (some with arms: pointing, shrugging, holding a mug, a laptop, a phone, arms crossed), 14 sitting, 30 standing. The site also advertises a mix-and-match kit (Sketch, Figma, XD; "584,688 combinations") that I could not open without the Gumroad download.</dd>
+ <dt>Files</dt><dd>SVG and PNG, black and white, 5 to 10 big filled paths each.</dd>
+ <dt>Motion</dt><dd>Each figure is one drawing, not layers: Motion can nudge, scale or tilt the whole person and draw bubbles around them, but cannot change a mouth or move a hand. Separate heads and arms would need the mix-and-match kit.</dd>
+ <dt class="gap">Gaps</dt><dd class="gap">The "sitting" figures are on the floor or crouching, not on a chair at a table (one is in a wheelchair). The lecture presenter is a standing figure with no lectern. The line is heavy and the clothing mostly solid black, which is the closest thing in this set to the "thick" fault the owner named.</dd></dl>
+</div><div class="art">
+ <div class="cell"><b>Around a table</b><img src="../refs/illustration-sets/open-peeps/peep-90.svg"><img src="../refs/illustration-sets/open-peeps/peep-46.svg"><img src="../refs/illustration-sets/open-peeps/peep-52.svg" class="flip"><img src="../refs/illustration-sets/open-peeps/peep-34.svg" class="flip"><div class="tbl"></div></div>
+ <div class="cell l"><b>Lecture</b><div class="board"></div><img class="tall" src="../refs/illustration-sets/open-peeps/standing-4.svg"></div>
+ <div class="cell i"><b>Interview</b><img src="../refs/illustration-sets/open-peeps/peep-59.svg"><img src="../refs/illustration-sets/open-peeps/peep-83.svg" class="flip"><div class="tbl"></div></div>
+</div></section>
+
+<section class="set"><div>
+ <h2>Open Doodles</h2>
+ <dl><dt>By</dt><dd>Pablo Stanley (opendoodles.com)</dd>
+ <dt>Licence</dt><dd>CC0 1.0 Public Domain badge; "Free for Commercial and Personal Use"; "No need to credit, license, or anything" (opendoodles.com, read 2026-10-13). The page does not mention modification, though CC0 permits it.</dd>
+ <dt>Poses</dt><dd>33 illustrations: relaxed, loose whole-body scenes (sitting on a chair, sitting on a sofa, reading, lying down, coffee, dancing, a dog).</dd>
+ <dt>Files</dt><dd>SVG and PNG, some GIF. Black ink with one pink accent in a separate "Accent" group, so the accent can be swapped for ours with one fill change. 150+ paths each.</dd>
+ <dt>Motion</dt><dd>Two groups (Ink, Accent) only; the whole figure can move, nothing inside it.</dd>
+ <dt class="gap">Gaps</dt><dd class="gap">Does not cover the brief. No one is talking, presenting or interviewing and there is no table scene, so it cannot do the hero's three settings. It would suit an empty state or a use-case page at best. Shown as the closest poses it has, with nothing contrived.</dd></dl>
+</div><div class="art">
+ <div class="cell d"><b>Around a table (closest poses)</b><img src="../refs/illustration-sets/open-doodles/sitting-reading.svg"><img src="../refs/illustration-sets/open-doodles/sitting.svg"><img src="../refs/illustration-sets/open-doodles/reading.svg"><div class="tbl"></div></div>
+ <div class="cell l"><b>Lecture</b><div class="none">No standing speaker or presenter pose in the set.</div></div>
+ <div class="cell i"><b>Interview</b><div class="none">No two-person or talking pose in the set.</div></div>
+</div></section>
+
+<p class="out"><b>Looked at and ruled out, so you need not:</b> Lukasz Adam's free illustrations (CC0, but flat colour fills, not outline-led), Humaaans (CC0, but flat, faceless, mid-stride figures), unDraw (a permissive licence, but flat colour fills, and its licence bars AI use and repackaging). <b>Could not confirm:</b> the GetIllustrations "Notion" collection, the closest by name (outline people, SVG, seated figures), but a paid subscription and its site blocks automated reading, so I could not read its licence or see its files; Blush and Doodle Ipsum (their licence page would not open for me). Say if you want me to check either with you at the keyboard.</p>
+</main></body></html>

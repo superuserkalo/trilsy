@@ -13,3 +13,10 @@ web/.vercel/
 web/tsconfig.tsbuildinfo
 web/shader-frame.png
 .env*
+
+# Redesign working files kept local: third-party reference captures (Mobbin, competitor sites) and screenshot sheets
+docs/redesign/refs/
+docs/redesign/behavior/
+docs/redesign/prototypes/**/*.png
+docs/redesign/prototypes/**/*.jpg
+docs/redesign/prototypes/**/*.jpeg

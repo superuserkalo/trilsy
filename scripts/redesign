@@ -6,6 +6,7 @@
 #   scripts/redesign .scratch/redesign/issues/03-hero.md    a Phase D ticket
 #   scripts/redesign -n [target]                            print the route, launch nothing
 #   scripts/redesign --opus [target]                        rerun a design session on Opus when Sonnet fell short
+#   scripts/redesign --loop                                 one orchestrator session that spawns a worker per phase or ticket
 #
 # Anything after the target is passed to claude, e.g. `scripts/redesign 01a --chrome`.
 # The lanes are defined in docs/redesign-brief/00-master.md.
@@ -22,15 +23,28 @@ STATE=docs/redesign/STATE.md
 
 die() { echo "redesign: $*" >&2; exit 1; }
 
-dry_run=0 force_opus=0
+dry_run=0 force_opus=0 loop=0
 while [[ "${1:-}" == -* ]]; do
   case "$1" in
     -n) dry_run=1 ;;
     --opus) force_opus=1 ;;
+    --loop) loop=1 ;;
     *) die "unknown option '$1'; options for claude go after the target" ;;
   esac
   shift
 done
+
+# Loop mode: the orchestrator routes and relays, so it runs on the logic lane's model.
+# Its steps are in docs/redesign-brief/orchestrator.md.
+if [[ $loop -eq 1 ]]; then
+  prompt="/loop Read $BRIEF/00-master.md and $BRIEF/orchestrator.md. You are the orchestrator: run the next step of the loop."
+  if [[ $dry_run -eq 1 ]]; then
+    printf 'target  loop\nlane    orchestrator\nmodel   %s\neffort  %s\nprompt  %s\n' "$OPUS" "$OPUS_EFFORT" "$prompt"
+    exit 0
+  fi
+  echo "redesign: loop -> orchestrator ($OPUS, $OPUS_EFFORT effort)"
+  exec claude --model "$OPUS" --effort "$OPUS_EFFORT" --name "redesign loop" "$prompt" "$@"
+fi
 
 target="${1:-}"
 [[ $# -gt 0 ]] && shift

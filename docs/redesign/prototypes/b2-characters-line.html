@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Character style sample (outline-led)</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>body{background:#fbf7ee}main{max-width:1200px;margin:0 auto;padding:36px 40px}h1{font:600 13px/1 ui-sans-serif,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#7a6f60;margin:0 0 18px}p{font-size:14px;color:#4a3f33;max-width:60em}svg{display:block}</style></head><body><main>
+<h1>Outline-led character style: placeholder sample, made by code</h1><div id="s"></div>
+<p>One outline weight, white fill, solid ink hair, and a single accent fill per person or none. Variety comes from hair, headwear, glasses, beard, pose and which accent is used.</p>
+<script src="hero-kit.js"></script><script src="hero-kit-line.js"></script>
+<script>
+const K=Kit2,A=K.ACC;
+const P=[
+ {hair:'bun',accent:A.terra,talk:true,gesture:true},
+ {hair:'curly',accent:A.mustard,glasses:true},
+ {hair:'scarf',scarfAccent:A.sage,talk:true},
+ {hair:'bald',beard:true,glasses:true,accent:A.teal,gesture:true,flip:true},
+ {hair:'long'},
+ {hair:'crop',accent:A.mustard,talk:true,gesture:true}];
+let inner='';P.forEach((o,i)=>{o.x=110+i*195;o.y=105;o.s=1.0;inner+=K.person(o)+'<path d="M'+(o.x-80)+' 250 H'+(o.x+80)+'" stroke="#2b2118" stroke-width="3.5" stroke-linecap="round"/>'});
+document.getElementById('s').innerHTML=K.svg(1200,270,inner).replace('role="img"','role="img"');
+</script></main></body></html>

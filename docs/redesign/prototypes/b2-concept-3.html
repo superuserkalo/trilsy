@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 concept 3: The sticker and the page</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  body{height:1020px;position:relative}
+  .hero{text-align:center;position:relative;height:900px;overflow:hidden}
+  .stk{height:262px;display:flex;justify-content:center;margin-top:-4px}
+  .hero h1{font-size:62px;max-width:15em;margin:2px auto 0}
+  .hero .sub{margin:16px auto 0;max-width:36em}
+  .hero .cta{justify-content:center;margin-top:20px}
+  .page{position:absolute;left:50%;top:650px;margin-left:-410px;text-align:left}
+  .page .win{box-shadow:6px 7px 0 var(--ink)}
+  .page .win .cols{grid-template-columns:1.15fr 1fr}
+  .logos{position:absolute;left:0;right:0;top:900px;background:var(--paper)}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right;z-index:9}
+</style></head>
+<body>
+<nav><span class="logo">Trilsy</span><ul><li>How it works</li><li>Use cases</li><li>Pricing</li></ul><span class="gh">GitHub</span></nav>
+<section class="hero">
+  <div class="stk" id="stk"></div>
+  <h1>Be in the conversation. Trilsy writes the notes.</h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="page" id="page"></div>
+</section>
+<div class="logos"><p>TODO: one line, true of every logo (B3)</p><div class="row"><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span></div></div>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script>
+<script>
+  const K = Kit;
+  const sticker = `<defs><filter id="stick" x="-10%" y="-10%" width="120%" height="125%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="d"/>
+      <feFlood flood-color="#fffdf8"/><feComposite in2="d" operator="in" result="w"/>
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#2b2118" flood-opacity=".28" in="w" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+  const inner = sticker + `<g filter="url(#stick)">` +
+    K.person({x:250,y:104,s:.9,skin:'c',hair:'curly',hairColor:'#2b2118',shirt:'#c8553d',talk:true,gesture:true,flip:true}) +
+    K.person({x:410,y:122,s:.8,skin:'a',hair:'long',hairColor:'#b0692f',shirt:'#e0a83a',held:'mug'}) + `</g>` +
+    K.bubble(296,4,272,['We moved the whole team','to Lisbon in March.'],{tail:'bl'});
+  document.getElementById('stk').innerHTML = K.svg(640,262,inner);
+  document.getElementById('page').innerHTML = K.win({
+    w:820,title:'Ana Ribeiro, product designer',time:'12:15',live:true,
+    transcript:[
+      {who:'Ana',c:'#c8553d',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Sam',c:'#2f6f73',t:'12:11',text:'What changed first?'},
+      {who:'Ana',c:'#c8553d',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+    notes:{overview:'Ana\'s team moved to Lisbon in March. The first change was meeting times.',
+      t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],
+      t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}
+  });
+</script>
+</body></html>

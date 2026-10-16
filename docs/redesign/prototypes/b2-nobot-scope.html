@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Where "no bot" appears</title>
+<style>
+/* Throwaway preview, placeholder type and colour. */
+:root{--ink:#241f1a;--paper:#f6f1e8;--line:#d9cfbd;--mute:#7a6f60;--mark:#b8541f}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Georgia,serif}
+main{max-width:1100px;margin:0 auto;padding:40px 32px;display:grid;gap:24px}
+h1{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;color:var(--mute);margin:0;text-transform:uppercase}
+article{background:#fffdf8;border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:grid;gap:12px}
+.tag{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--mute)}.rec{color:#fff;background:var(--mark);padding:5px 8px;border-radius:99px;justify-self:start}
+.sub{font-size:20px;margin:0;max-width:52ch}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;border-top:1px solid var(--line);padding-top:14px;font:14px/1.4 ui-sans-serif,system-ui,sans-serif}
+.strip b{display:block;margin-bottom:2px}.faq{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--mute);margin:0}
+.x{color:var(--mark)}
+@media(max-width:700px){.strip{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<h1>Hero subhead, trust strip and FAQ under each option (placeholder type)</h1>
+<article><span class="tag rec">1 &middot; recommended: say how, not what it is not</span>
+<p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+<div class="strip"><div><b>Records from your Mac</b>Microphone and system sound, in one take.</div><div><b>Works with anything that plays</b>Calls, browser tabs, lecture streams, the room you are in.</div><div><b>Your audio is saved on your Mac</b>Plain files in a folder you can open.</div><div><b>Open source</b>Read the code on GitHub.</div></div>
+<p class="faq">FAQ "Will others see it?": "Trilsy records from your own Mac, so nothing appears in the call. Tell people before you record them." (true, no "no bot" phrase, no promise about the future)</p></article>
+<article><span class="tag">2 &middot; no bot anywhere, including the master's facts</span>
+<p class="sub">Same subhead as 1.</p>
+<div class="strip"><div><b>Records from your Mac</b>Microphone and system sound.</div><div><b>Works with anything that plays</b></div><div><b>Audio saved on your Mac</b></div><div><b>Open source</b></div></div>
+<p class="faq">FAQ drops the "no bot" question entirely; the consent answer talks about recording, not about how it is invisible.</p></article>
+<article><span class="tag">3 &middot; keep "no bot" everywhere except the positioning sentence</span>
+<p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit. <span class="x">No bot joins the call.</span></p>
+<div class="strip"><div><b class="x">No bot joins</b>Trilsy records from your Mac.</div><div><b>Works with anything that plays</b></div><div><b>Audio saved on your Mac</b></div><div><b>Open source</b></div></div>
+<p class="faq">FAQ "Does a bot join?": "No. Trilsy records from your Mac." This is today's live strip and the master's facts, unchanged. If a bot product ships later, these lines must be rewritten.</p></article>
+</main></body></html>

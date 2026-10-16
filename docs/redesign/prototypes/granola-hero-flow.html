@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype: a call and the notes it becomes (timing study after Granola's hero)</title>
+<!--
+  Study prototype for docs/redesign/animation-granola-hero.md. Our own code, placeholder people and copy.
+  It reproduces the structure and the clock of Granola's hero demo (measured 2026-10-15), not its look:
+  - two call tiles that idle on their own loops (5s and 10s), never synced to the notes;
+  - one 8.18s notes loop: rough notes, a line typed at 26 characters a second, "Listening" pill,
+    "Write notes" button pressed, a row that travels down while the notes are revealed above it with a
+    colour sweep per line, the row turning into a two-way toggle, the toggle sliding back to the rough notes.
+  The clock advances only while the window is within 100px of the viewport, and resumes where it stopped.
+  Unlike the reference, prefers-reduced-motion shows a still final state (Trilsy's rule).
+  Not site code. Serve with: python3 -m http.server -d docs/redesign/prototypes 4173
+-->
+<style>
+  :root { --paper:#fbf7ee; --card:#fffdf8; --ink:#241e18; --muted:#6e6354; --border:#d9cfbd; --mustard:#e6ab4f;
+          --terracotta:#bf6a4e; --sage:#8d9f8b; --dusty:#7f99b3; --field:#dce6f2; --tint:#f4ecdd; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, sans-serif; }
+  .hero { max-width: 1200px; margin: 0 auto; padding: 118px 40px 80px; display: grid; grid-template-columns: 60% 40%; align-items: center; min-height: 900px; }
+  .copy h1 { font: 400 72px/1.05 Georgia, serif; letter-spacing: -0.02em; max-width: 9ch; }
+  .copy p { margin-top: 24px; font-size: 20px; color: var(--muted); }
+  .win-wrap { position: relative; width: 384px; height: 576px; justify-self: center; }
+
+  .win { position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; overflow: hidden; user-select: none;
+         background: var(--card); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 20px 40px -12px rgb(36 30 24 / .25); }
+  .bar { height: 44px; flex: none; display: flex; align-items: center; gap: 6.5px; padding-left: 15.5px; }
+  .bar i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgb(0 0 0 / .1); }
+  .bar i:nth-child(1) { background: #ff736a; } .bar i:nth-child(2) { background: #febc2e; } .bar i:nth-child(3) { background: #19c332; }
+  .body { flex: 1; display: flex; flex-direction: column; padding: 0 8px 64px; min-height: 0; }
+  .title { padding: 12px 16px 0; font: 400 20px/1.4 Georgia, serif; }
+  .chips { margin: 8px 12px 0; padding: 4px 0; display: flex; gap: 8px; }
+  .chip { height: 26px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 10px; color: var(--muted); }
+  .area { position: relative; margin-top: 16px; flex: 1; min-height: 0; }
+  .stack { position: absolute; inset: 0; display: grid; grid-template-areas: 'stack'; grid-template-rows: minmax(0,1fr); }
+  .stack > * { grid-area: stack; min-height: 0; overflow: hidden; padding: 0 16px; }
+  .rough { display: flex; flex-direction: column; gap: 8px; padding-bottom: 24px; font-size: 10px; line-height: 1.625; }
+  .rough p { min-height: 1.625em; }
+  .caret { display: inline-block; width: 1px; height: 1em; margin-left: 1px; vertical-align: middle; background: var(--terracotta); animation: caret 2s cubic-bezier(.4,0,.6,1) infinite; }
+  @keyframes caret { 50% { opacity: .5; } }
+  .pad { position: relative; padding-bottom: 24px; }
+  .notes { display: flex; flex-direction: column; background: var(--card); font-size: 10px; line-height: 15px; clip-path: inset(0 0 100% 0); }
+  .line { --base: var(--ink); color: transparent; -webkit-text-fill-color: transparent; background-clip: text; -webkit-background-clip: text;
+          background-size: 300% 100%; background-position: 100% 0;
+          background-image: linear-gradient(90deg, var(--base) 0, var(--base) 33.33%, var(--mustard) 40%, var(--terracotta) 45%, var(--sage) 50%, var(--field) 55%, var(--dusty) 60%, transparent 66.67%, transparent); }
+  .line.grey { --base: var(--muted); }
+  .line.h { font-weight: 600; } .line.h + .line, .line.b { padding-left: 12px; } .line.h:not(:first-child) { margin-top: 15px; }
+  .line.on { animation: sweep .4s ease-in-out forwards; }
+  @keyframes sweep { to { background-position: 0 0; } }
+  .rowwrap { position: absolute; left: 8px; right: 8px; top: 0; pointer-events: none; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px; background: #fff; box-shadow: 0 4px 10px rgb(36 30 24 / .12);
+         font-size: 10px; font-weight: 500; color: var(--muted); opacity: 0; visibility: hidden; }
+  .spin { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--terracotta); border-top-color: transparent; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .dock { position: absolute; left: 0; right: 0; bottom: 16px; display: grid; place-items: center; pointer-events: none; }
+  .dock > * { grid-area: 1 / 1; opacity: 0; visibility: hidden; }
+  .pill { display: flex; align-items: center; gap: 12px; height: 38px; padding: 0 16px; border: 1px solid var(--border); border-radius: 999px; background: #fff; font-size: 14px; color: var(--muted); }
+  .bars { display: flex; align-items: center; gap: 4px; }
+  .bars b { width: 4px; border-radius: 2px; background: var(--ink); animation: bar ease-in-out infinite alternate; }
+  .bars b:nth-child(1) { height: 12px; --a: 1.67; animation-duration: .6s; }
+  .bars b:nth-child(2) { height: 18px; --a: 1.56; animation-duration: .5s; animation-delay: .18s; }
+  .bars b:nth-child(3) { height: 13px; --a: 1.38; animation-duration: .92s; animation-delay: .33s; }
+  @keyframes bar { to { transform: scaleY(var(--a)); } }
+  .gen { height: 40px; display: flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: 14px; font-weight: 500; }
+  .toggle { position: relative; display: flex; width: 192px; padding: 2px; border: 1px solid var(--border); border-radius: 999px; background: #fff; box-shadow: 0 4px 10px rgb(36 30 24 / .12); }
+  .hl { position: absolute; top: 2px; bottom: 2px; left: 2px; width: calc(50% - 2px); border-radius: 999px; background: var(--tint); }
+  .toggle span { position: relative; flex: 1; padding: 4px 0; text-align: center; font-size: 10px; font-weight: 500; }
+
+  .call { position: absolute; z-index: 20; top: 50%; right: -14%; width: 28%; display: flex; flex-direction: column; gap: 3px; padding: 3px; border-radius: 8px; background: #111; }
+  .tile { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 3px; }
+  .tile.a { background: var(--field); } .tile.b { background: var(--tint); }
+  .tile svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .tile .head { transform-box: fill-box; transform-origin: 50% 90%; }
+  .tile.a .head { animation: idle-a 10s ease-in-out infinite; }
+  .tile.b .head { animation: idle-b 5s ease-in-out infinite; }
+  @keyframes idle-a { 0%,18%,100% { transform: none; } 24% { transform: rotate(-4deg) translateY(1px); } 30% { transform: translateY(2px); } 36%,62% { transform: none; } 70% { transform: rotate(3deg); } 80% { transform: none; } }
+  @keyframes idle-b { 0%,40%,100% { transform: none; } 50% { transform: translateY(2px); } 58% { transform: none; } 66% { transform: translateY(2px); } 74% { transform: none; } }
+  .ctl { display: flex; justify-content: center; gap: 6px; padding-top: 2px; }
+  .ctl i { width: 26px; height: 14px; border-radius: 999px; background: #484844; } .ctl i:last-child { background: #ef4444; }
+
+  @media (max-width: 1023px) {
+    .hero { grid-template-columns: 1fr; padding: 96px 16px 48px; min-height: 0; gap: 40px; }
+    .copy h1 { font-size: 48px; }
+    .win-wrap { width: 100%; max-width: 358px; height: 537px; }
+    .call { top: 30%; right: -4%; width: 24%; min-width: 80px; max-width: 96px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tile.a .head, .tile.b .head, .bars b, .spin, .caret { animation: none; }
+  }
+</style>
+</head>
+<body>
+<main class="hero">
+  <div class="copy">
+    <h1>Placeholder headline for the timing study</h1>
+    <p>Placeholder line. The window on the right is the part being measured.</p>
+  </div>
+  <div class="win-wrap">
+    <div class="win" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="body">
+        <div class="title">Spring term planning</div>
+        <div class="chips"><span class="chip">Today &nbsp;·&nbsp; 2 people</span></div>
+        <div class="area">
+          <div class="stack">
+            <div><div class="rough" id="rough"></div></div>
+            <div id="scroller"><div class="pad"><div class="notes" id="notes"></div></div></div>
+          </div>
+          <div class="rowwrap"><div class="row" id="row"><span class="spin"></span><span>Writing notes</span></div></div>
+        </div>
+      </div>
+      <div class="dock">
+        <div class="pill" id="pill"><span class="bars"><b></b><b></b><b></b></span><span>Listening</span></div>
+        <div class="gen" id="gen">Write notes</div>
+        <div class="toggle" id="toggle"><div class="hl" id="hl"></div><span>Mine</span><span>Notes</span></div>
+      </div>
+    </div>
+    <div class="call" aria-hidden="true">
+      <div class="tile a"><svg viewBox="0 0 100 100"><path d="M14 100c2-22 16-32 36-32s34 10 36 32z" fill="#7f99b3"/><g class="head"><rect x="44" y="52" width="12" height="16" fill="#c99a7a"/><circle cx="50" cy="40" r="17" fill="#d8ab8a"/><path d="M33 38c0-14 9-20 18-20s17 7 17 18c-6-6-20-8-35 2z" fill="#3b2a20"/></g></svg></div>
+      <div class="tile b"><svg viewBox="0 0 100 100"><path d="M12 100c3-21 17-31 38-31s35 10 38 31z" fill="#8d9f8b"/><g class="head"><rect x="44" y="53" width="12" height="16" fill="#8a5a3c"/><circle cx="50" cy="41" r="17" fill="#9b6646"/><path d="M32 44c-2-18 8-26 18-26s20 8 18 26c-3-9-9-14-18-14s-15 5-18 14z" fill="#1f1712"/></g></svg></div>
+      <div class="ctl"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</main>
+<script>
+(() => {
+  // ---- content (placeholder) ----
+  const ROUGH = ['ask about room booking', 'Reading list - too long?', '', 'Field trip budget, who has to sign off?']; // last line: 39 chars, typed live
+  const NOTES = [
+    ['h', 'Room Booking'],
+    ['b', 'Agreed to move the Thursday seminar to the big room upstairs'], // fits one line at 1440, wraps at 390, like the reference's line 2
+    ['b grey', 'Bookings office to confirm by Friday'],
+    ['b grey', 'Projector in the old room stays as a backup'],
+    ['h', 'Reading List'],
+    ['b', 'Sam thinks the list is too long for a six-week module'],
+    ['b grey', 'Cut to eight core texts, the rest optional'],
+    ['b grey', 'Library to hold two copies of each core text'],
+    ['b grey', 'Revisit after the first two weeks'],
+    ['h', 'Field Trip Budget'],
+    ['b', 'Department head signs off anything over the usual limit'],
+    ['b grey', 'Quote from the coach company still pending'],
+    ['h', 'Next Steps'],
+    ['b grey', 'Maya: send the room change to students'],
+    ['b grey', 'Sam: trim the reading list by Monday'],
+    ['b grey', 'Maya: chase the coach quote'],
+  ];
+  const $ = id => document.getElementById(id);
+  const rough = $('rough'), notes = $('notes'), scroller = $('scroller'), row = $('row'), pill = $('pill'), gen = $('gen'), toggle = $('toggle'), hl = $('hl');
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  notes.innerHTML = NOTES.map(([k, t]) => `<p class="line ${k.startsWith('h') ? 'h grey' : k}">${k.startsWith('b') ? '•&nbsp;&nbsp;' : ''}${esc(t)}</p>`).join('');
+  const lines = [...notes.children];
+  let roughKey = '';
+  const setRough = typed => { // typed: number of chars of the last line shown
+    const key = String(typed); if (key === roughKey) return; roughKey = key;
+    rough.innerHTML = ROUGH.slice(0, 3).map(esc).map(s => `<p>${s}</p>`).join('') + `<p>${esc(ROUGH[3].slice(0, typed))}<span class="caret"></span></p>`;
+  };
+
+  // ---- easing, GSAP-equivalent curves written out ----
+  const clamp = x => Math.min(1, Math.max(0, x));
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const backOut = s => x => 1 + (s + 1) * (x - 1) ** 3 + s * (x - 1) ** 2;
+  const p1in = x => x * x, p2in = x => x ** 3, p2out = x => 1 - (1 - x) ** 3;
+  const p3inOut = x => x < .5 ? 8 * x ** 4 : 1 - (-2 * x + 2) ** 4 / 2;
+  const show = (el, a, tf) => { el.style.opacity = Math.min(1, Math.max(0, a)); el.style.visibility = a > 0 ? 'inherit' : 'hidden'; el.style.transform = tf; };
+
+  // ---- timeline, seconds into one loop ----
+  const T = { pillIn: .04, typeStart: .3, typeEnd: 1.8, pillOut: 2.17, genIn: 2.25, press: 2.81, release: 2.91, drop: 3.08, enhance: 3.43, enhDur: 3.1, morph: 6.53, tglIn: 6.93, rowOut: 6.95, sw: 7.78, swEnd: 8.06, loop: 8.18 };
+  let G = null; // geometry, measured from layout
+  const measure = () => {
+    const E = scroller.clientHeight, H = scroller.scrollHeight, f = notes.offsetHeight;
+    const rowR = row.getBoundingClientRect(), tR = toggle.getBoundingClientRect(), win = document.querySelector('.win');
+    const k = win.getBoundingClientRect().width / win.offsetWidth || 1;
+    const rowTop0 = rowR.top / k - (parseFloat(getComputedStyle(row).transform.split(',')[5]) || 0);
+    G = { E, f, D: Math.max(0, E - (H - f)), over: Math.max(0, H - E), tops: lines.map(l => l.offsetTop),
+          toY: (tR.top / k + toggle.offsetHeight / 2) - (rowTop0 + row.offsetHeight / 2), toS: Math.max(.7, toggle.offsetWidth / row.offsetWidth) };
+  };
+
+  const render = t => {
+    if (!G) measure();
+    // rough notes and the typed line
+    setRough(t < T.typeStart || t >= T.swEnd ? 0 : t < T.typeEnd ? Math.round(38 * seg(t, T.typeStart, T.typeEnd)) + 1 : 39);
+    // Listening pill
+    if (t < T.pillIn) show(pill, 0, 'scale(.6)');
+    else if (t < T.pillOut) { const e = backOut(2.6)(seg(t, T.pillIn, T.pillIn + .45)); show(pill, e, `scale(${.6 + .4 * e})`); }
+    else { const e = p2in(seg(t, T.pillOut, T.pillOut + .25)); show(pill, 1 - e, `scale(${1 - .2 * e})`); }
+    // Write notes button: pop, press, drop
+    if (t < T.genIn) show(gen, 0, 'translateY(0) scale(.8)');
+    else if (t < T.press) { const e = backOut(2.2)(seg(t, T.genIn, T.genIn + .38)); show(gen, e, `translateY(0) scale(${.8 + .2 * e})`); }
+    else if (t < T.release) show(gen, 1, `translateY(0) scale(${1 - .04 * p2in(seg(t, T.press, T.press + .1))})`);
+    else if (t < T.drop) show(gen, 1, `translateY(0) scale(${.96 + .04 * p2out(seg(t, T.release, T.release + .12))})`);
+    else { const e = p2in(seg(t, T.drop, T.drop + .35)); show(gen, 1 - e, `translateY(${28 * e}px) scale(${1 - .15 * e})`); }
+    // notes revealed above the travelling row, a sweep per line as the edge passes
+    const p = t < T.enhance ? 0 : p1in(seg(t, T.enhance, T.enhance + T.enhDur));
+    const top = p * G.D, sc = Math.max(0, (p - .5) / .5) * G.over, edge = top + sc;
+    scroller.scrollTop = sc;
+    notes.style.clipPath = `inset(0 0 ${t < T.enhance ? '100%' : Math.max(0, G.f - edge) + 'px'} 0)`;
+    notes.style.opacity = t >= T.swEnd ? 0 : 1;
+    lines.forEach((l, i) => l.classList.toggle('on', t >= T.enhance && t < T.swEnd && edge >= G.tops[i]));
+    // the row: in, travel, move onto the toggle, fade into it
+    if (t < T.enhance) show(row, 0, 'translateY(0) scale(.95)');
+    else if (t < T.morph) { const e = p2out(seg(t, T.enhance, T.enhance + .28)); show(row, e, `translateY(${top - 8}px) scale(${.95 + .05 * e})`); }
+    else {
+      const y = (G.D - 8) + (G.toY - (G.D - 8)) * p2out(seg(t, T.morph, T.morph + .5));
+      const e = p2in(seg(t, T.rowOut, T.rowOut + .22));
+      show(row, 1 - e, `translateY(${y}px) scaleX(${1 + (G.toS - 1) * e})`);
+    }
+    // toggle: pops in on its rough-notes side, then slides back to Mine
+    if (t < T.tglIn) show(toggle, 0, 'scale(.88)');
+    else { const e = backOut(1.8)(seg(t, T.tglIn, T.tglIn + .4)); show(toggle, e, `scale(${.88 + .12 * e})`); }
+    hl.style.transform = `translateX(${100 * (1 - p3inOut(seg(t, T.sw, T.sw + .28)))}%)`;
+  };
+
+  // ---- clock: advances only while the window is within 100px of the viewport ----
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const still = () => { // Trilsy rule: a still final state, notes shown, toggle on Notes
+    setRough(39); measure();
+    show(pill, 0, 'none'); show(gen, 0, 'none'); show(row, 0, 'none'); show(toggle, 1, 'none');
+    notes.style.clipPath = 'inset(0 0 0 0)'; notes.style.opacity = 1; lines.forEach(l => { l.classList.add('on'); l.style.animation = 'none'; l.style.backgroundPosition = '0 0'; });
+    hl.style.transform = 'translateX(100%)';
+  };
+  let visible = false, elapsed = 0, last = null, stillDone = false;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(document.querySelector('.win'));
+  const tick = now => {
+    if (reduced.matches) { if (!stillDone) { still(); stillDone = true; } last = null; requestAnimationFrame(tick); return; }
+    if (stillDone) { stillDone = false; lines.forEach(l => { l.style.animation = ''; l.style.backgroundPosition = ''; }); }
+    if (visible && last != null) elapsed += now - last;
+    last = visible ? now : null;
+    render((elapsed / 1000) % T.loop);
+    requestAnimationFrame(tick);
+  };
+  addEventListener('resize', () => { G = null; });
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { measure(); requestAnimationFrame(tick); });
+})();
+</script>
+</body>
+</html>

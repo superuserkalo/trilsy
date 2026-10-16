@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B6 logo: three directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@500;600&display=block" rel="stylesheet">
+<style>
+:root{--ink:#241E18;--paper:#FBF7EE;--mustard:#E6AB4F;--blue:#DCE6F2}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Figtree,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:22px 30px}
+h1{font:600 12px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;color:#7a6f60;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#FFFDF8;border:1.5px solid var(--ink);border-radius:14px;padding:16px}
+.card h2{margin:0 0 2px;font:600 20px/1.2 Fraunces,serif}.card .why{font-size:13px;color:#4a3f33;margin:0 0 12px;min-height:54px}
+.big{height:210px;display:grid;place-items:center;background:var(--paper);border:1px solid #D9CFBD;border-radius:10px}
+.big svg{width:170px;height:170px}
+.lock{height:90px;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;border:1px solid #D9CFBD;border-radius:10px;background:var(--paper)}
+.lock svg{width:54px;height:54px}.lock b{font:600 44px/1 Fraunces,serif;letter-spacing:-.02em}
+.dark .lock{background:#1C1713}.lock.d{background:#1C1713;color:#F4EEE2}
+.sz{display:flex;gap:10px;margin-top:10px}.sz>div{flex:1;border-radius:10px;padding:10px;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;border:1px solid #D9CFBD}
+.sz .l{background:var(--paper)}.sz .d{background:#1C1713}
+.sz small{display:block;font-size:9.5px;color:#7a6f60;text-align:center;margin-top:3px}.sz .d small{color:#A99C88}
+.sz figure{margin:0}.sz svg{display:block;margin:auto}
+</style></head><body><div class="wrap"><h1>B6 logo: three distinct directions (placeholder drawing, made by code with a wobble; large, as lockup, and at 64, 32 and 16px, light and dark)</h1><div class="grid" id="g"></div></div>
+<script>
+function rnd(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+function pathFrom(pts,closed,seed,amp){const r=rnd(seed);const q=pts.map(p=>[p[0]+(r()-.5)*amp,p[1]+(r()-.5)*amp]);const n=q.length;let d=`M${q[0][0].toFixed(1)} ${q[0][1].toFixed(1)}`;for(let i=0;i<(closed?n:n-1);i++){const p0=q[(i-1+n)%n],p1=q[i],p2=q[(i+1)%n],p3=q[(i+2)%n];const a=closed||i>0?p0:p1,b=closed||i<n-2?p3:p2;d+=` C${(p1[0]+(p2[0]-a[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-a[1])/6).toFixed(1)} ${(p2[0]-(b[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(b[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`}return d+(closed?' Z':'')}
+const M={
+ bubble:(ink,fill)=>{ // a speech bubble with a folded corner, two note lines
+  const body=pathFrom([[14,18],[50,14],[86,18],[88,40],[87,62],[84,74],[56,76],[34,92],[34,76],[16,74],[12,50]],true,3,1.6);
+  const fold=pathFrom([[68,15],[70,32],[87,34]],false,5,1.2);
+  const l1=pathFrom([[26,40],[44,39],[60,40]],false,7,1.4),l2=pathFrom([[26,56],[40,57],[54,56]],false,9,1.4);
+  return `<path d="${body}" fill="${fill}" stroke="none" transform="translate(2.5 2.5)"/><path d="${body}" fill="none" stroke="${ink}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="${fold}" fill="none" stroke="${ink}" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><path d="${l1}" fill="none" stroke="${ink}" stroke-width="4.2" stroke-linecap="round"/><path d="${l2}" fill="none" stroke="${ink}" stroke-width="4.2" stroke-linecap="round"/>`},
+ tmono:(ink,fill)=>{ // a T drawn with two marker strokes, on a hand-cut tile
+  const tile=pathFrom([[10,14],[50,10],[90,14],[92,50],[90,86],[50,90],[10,86],[8,50]],true,4,2);
+  const bar=pathFrom([[26,32],[50,30],[76,32]],false,6,1.8),stem=pathFrom([[50,32],[51,56],[50,78]],false,8,1.6);
+  return `<path d="${tile}" fill="${fill}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/><path d="${bar}" fill="none" stroke="${ink}" stroke-width="13" stroke-linecap="round"/><path d="${stem}" fill="none" stroke="${ink}" stroke-width="13" stroke-linecap="round"/><path d="${pathFrom([[24,36],[50,35],[78,37]],false,12,1.5)}" fill="none" stroke="${fill}" stroke-width="2.4" stroke-linecap="round" opacity=".0"/>`},
+ lines:(ink,fill)=>{ // three note lines, the top one highlighted by a marker pass
+  const hl=pathFrom([[10,22],[40,18],[90,22],[92,34],[60,38],[12,36]],true,3,2.5);
+  const a=pathFrom([[16,30],[40,29],[84,30]],false,2,1.6),b=pathFrom([[16,54],[38,53],[70,54]],false,5,1.6),c=pathFrom([[16,78],[32,77],[52,78]],false,8,1.6);
+  return `<path d="${hl}" fill="${fill}" stroke="none"/><path d="${a}" fill="none" stroke="${ink}" stroke-width="8" stroke-linecap="round"/><path d="${b}" fill="none" stroke="${ink}" stroke-width="8" stroke-linecap="round"/><path d="${c}" fill="none" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`}
+};
+const D=[['bubble','A. The note bubble','A speech bubble with a folded page corner and two lines of notes: a conversation that becomes a note, in the one hand-drawn outline-and-mustard language of the characters. Reads at 16px as a bubble.'],
+['tmono','B. The marker T','A T made of two thick marker strokes on a hand-cut mustard tile: the most compact, the best favicon and app icon, and it echoes the headline marker. Least explanatory of what the product does.'],
+['lines','C. Three lines','Three note lines of falling length with a mustard marker stroke behind the first: plain and calm, and the highlighter ties it to the headline. Closest to a generic notes icon.']];
+const inkL='#241E18',inkD='#F4EEE2',fill='#E6AB4F';
+const sv=(k,ink,fl,s)=>`<svg viewBox="0 0 100 100" width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">${M[k](ink,fl)}</svg>`;
+document.getElementById('g').innerHTML=D.map(([k,t,w])=>`<div class="card"><h2>${t}</h2><p class="why">${w}</p><div class="big">${sv(k,inkL,fill,170)}</div>
+<div class="lock">${sv(k,inkL,fill,54)}<b>Trilsy</b></div><div class="lock d">${sv(k,inkD,fill,54)}<b>Trilsy</b></div>
+<div class="sz"><div class="l">${[64,32,16].map(s=>`<figure>${sv(k,inkL,fill,s)}<small>${s}</small></figure>`).join('')}</div><div class="d">${[64,32,16].map(s=>`<figure>${sv(k,inkD,fill,s)}<small>${s}</small></figure>`).join('')}</div></div></div>`).join('');
+</script></body></html>

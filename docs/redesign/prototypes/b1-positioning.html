@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 positioning options</title>
+<style>
+  /* Throwaway preview. Type and colour here are placeholders, not the Phase B type or palette. */
+  :root { --ink:#241f1a; --paper:#f6f1e8; --line:#d9cfbd; --mute:#7a6f60; --mark:#b8541f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.5 Georgia, "Times New Roman", serif; }
+  main { max-width:1100px; margin:0 auto; padding:48px 32px 64px; display:grid; gap:28px; }
+  h1 { font:600 13px/1 ui-sans-serif, system-ui, sans-serif; letter-spacing:.04em; color:var(--mute); margin:0 0 4px; text-transform:uppercase; }
+  article { background:#fffdf8; border:1px solid var(--line); border-radius:14px; padding:28px 32px 24px; display:grid; gap:14px; }
+  .tag { font:600 12px/1 ui-sans-serif, system-ui, sans-serif; color:var(--mark); }
+  .tag.rec { color:#fff; background:var(--mark); display:inline-block; padding:5px 8px; border-radius:99px; justify-self:start; }
+  .tag.alt { color:var(--mute); }
+  p.s { font-size:30px; line-height:1.25; margin:0; letter-spacing:-.01em; max-width:30ch; }
+  p.s em { font-style:normal; background:linear-gradient(transparent 62%, #f0d9b8 62%); }
+  dl { margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:6px 16px; font:14px/1.45 ui-sans-serif, system-ui, sans-serif; color:var(--mute); border-top:1px solid var(--line); padding-top:14px; }
+  dt { color:var(--ink); font-weight:600; }
+  dd { margin:0; }
+  @media (max-width:640px){ p.s{font-size:24px} dl{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<main>
+  <h1>B1. Positioning sentence: three options (placeholder type)</h1>
+
+  <article>
+    <span class="tag rec">A &middot; recommended</span>
+    <p class="s">Trilsy is a Mac app that <em>records any call, lecture or interview</em> and writes the notes. <em>No bot joins.</em></p>
+    <dl>
+      <dt>What it is</dt><dd>A Mac app that records and writes notes.</dd>
+      <dt>Who for</dt><dd>Anyone in a conversation: call, lecture, interview.</dd>
+      <dt>Different</dt><dd>No bot. Stated last, so it is the thing the visitor leaves with.</dd>
+      <dt>Risk</dt><dd>Least distinctive of the three; it leans on the hero visual to carry personality.</dd>
+    </dl>
+  </article>
+
+  <article>
+    <span class="tag alt">B &middot; mechanism first</span>
+    <p class="s">Trilsy <em>listens to your Mac and your microphone</em>, then turns what was said into notes. Nothing joins the call.</p>
+    <dl>
+      <dt>What it is</dt><dd>Something on your Mac that listens and writes notes.</dd>
+      <dt>Who for</dt><dd>Left implicit: anyone with a conversation on a Mac.</dd>
+      <dt>Different</dt><dd>It explains how no bot is possible (it hears the Mac itself).</dd>
+      <dt>Risk</dt><dd>"Listens" can read as surveillance; says nothing about lectures or rooms.</dd>
+    </dl>
+  </article>
+
+  <article>
+    <span class="tag alt">C &middot; open source first</span>
+    <p class="s">Trilsy is the <em>open-source notetaker for Mac</em>: it records any conversation, writes the notes, and <em>sends no bot</em> into the room.</p>
+    <dl>
+      <dt>What it is</dt><dd>A notetaker, on Mac, open source.</dd>
+      <dt>Who for</dt><dd>Anyone; "any conversation" covers calls, lectures, interviews.</dd>
+      <dt>Different</dt><dd>Two differences at once: open source and no bot. Open source is checkable on GitHub; none of the other nine pages in the teardown leads with it.</dd>
+      <dt>Risk</dt><dd>"Open-source" narrows the first read toward developers, against the universal positioning.</dd>
+    </dl>
+  </article>
+</main>
+</body>
+</html>

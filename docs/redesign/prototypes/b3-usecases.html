@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B3 use-case pages: proposed list</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf7ee;--mute:#7a6f60;--acc:#f2c14e;--line:rgba(43,33,24,.35)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 -apple-system,system-ui,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:16px 30px 30px}
+.island{position:relative;z-index:20;max-width:912px;margin:0 auto;background:#fffdf8;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+.island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+.island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+.island .on{color:var(--ink);font-weight:600;display:flex;gap:5px;align-items:center}.island svg{width:12px;height:12px}
+.island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px}
+.mega{max-width:912px;margin:6px auto 0;background:#fffdf8;border:1.5px solid var(--line);border-radius:10px;padding:18px 20px 12px;box-shadow:0 12px 28px rgba(43,33,24,.12);display:grid;grid-template-columns:repeat(4,1fr);gap:8px 22px}
+.mega h3{margin:0 0 6px;font:700 11px/1 ui-sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.mega a{display:block;padding:6px 8px;margin:0 -8px;border-radius:7px;font-size:14px;color:var(--ink)}
+.mega a:first-of-type{background:#f4ecdd}
+.mega .foot{grid-column:1/-1;border-top:1px solid var(--line);margin-top:6px;padding-top:9px;font-size:13px;color:#4a3f33;display:flex;justify-content:space-between}
+.ghost{max-width:912px;margin:14px auto 0;height:70px;border:1.5px dashed rgba(43,33,24,.25);border-radius:10px;display:grid;place-items:center;color:var(--mute);font-size:12px}
+h1{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+table{width:100%;border-collapse:collapse;background:#fffdf8;border:1.5px solid var(--line);font-size:12.5px}
+th{text-align:left;font:700 11px/1 ui-sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding:9px 10px;border-bottom:1.5px solid var(--ink);background:#f4ecdd}
+td{padding:7px 10px;border-bottom:1px solid rgba(43,33,24,.15);vertical-align:top}
+td.g{font:700 11px/1.3 ui-sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);width:96px}
+td b{display:block}td i{display:block;font-style:normal;color:var(--mute);font-size:11.5px}
+.caut{color:#9a3b25}
+.note{margin:12px 0 0;font-size:12.5px;color:#4a3f33;max-width:110em}.note b{color:var(--ink)}
+</style></head><body><div class="wrap" id="w"></div>
+<script>
+const rows=[
+ ['Learning','Lecture notes for students','/use-cases/lecture-notes','University and college students','A 90-minute lecture you want to keep as notes you can edit and search before the exam','record lectures on mac; lecture transcription'],
+ ['Learning','Study groups and seminars','/use-cases/study-groups','Students in discussion-based classes','A seminar where you want to listen, not type, and still have the points afterwards','seminar notes; record a study group'],
+ ['Learning','Online courses and bootcamps','/use-cases/online-courses','People learning from video courses and live online classes','A course video in your browser: Trilsy records what your Mac plays and writes the notes','transcribe an online course; notes from video lectures'],
+ ['Research and hiring','Researchers and academics','/use-cases/academic-research','Postgraduates, academics, anyone interviewing for a study','Interviews for a thesis: a transcript to quote from and notes to code, with the audio kept on your Mac','interview transcription for research'],
+ ['Research and hiring','UX and market researchers','/use-cases/user-research','Product and UX researchers','A customer interview you want written up while you keep asking questions','user interview transcription; ux research notes'],
+ ['Research and hiring','Recruiters and hiring managers','/use-cases/hiring-interviews','Recruiters, hiring managers, interview panels','A hiring interview: notes you can compare across candidates instead of a page of scribbles','interview notes for recruiters'],
+ ['Work','Team and project meetings','/use-cases/team-meetings','Managers, team leads, project managers','The weekly sync: decisions and actions captured while you take part','meeting notes app for mac'],
+ ['Work','Founders','/use-cases/founders','Founders and early teams','Customer discovery and investor calls you do not want to take notes during','notes for customer discovery calls; founder call notes'],
+ ['Work','Sales and customer calls','/use-cases/sales-calls','Sales reps, account and customer success managers','A call where the customer says what they need and you want it written down exactly','sales call notes on mac'],
+ ['Work','Consultants and agencies','/use-cases/consultants','Consultants, agencies, freelancers','A client workshop: a record of what was agreed, ready to send on','consulting meeting notes; client call notes'],
+ ['Media and legal','Journalists','/use-cases/journalists','Reporters, editors, writers','An interview with a source: the transcript to quote from, searchable, exported as text','journalist interview transcription'],
+ ['Media and legal','Podcasters and video creators','/use-cases/podcasters','Podcasters, interviewers, video editors','A recorded conversation turned into a transcript and subtitles (SRT)','podcast transcript and subtitles on mac'],
+ ['Media and legal','Legal professionals','/use-cases/legal','Lawyers, paralegals, legal teams','A client meeting where you want a record: audio saved on your Mac, notes you edit. Needs care (see note)','legal meeting notes mac'],
+];
+const v=new URLSearchParams(location.search).get('v')||'menu';
+const groups=['Learning','Research and hiring','Work','Media and legal'];
+let h='';
+if(v==='menu'){
+ h+=`<h1>Header with the full list: Use cases open (13 pages, four groups, titles only)</h1>
+ <header class="island"><span class="logo">Trilsy</span><ul><li class="on">Use cases <svg viewBox="0 0 12 12"><path d="M2 7.5 L6 3.5 L10 7.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul><span class="go">View on GitHub</span></header>
+ <div class="mega">`+groups.map(g=>`<div><h3>${g}</h3>`+rows.filter(r=>r[0]===g).map(r=>`<a>${r[1]}</a>`).join('')+`</div>`).join('')+`<div class="foot"><span>All use cases</span><span>Students and the student offer have their own item in the header</span></div></div>
+ <div class="ghost">page content below</div>
+ <p class="note"><b>How it works on a phone:</b> the menu sheet lists the four group headings; each opens in place to its pages. <b>On desktop:</b> a panel the width of the island under it, opened by click or keyboard, closed by Escape. <b>Why this shape:</b> thirteen items in a single column would be a wall; four short groups read at a glance, and the panel keeps the island's square look.</p>`;
+}else{
+ h+=`<h1>Proposed use-case pages (13): who each is for, the one situation it speaks to, and the phrase it targets</h1><table><tr><th>Group</th><th>Page title and path</th><th>Who it is for</th><th>The one situation</th><th>Search phrase it targets</th></tr>`;
+ rows.forEach(r=>{h+=`<tr><td class="g">${r[0]}</td><td><b>${r[1]}</b><i>${r[2]}</i></td><td>${r[3]}</td><td class="${r[1]==='Legal professionals'?'caut':''}">${r[4]}</td><td>${r[5]}</td></tr>`});
+ h+=`</table>
+ <p class="note"><b>Rules every page follows:</b> only true product facts (it records your microphone and your Mac's sound, transcribes, writes editable and searchable notes, exports Markdown, text or subtitles; audio is saved on your Mac; Apple silicon and macOS 15 or later); nothing about cloud or paid capability until B8; no claim about bots; no invented customers, numbers or quotes; each page carries its own real-looking example of the notes for that situation; the home page stays universal.</p>
+ <p class="note"><b>Students:</b> the header item <i>Students</i> (/students) is the offer page: the student discount, who qualifies, how it is verified, one button (all <i>TODO: confirm</i> until B8). The three Learning pages are about the job (recording a lecture, a seminar, a course) and each ends with one line pointing to /students; the offer is never repeated on them, and /students links back to the three. <b>Left out on purpose:</b> healthcare and any regulated medical use (it would need privacy and compliance claims we cannot make), and anything naming real companies as users. <b>Needs care:</b> Legal professionals says only that audio is saved on your Mac and that you tell people before recording them; no confidentiality or compliance promise.</p>
+ <p class="note"><b>What Phase E inherits:</b> one page per row with its own title, meta description, H1, canonical URL and a breadcrumb; an index page at /use-cases listing all thirteen (the dropdown is not crawlable on its own); FAQ schema built from each page's real questions; links in the footer as well as the dropdown; entries in the sitemap and llms.txt; and a check that no page is a template with the nouns swapped. The search phrases are my estimates of what people type. They have not been checked against search volume, which is Phase E work.</p>`;
+}
+document.getElementById('w').innerHTML=h;
+</script></body></html>

@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B4 type pairings on the palette from the cast sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=block" rel="stylesheet">
+<style>
+:root{--paper:#FBF7EE;--card:#FFFDF8;--ink:#241E18;--mute:#6E6354;--line:#D9CFBD;--mustard:#E6AB4F;--terra:#A4472D;--blue:#4A6784;--sage:#8D9F8B}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink)}
+.row{display:grid;grid-template-columns:600px 1fr;gap:28px;align-items:center;padding:26px 44px;border-bottom:1.5px solid var(--ink);position:relative;height:340px}
+.lab{position:absolute;left:44px;top:8px;font:700 11px/1 ui-sans-serif,system-ui;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
+.lab b{background:var(--ink);color:#fff;border-radius:99px;padding:3px 7px;margin-left:6px}
+h1{margin:14px 0 0;font-size:50px;line-height:1.05;letter-spacing:-.015em;font-weight:600;text-wrap:balance}
+.sub{margin:12px 0 0;font-size:18px;line-height:1.45;color:#4a3f33;max-width:30em}
+.btn{display:inline-block;margin-top:16px;background:var(--mustard);border:2px solid var(--ink);border-radius:8px;padding:11px 20px;font-weight:600;font-size:16px}
+.win{background:var(--card);border:1.5px solid var(--ink);border-radius:14px;box-shadow:6px 7px 0 var(--ink);font-size:13px;line-height:1.4;overflow:hidden}
+.bar{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:1px solid var(--line);background:#F4ECDD}
+.bar i{width:11px;height:11px;border-radius:50%;display:block}.bar i:nth-child(1){background:#ff5f57}.bar i:nth-child(2){background:#febc2e}.bar i:nth-child(3){background:#28c840}
+.cols{display:grid;grid-template-columns:1.1fr 1fr}.cols>div{padding:12px 16px}.cols>div+div{border-left:1px solid var(--line);background:#FDFAF3}
+.k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 6px;font-weight:600}
+.chip{display:inline-block;font-size:11px;font-weight:700;color:#fff;border-radius:99px;padding:1px 8px;margin-right:6px}
+.t{font-variant-numeric:tabular-nums;color:var(--mute);font-size:11px}
+.ln{margin-bottom:8px}.ln p{margin:2px 0 0}
+.bub{display:inline-block;margin-top:12px;border:2.2px solid var(--ink);border-radius:14px;padding:8px 14px;background:var(--card);font-size:15px}
+h4{margin:10px 0 3px;font-size:12px}
+.p1 h1,.p1 .doc{font-family:'Fraunces',serif;font-optical-sizing:auto}.p1{font-family:'Figtree',sans-serif}
+.p2 h1,.p2 .doc{font-family:'Newsreader',serif}.p2{font-family:'Instrument Sans',sans-serif}
+.p3 h1,.p3 .doc{font-family:'Instrument Serif',serif;font-weight:400}.p3 h1{font-size:60px}.p3{font-family:'Hanken Grotesk',sans-serif}
+.doc{font-weight:600;font-size:15px;padding:10px 16px 0}
+</style></head><body>
+<script>
+const P=[['p1','1. Fraunces + Figtree','recommended','A soft, slightly wonky serif with real warmth beside a friendly geometric sans. Closest to the owner\'s characters: round, hand-made, not precious.'],
+['p2','2. Newsreader + Instrument Sans','','A calm editorial serif and a crisp neutral sans. The most grown-up and the least playful; closest to the Wispr and Granola register.'],
+['p3','3. Instrument Serif + Hanken Grotesk','','A condensed, elegant display serif with a plain grotesk. The most distinctive headline, regular weight only, so it carries less emphasis and shrinks poorly.']];
+document.write(P.map(p=>`<section class="row ${p[0]}"><div class="lab">${p[1]}${p[2]?'<b>recommended</b>':''}</div>
+<div><h1>Be in the conversation. Trilsy writes the notes.</h1><p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p><span class="btn">View on GitHub</span><div style="font-size:12px;color:var(--mute);margin-top:10px;max-width:34em">${p[3]}</div></div>
+<div><div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="doc">Biology 201, lecture 9</div><div class="cols"><div><p class="k">Transcript</p><div class="ln"><span class="chip" style="background:${'#4A6784'}">Professor</span><span class="t">00:21</span><p>Mitosis has four stages. Prophase comes first.</p></div><div class="ln"><span class="chip" style="background:#A4472D">Student</span><span class="t">00:34</span><p>Is prophase the longest?</p></div></div><div><p class="k">Notes</p><h4 style="margin-top:0">Overview</h4><p style="margin:0">Mitosis has four stages. Prophase comes first and is usually the longest.</p><h4>Key terms</h4><p style="margin:0">Prophase: chromosomes condense</p></div></div></div><span class="bub">Mitosis has four stages. Prophase comes first.</span></div></section>`).join(''));
+</script></body></html>

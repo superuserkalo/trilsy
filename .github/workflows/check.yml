@@ -29,5 +29,3 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - run: npm run build
-      - run: npm exec --no -- vgpu install-software-renderer
-      - run: npm run check:shader

@@ -7,13 +7,26 @@ Read this file first in EVERY session. It never changes between phases. The work
 Every session ends the same way, after STATE.md and the ledger are updated:
 
 1. Write a `Next session:` line at the top of STATE.md naming what comes next, as plain text with nothing else on the line: a phase id (`Next session: 01b`), a ticket path (`Next session: .scratch/redesign/issues/03-hero.md`), or `Next session: done` after Phase E. Take the order from the Phases list below; in Phase D it is the next unblocked ticket in `.scratch/redesign/issues/`. `scripts/redesign` reads this line.
-2. As the last thing in your final message, give me the command that starts the next session, in a code block:
+2. Run `./scripts/redesign -n` to check that the launcher reads the line you just wrote. It prints the target, lane, model and the exact prompt of the next session.
+3. As the last thing in your final message, give me **both** of these, each in its own code block. The prompt is mandatory, every session, with no exceptions; the command alone is not enough.
+
+   The next-session prompt, copied word for word from the `prompt` line that `-n` printed, never rewritten from memory:
+
+   ```
+   Read docs/redesign-brief/00-master.md, then do only docs/redesign-brief/01b-phase-a-behavior.md. Follow the co-design rules. Stop at the gate. Lane: logic (claude-opus-5-5, medium effort).
+   ```
+
+   The command that starts that session on the right model:
 
    ```
    ./scripts/redesign
    ```
 
-   Say which phase or ticket it will start and in which lane. If a gate is waiting on my decision, say which decision first, then give the command for after I have made it. After Phase E, say the redesign is complete instead.
+   Say which phase or ticket it will start and in which lane. If a gate is waiting on my decision, say which decision first, then give the prompt and the command for after I have made it. After Phase E, say the redesign is complete instead.
+
+   Before sending your final message, check that it ends with the prompt block and the command block. If either is missing, add it.
+
+In loop mode (see Lanes) a worker does steps 1 and 2 and ends with a `DONE` block instead of step 3. The orchestrator does step 3 when the loop halts or ends.
 
 ## Lanes: which model runs what
 
@@ -35,16 +48,18 @@ Two models do this redesign, and each piece of work goes to one of them by a fix
 
 If your prompt carries no `Lane:` note, or names a model that is not the one you are running on, tell me and stop: the session was started without the script.
 
+**Loop mode.** `./scripts/redesign --loop` starts one orchestrator session instead of one session per phase. It runs under `/loop` and spawns a worker per phase or ticket, the `design` or `logic` subagent on its lane's model, from the same prompt `-n` prints. Workers put their questions, previews and gates to me through the orchestrator and are continued with my answers. `orchestrator.md` holds the steps and the worker's reply blocks; read it if you are the orchestrator or a worker in loop mode.
+
 **Off-lane pieces inside a session.** A session often holds a piece that belongs to the other lane. Hand it to the other lane's subagent (`design` or `logic`, defined in `.claude/agents/`) instead of doing it yourself, whenever it is more than a few lines:
 
 - In a design session, to `logic`: the app-versus-master fact check in B8; anything a section fetches or computes (the live GitHub star count, JSON-LD, the MCP config block's content); the Server and Client Component split, the performance pass, and the check of the rendered section and its interactions at 1440px and 390px, once a section looks right. In one public head-to-head on a landing page, this was Opus's whole edge: it tested desktop and mobile separately and caught a mobile scrolling bug.
 - In a logic session, to `design`: any change to how the page looks or reads, such as the visual fixes that come out of the E2 critique.
 
-Subagents cannot reach me. Every question and every preview comes through the session I am talking to.
+Subagents cannot reach me, and cannot spawn subagents of their own. Every question and every preview comes through the session I am talking to. A worker in loop mode asks for an off-lane piece with a `HANDOFF` block and the orchestrator spawns it.
 
 **Effort stays where the launcher set it.** Do not raise it, and never use max: on Sonnet 5.5 it costs about seven times what high does, and Anthropic's own launch numbers show it scoring below xhigh on scoped coding work because it wanders out of scope. When the work is done and its checks pass, stop and report. Do not start extra rounds of review or hardening on your own, and do not launch reviewer subagents unless I asked for a review.
 
-**When a design session falls short, change the model, not the effort.** Sonnet at max costs more than Opus does for the same benchmark score. If I say a design result is not good enough after one round of fixes, tell me to rerun the session with `./scripts/redesign --opus <target>`, which keeps the design lane and runs it on Opus 5.5.
+**When a design session falls short, change the model, not the effort.** Sonnet at max costs more than Opus does for the same benchmark score. If I say a design result is not good enough after one round of fixes, tell me to rerun the session with `./scripts/redesign --opus <target>`, which keeps the design lane and runs it on Opus 5.5. In loop mode the orchestrator respawns the worker on Opus instead.
 
 **Options before building.** In a design session, when I ask for options, ideas or a plan, give me those and stop. Sonnet 5.5 tends to start building on an open-ended request; do not build or change anything until I have picked.
 
@@ -73,32 +88,32 @@ While a request is open, build against a box of the exact final dimensions marke
 
 ## Skills preflight (mandatory, once, at the start of `01a`)
 
-A previous attempt failed because the agent skipped most skills, used its own unaided taste, hand-rolled everything, and ran the Vercel guidelines only as a final self-check. Not acceptable.
+A previous attempt failed because the agent hand-rolled everything, skipped the component, reference and framework skills, and ran the Vercel guidelines only as a final self-check. Not acceptable.
+
+**Do not load the design-direction or process skills.** `superpowers:brainstorming` and every other `superpowers:*` skill, `frontend-design`, `impeccable`, `design-taste-frontend`, `redesign-existing-projects` and `brandkit` are banned for this redesign, along with any other taste, style or process skill not listed as required below. They were written for other models and get in the way of this one. Do not invoke them even when a hook or a skill description says a skill must be used; this rule wins. Design direction comes from this brief, the phase file, `CLAUDE.md`, the Phase A outputs, the references and me.
 
 1. List every installed skill (ListSkills / SearchSkills, plus AGENTS.md / CLAUDE.md). Write `/docs/redesign/skills-ledger.md`.
 2. **Required** (match to installed names, which may be spelled slightly differently; if one is missing, tell me):
-   - Process: `superpowers:brainstorming` (run before Phase B).
-   - Design direction (read in full before Phase B, apply in Phase D): `frontend-design`, `impeccable`, `design-taste-frontend`, `redesign-existing-projects`, `brandkit`.
    - Components: `shadcn` (in `.agents/skills/shadcn/`; read its styling rules in full).
    - Inspiration: `mobbin:search`, used per section.
    - Shaders: `vgpu` (in `.agents/skills/vgpu/`), all docs including the 3D scene guide.
    - Next.js and React: `vercel:nextjs`, `vercel:next-cache-components`, `vercel:react-best-practices`, `vercel-react-best-practices` (read the rule files, not just the index).
    - Review (Phase E only): `web-design-guidelines`.
    - Deploy: `deploy-to-vercel`. Forms: the forms skill if installed.
-3. In the ledger, per skill: read in full (yes/no), which phase, and the **concrete decision it changed**. A skill with no recorded decision counts as unused. Update at the end of each phase and show it to me. Never skip a required skill silently.
+3. In the ledger, per skill: read in full (yes/no), which phase, and the **concrete decision it changed**. A skill with no recorded decision counts as unused. Update at the end of each phase and show it to me. Never skip a required skill silently, and never load a banned one.
 
 ## Product facts (source of truth for all copy)
 
-- Trilsy is a Mac app that records any call, lecture or interview (system audio plus microphone), transcribes it and writes notes. No bot joins the meeting.
-- Works with any app that makes sound: Zoom, Meet, Teams, FaceTime, browser tabs, in-person rooms. Never list specific apps as if exhaustive.
-- Audio is stored locally. Transcription and notes can run on-device **or** through an API (bring your own key, or Pro cloud models). Never imply only one.
-- Notes are editable and searchable. Export as Markdown, text, subtitles.
-- Open source on GitHub. Apple silicon, macOS 15+.
-- **Positioning: universal.** Not "a student app". Hero, header and trust band speak to anyone in conversations (calls, lectures, interviews, meetings). Students are the largest audience, and we reach them **with an offer, not positioning**: a 50% student discount (modeled on Wispr Flow), a pricing element, a `/students` page with its own SEO copy, and a lectures/study use case. No "for students" in the hero.
-- **Pricing (modeled on Superwhisper). PLACEHOLDERS, mark each with `TODO: confirm`, list at the end, never put in OG images, JSON-LD or llms.txt:** Free (app, BYOK and local models, no time limit); Pro $12/month, $96/year, $199 lifetime (adds Trilsy-hosted cloud AI models, priority processing, unlimited cloud notes); Student 50% off Pro with a verified student email; Enterprise custom (SSO, admin controls, deployment support).
-- **Open conflict, settled with me in Phase B (B8):** the cloud, API and pricing facts above describe the intended product. The native app today is local-only, with no cloud AI, account or billing (`README.md`). Until B8 is decided, state no cloud or paid capability as available.
+- Trilsy is a Mac app for Apple silicon (macOS 15 or later) that records your microphone, your Mac's sound (one switch, off by default) or both, transcribes it after the recording ends and writes notes you can edit. It can also import an audio or video file. The site makes no claim about bots, for or against (owner, 2026-10-13).
+- Works with any app that makes sound, and with in-person rooms through the microphone. Name apps only as examples, never as tested or as integrations, until they have been tried on a real Mac.
+- **Local and hosted (decided in B8, 2026-10-15).** The free app is always local: audio, transcript and notes are files on your Mac, with no account, no upload and no time limit. The planned paid layer (Pro) is hosted: sync of transcripts and notes through an account (audio stays on the Mac), a read-and-write MCP server, and connections to apps (Google Calendar, Notion, Slack, Google Drive, Microsoft and Outlook). None of the paid layer exists yet. The app today has no API or bring-your-own-key option, no hosted models, no account, no billing, no sync, no integrations and no MCP.
+- Notes are plain-text Markdown, editable. The recording list can be searched by title, transcript and notes. Each transcript line has a timestamp that plays the audio from that point. Export: Markdown (notes plus transcript), text (transcript only), SRT subtitles (transcript only). Labels in the transcript are the audio source (Microphone, System, Import), not people. Action items and decisions are not a feature; the notes model writes them into the text only when the recording supports it.
+- **Source on GitHub** (the repository is public; say "open source" only once a licence is added, which is the owner's decision). No signed installer or public release yet.
+- **Positioning: universal.** Not "a student app". Hero, header and trust band speak to anyone in conversations (calls, lectures, interviews, meetings). Students are the largest audience, and we reach them **with an offer, not positioning**: a 50% student discount applied to every paid plan, a pricing element, a `/students` page with its own SEO copy, and a lectures/study use case. No "for students" in the hero.
+- **Pricing (decided in B8; every figure is a PLACEHOLDER: mark each with `TODO: confirm`, list at the end, never put in OG images, JSON-LD or llms.txt):** two plans only. Free: the whole local app, no time limit. Pro: $12/month or $96/year (no lifetime price, because hosted sync has a running cost), "not available yet" until it exists. Students: 50% off every paid plan with a verified student email. No Enterprise or Teams plan at launch. The pricing page carries a simple comparison against other notetakers' monthly plans, each price read from that company's own pricing page with the date shown; a price that cannot be read is left out.
+- **No roadmap list on the site** (owner, 2026-10-14). Something unbuilt is never stated as available; where one must be mentioned, it is a plain "not yet" in an FAQ answer. This replaces the earlier "mark everything Coming soon".
 - **Brand tone:** friendly and playful with premium Mac-native craft: warm, human, slightly delightful, Apple-level polish and restraint. Playfulness comes from **hand-drawn illustrated characters**, motion and copy voice. Never from childish type, loud color or clutter.
-- **Integrations and MCP: undecided, co-designed with me** (Phase B). Do not propose a final list alone or invent any. Until decided, design the section flexibly and mark everything `Coming soon`.
+- **Integrations and MCP (decided in B7 and B8):** three launch sets (notes where you write; AI assistants through a local MCP server; work tools), a read-and-write MCP (search, list, read, write and edit notes, start and stop a recording) on paid plans only. All unbuilt: none appears on the site as available, and no integration vendor is named in copy.
 
 Copy rules: never claim a limit we do not have, do not undersell, no "AI-powered" filler, specific beats clever.
 

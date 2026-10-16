@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 concept 2: One window, three settings</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  body{height:1000px}
+  .grid{display:grid;grid-template-columns:560px 1fr;gap:56px;padding:34px 56px 0;align-items:start}
+  .copy{padding-top:70px}
+  .copy h1{font-size:60px}
+  .copy .sub{margin-top:22px}
+  .copy .cta{margin-top:30px}
+  .mini-unused{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;margin-top:64px;padding-top:24px;border-top:1.5px solid var(--ink);font-size:14.5px;line-height:1.35;color:#4a3f33}
+  .mini b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:2px}
+  .card{position:relative;height:700px;background:var(--sage);border:2.5px solid var(--ink);border-radius:30px;box-shadow:7px 8px 0 var(--ink);margin-right:8px}
+  .tabs{position:absolute;left:22px;top:20px;display:flex;gap:10px;z-index:3}
+  .tab{font-weight:600;font-size:14px;padding:7px 14px;border-radius:99px;border:1.5px solid var(--ink);background:#fffdf8;position:relative;overflow:hidden}
+  .tab.on{background:var(--ink);color:#fffdf8}
+  .tab.on::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:62%;background:var(--terra)}
+  .card svg{position:absolute;left:0;top:0}
+  .card .win{position:absolute;left:92px;top:366px;z-index:2;text-align:left}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right}
+</style></head>
+<body>
+<nav><span class="logo">Trilsy</span><ul><li>How it works</li><li>Use cases</li><li>Pricing</li></ul><span class="gh">GitHub</span></nav>
+<div class="grid">
+  <div class="copy">
+    <h1>Any conversation in. Clean notes out.</h1>
+    <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+    <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+    <div class="logos" style="padding:20px 0 0;margin-top:56px"><p>TODO: one line, true of every logo (B3)</p><div class="row"><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span></div></div>
+  </div>
+  <div class="card" id="card"><div class="tabs"><span class="tab on">Call</span><span class="tab">Lecture</span><span class="tab">Interview</span></div></div>
+</div>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script>
+<script>
+  const K = Kit;
+  const tileA = K.tile(410,92,120,100,'ta', K.person({x:470,y:140,s:.5,skin:'b',hair:'scarf',hairColor:'#6b3f5a',shirt:'#9bb08a'}), '#f7e6c8');
+  const tileB = K.tile(546,92,120,100,'tb', K.person({x:606,y:142,s:.5,skin:'d',hair:'bald',glasses:true,shirt:'#c8553d'}), '#d8e6e4');
+  const inner =
+    K.person({x:190,y:250,s:1.35,skin:'a',hair:'long',hairColor:'#7a4a2a',shirt:'#2f6f73',talk:true,gesture:true,flip:true}) +
+    K.laptopBack(70,330,250) + tileA + tileB +
+    K.bubble(40,92,230,["Let's go through the","budget one more time."],{tail:'br'}) +
+    K.flow('M262 236 C320 262 346 306 372 350');
+  document.getElementById('card').insertAdjacentHTML('beforeend', K.svg(684,700,inner) + K.win({
+    w:560,title:'Budget review',time:'01:27',live:true,
+    transcript:[
+      {who:'Dana',c:'#2f6f73',t:'01:12',text:"Let's go through the budget one more time."},
+      {who:'Omar',c:'#c8553d',t:'01:19',text:'Travel is over by about four thousand.'},
+      {who:'Dana',c:'#2f6f73',t:'01:27',text:'Then we cut the October offsite.'}],
+    notes:{overview:'Travel is about $4,000 over budget, so the October offsite is cut.',
+      decisions:['Cut the October offsite'],actions:['Dana: update the forecast by Thursday']}
+  }));
+</script>
+</body></html>

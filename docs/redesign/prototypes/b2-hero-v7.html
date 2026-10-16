@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 hero v7: placeholder figures marked TODO: character at final dimensions</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  :root{--paper:#fbf7ee;--acc:#f2c14e}
+  body{background:var(--paper);height:960px;position:relative}
+  .island{position:relative;z-index:20;max-width:912px;margin:16px auto 0;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+  .island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+  .island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+  .island .dd{display:flex;align-items:center;gap:5px}.island .dd svg{width:12px;height:12px}
+  .island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink)}
+  .hero{text-align:center;padding-top:52px}
+  .hero h1{font-size:52px;line-height:1.06;max-width:15em;margin:0 auto}
+  .hero .sub{margin:14px auto 0;max-width:36em;font-size:19px;text-wrap:balance}
+  .hero .cta{justify-content:center;margin-top:18px}
+  .btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:8px}
+  .scene{position:relative;height:416px;margin-top:6px;overflow:hidden}
+  .scene svg{position:absolute;left:0;top:0}
+  .scene .win{position:absolute;left:430px;top:10px;text-align:left}
+  .win .dots i:nth-child(1){background:#ff5f57}.win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
+  .win .bar{padding:9px 14px}
+  .win .bar strong{display:flex;justify-content:center}
+  .tabs{display:inline-flex;background:#ece4d3;border-radius:7px;padding:2px;gap:2px;font-weight:600;font-size:12.5px}
+  .tabs span{padding:3px 12px;border-radius:5px;color:#4a3f33;position:relative;overflow:hidden}
+  .tabs .on{background:#fffdf8;color:var(--ink);box-shadow:0 1px 2px rgba(43,33,24,.25)}
+  .tabs .on::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:62%;background:var(--acc)}
+  .win .doc{padding:10px 16px 0;font:600 14.5px/1.2 "Iowan Old Style",Georgia,serif;border-bottom:0}
+  .trust{position:absolute;left:0;right:0;top:796px;border-top:1px solid rgba(43,33,24,.25)}
+  .trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute)}
+  .marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:16px 0 20px}
+  .marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+  .marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+  .marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+  .marquee-track li i{width:20px;height:20px;border:1.5px dashed rgba(43,33,24,.4);border-radius:5px;display:block}
+  @keyframes marquee-loop{to{transform:translateX(-50%)}}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right}
+  .tag{position:absolute;left:12px;top:70px;font:700 11px/1.3 ui-sans-serif,system-ui;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);z-index:30;max-width:200px}
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul><li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul>
+  <span class="go">View on GitHub</span>
+</header>
+<section class="hero">
+  <h1>Be in the conversation. Trilsy writes the notes.</h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="scene" id="scene"></div>
+</section>
+<section class="trust" aria-label="Trust band placeholder"><p>TODO: the line above the logos (B3, the owner picks)</p><div class="marquee-mask"><div class="marquee-track" id="track"></div></div></section>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script><script src="hero-kit-ink.js"></script>
+<script>
+const K = Ink, INK = '#2b2118';
+const q = new URLSearchParams(location.search);
+const state = (location.hash || '#lecture').slice(1);
+const row = '<ul>' + Array.from({length:13},()=>'<li><i></i>TODO: company</li>').join('') + '</ul>';
+document.getElementById('track').innerHTML = row + row;
+
+
+const fig = (key, x, w, flip) => {
+  const h = w, y = 416 - h;
+  const t = flip ? `translate(${x + w} ${y}) scale(-1 1)` : `translate(${x} ${y})`;
+  // placeholder: the Notionists figure stays as a stand-in, with a dashed box at the final image size (300x300 CSS px, 1:1)
+  return `<image href="notionists-hero/v5/${key}.svg" x="0" y="0" width="${w}" height="${h}" transform="${t}" opacity=".55"/>` +
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#9a3b25" stroke-width="1.4" stroke-dasharray="6 5"/>` +
+    `<text x="${x+8}" y="${BOT.includes(key)? y+h-8 : y+16}" font-family="-apple-system,system-ui,sans-serif" font-size="11" font-weight="700" fill="#9a3b25">TODO: character ${LAB[key]||key}</text>`;
+};
+const BOT=['lec_listen','mt_l_listen','mt_r_speak'];
+const LAB={lec_prof:'(professor)',lec_hand:'(student, asking)',lec_listen:'(student, listening)',mt_l_speak:'(meeting A)',mt_l_listen:'(meeting B)',mt_r_listen:'(meeting C)',mt_r_speak:'(meeting D)',iv_guest:'(interview guest)',iv_host:'(interview host)'};
+// A speech bubble whose tail points at the speaker's head, with the speaker's chip so the eye can pair it with the transcript line.
+const say = (x, y, w, who, col, lines, tailX) => {
+  const h = 18 + lines.length * 23 + 16, ty = y + h;
+  const text = lines.map((l,i)=>`<text x="${x+16}" y="${y+50+i*23}" font-family="'Bradley Hand','Segoe Print',cursive" font-size="19.5" fill="${INK}">${l}</text>`).join('');
+  return `<g filter="url(#inkwob)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>` +
+    `<path d="M${tailX-9} ${ty} Q${tailX-2} ${ty+14} ${tailX+4} ${ty+24} Q${tailX+8} ${ty+10} ${tailX+14} ${ty}" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>` +
+    `<path d="M${tailX-7} ${ty+1.2} H${tailX+12}" stroke="#fffdf8" stroke-width="4.5"/></g>` +
+    `<rect x="${x+14}" y="${y+10}" width="${who.length*7.4+16}" height="19" rx="9.5" fill="${col}"/><text x="${x+22}" y="${y+24}" font-family="-apple-system,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff">${who}</text>${text}`;
+};
+const scenes = {
+  lecture: {
+    svg:
+      `<g filter="url(#inkwob)"><rect x="1050" y="12" width="352" height="150" rx="6" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>
+         <text x="1070" y="46" font-family="'Bradley Hand','Segoe Print',cursive" font-size="24" fill="${INK}">Mitosis</text>
+         <path d="M1070 56 H1180" stroke="${INK}" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+         ${['P','M','A','T'].map((c,i)=>`<g transform="translate(${1092+i*76} 108)"><ellipse rx="26" ry="20" fill="none" stroke="${INK}" stroke-width="2"/><path d="${['M-4 -6 q4 6 0 12','M0 -18 V18','M-22 0 H22','M-18 0 q18 -10 36 0'][i]}" fill="none" stroke="${INK}" stroke-width="1.8" stroke-dasharray="${i==0?'0':'3 4'}" stroke-linecap="round"/><text y="40" text-anchor="middle" font-family="'Bradley Hand',cursive" font-size="15" fill="${INK}">${c}</text></g>`).join('')}
+         ${[0,1,2].map(i=>`<path d="M${1121+i*76} 108 h24 m-6 -6 l6 6 l-6 6" fill="none" stroke="#d9694a" stroke-width="2" stroke-linecap="round"/>`).join('')}</g>` +
+      fig('lec_prof',20,300) + fig('lec_hand',1010,300,true) + fig('lec_listen',1140,300,true) +
+      say(14,8,300,'Professor','#2f6f73',['Mitosis has four stages.','Prophase comes first.'],170),
+    win:{title:'Biology 201, lecture 9',time:'00:34',transcript:[
+      {who:'Professor',c:'#2f6f73',t:'00:21',text:'Mitosis has four stages. Prophase comes first.'},
+      {who:'Student',c:'#c8553d',t:'00:34',text:'Is prophase the longest?'},
+      {who:'Professor',c:'#2f6f73',t:'00:38',text:'Usually, yes. The chromosomes condense there.'}],
+      notes:{overview:'Mitosis has four stages. Prophase comes first and is usually the longest.',t2:'Key terms',decisions:['Prophase: chromosomes condense','Metaphase: chromosomes line up'],t3:'To review',actions:['Read chapter 7 before Thursday']}}
+  },
+  meeting: {
+    svg: fig('mt_l_speak',-20,300) + fig('mt_l_listen',170,300) + fig('mt_r_listen',980,300,true) + fig('mt_r_speak',1140,300,true) +
+      say(14,10,290,'Priya','#c8553d',['Can we move the launch','to the 14th?'],130) +
+      say(1130,22,290,'Marcus','#6b3f5a',['Legal needs two more','days on the review.'],1290),
+    win:{title:'Product sync',time:'00:52',transcript:[
+      {who:'Priya',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'Marcus',c:'#6b3f5a',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Priya',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+      notes:{overview:'The launch moves to the 14th so legal can finish its review.',decisions:['Launch date is the 14th','Legal gets two more days'],actions:['Dev: send revised timeline by Friday']}}
+  },
+  interview: {
+    svg:
+      `<g filter="url(#inkwob)"><path d="M30 400 V190 Q30 150 70 150 H310 Q350 150 350 190 V416" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M1090 400 V190 Q1090 150 1130 150 H1370 Q1410 150 1410 190 V416" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/></g>` +
+      fig('iv_guest',40,300) + fig('iv_host',1100,300,true) +
+      say(14,8,310,'Ana','#c8553d',['We moved the whole team','to Lisbon in March.'],190) +
+      say(1110,20,250,'Sam','#2f6f73',['What changed first?'],1250),
+    win:{title:'Ana Ribeiro, product designer',time:'12:15',transcript:[
+      {who:'Ana',c:'#c8553d',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Sam',c:'#2f6f73',t:'12:11',text:'What changed first?'},
+      {who:'Ana',c:'#c8553d',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+      notes:{overview:"Ana's team moved to Lisbon in March. The first change was meeting times.",t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}}
+  }
+};
+const S = scenes[state] || scenes.lecture;
+const labels = {lecture:'Lecture',meeting:'Meeting',interview:'Interview'};
+document.getElementById('scene').innerHTML = K.svg(1440,416,S.svg) + K.win(Object.assign({w:580,live:true,tabs:'<span class="tabs">' + Object.keys(labels).map(k=>`<span class="${k===state?'on':''}">${labels[k]}</span>`).join('') + '</span>'},S.win));
+</script>
+</body></html>

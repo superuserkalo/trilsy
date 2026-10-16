@@ -1,0 +1,292 @@
+<!doctype html>
+<!--
+Hero motion prototype, beats 1 to 3 of the lecture setting. Throwaway.
+Decisions on how the motion explains the product:
+1. The bubble grows from its tail, so the speech visibly comes from the speaker's head; then the same words
+   that sit in the bubble are typed into the transcript while the bubble text fades. The match of sentence and
+   moment is the whole explanation: no arrow, no label.
+2. The waveform is driven by the typed characters (a level per letter, a dip at spaces and full stops), so sound
+   and text read as one event. The timer only starts once the transcript does: the recording is what is running.
+3. Everything else stays still and the window space is reserved up front, so nothing shifts. One easing token
+   for all transitions; 600ms for the bubble, 400ms for everything small. Reduced motion shows the end of beat 3.
+Open point: the transcript line is stamped 00:21 as specified while the timer reads 00:00 to 00:04 in the loop.
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilsy hero motion, beats 1 to 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet"><link rel="stylesheet" href="../../hero-kit.css">
+<style>
+:root{--paper:#fbf7ee;--acc:#f2c14e;--ease-trilsy:cubic-bezier(0.22,1,0.36,1);--s:1}
+body{background:var(--paper);font-family:Figtree,system-ui,sans-serif}
+h1,.logo,.win .doc{font-family:Fraunces,serif!important;font-optical-sizing:auto}
+.island{position:relative;z-index:20;width:min(912px,calc(100% - 24px));margin:16px auto 0;background:#fbf7ee;border:3px solid #DCE6F2;border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+.island .logo{font-size:24px;line-height:1;font-weight:700;letter-spacing:-.02em;margin-right:auto}
+.island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+.island .dd{display:flex;align-items:center;gap:5px}.island .dd svg{width:12px;height:12px}
+.island .go{background:var(--acc);border:2px solid var(--ink);border-radius:999px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap}
+.hero{text-align:center;padding:52px 16px 0;position:relative;z-index:1}
+.hero h1{font-size:52px;line-height:1.06;max-width:15em;margin:0 auto}
+.hero h1 em{font-style:normal;color:#A4472D;background:linear-gradient(transparent 62%,#E6AB4F 62%,#E6AB4F 92%,transparent 92%);padding:0 8px;display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hero .sub{margin:14px auto 0;max-width:36em;font-size:19px;text-wrap:balance}
+.hero .cta{justify-content:center;margin-top:18px}
+.btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:999px}
+/* lower area: the pale blue band sits behind the scene's feet and the trust strip */
+.lower{position:relative;padding-bottom:40px;margin-top:6px}
+.lower::before{content:"";position:absolute;left:0;right:0;top:50px;bottom:0;background:#DCE6F2;border-top:1.5px dotted #241E18;border-bottom:1.5px dotted #241E18}
+.scene{position:relative;z-index:1;height:calc(416px*var(--s));overflow:hidden;margin-top:14px;text-align:left}
+.stage{position:absolute;left:50%;top:0;width:1440px;height:416px;margin-left:-720px;transform:scale(var(--s));transform-origin:50% 0}
+.stage.ghost{pointer-events:none;opacity:1;transition:opacity 400ms var(--ease-trilsy);z-index:3}
+.stage.ghost.out{opacity:0}
+.stage svg{position:absolute;left:0;top:0}
+.stage .win{position:absolute;left:430px;top:10px;width:580px;min-height:360px;display:flex;flex-direction:column;border-width:2px}
+.win .cols{flex:1}
+.win .dots i:nth-child(1){background:#ff5f57}.win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
+.win .bar{padding:9px 14px;background:#f7f1e6}
+.win .bar strong{display:flex;justify-content:center}
+.win .doc{padding:10px 16px 0;font-size:14.5px;line-height:1.2;font-weight:600}
+.tabs{display:inline-flex;background:#ece4d3;border-radius:7px;padding:2px;gap:2px;font-weight:600;font-size:12.5px}
+.tabs span{padding:3px 12px;border-radius:5px;color:#4a3f33;position:relative;overflow:hidden;cursor:pointer}
+.tabs .on{background:#fffdf8;color:var(--ink);box-shadow:0 1px 2px rgba(43,33,24,.25);cursor:default}
+.tabs .on::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:62%;background:var(--acc)}
+.chip,.make{background:#4A6784!important}
+.win .wave i{height:3px}
+.win .wave.settle i{transition:height 400ms var(--ease-trilsy)}
+.pend{visibility:hidden}
+.caret{width:0;margin-left:1px;border-left:2px solid var(--terra)}
+.nt .blank{display:block}
+/* the beats */
+.bub{opacity:0;transform:scale(.96);transform-box:view-box;transform-origin:334px 112px;transition:opacity 600ms var(--ease-trilsy),transform 600ms var(--ease-trilsy)}
+.bubtxt{transition:opacity 400ms var(--ease-trilsy)}
+.ln1{opacity:0;transition:opacity 400ms var(--ease-trilsy)}
+.b2 .bub{opacity:1;transform:none}
+.b3 .bubtxt{opacity:0}
+.b3 .ln1{opacity:1}
+.reset,.reset *{transition:none!important}
+/* trust strip */
+.trust{position:relative;z-index:1;margin-top:24px;border-top:1.5px dotted #241E18}
+.trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute);padding-inline:16px}
+.marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:16px 0 20px}
+.marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+.marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+.marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+.marquee-track li img{filter:grayscale(1)}
+.marquee-track li i{width:20px;height:20px;border:1.5px dashed rgba(43,33,24,.4);border-radius:5px;display:block}
+@keyframes marquee-loop{to{transform:translateX(-50%)}}
+.trust .tm{font-size:11px;padding:0 16px 8px;margin-top:-10px;opacity:.75}
+/* narrow: people hidden, window shown at full width */
+@media (max-width:1099px){
+  .scene{height:auto;padding:0 16px;margin-top:20px}
+  .stage{position:static;width:auto;height:auto;margin:0;transform:none}
+  .stage.ghost{position:absolute;left:16px;right:16px;top:0}
+  .stage svg{display:none}
+  .stage .win{position:static;width:min(580px,100%);min-height:0;margin:0 auto}
+  .lower::before{top:70px}
+}
+@media (max-width:820px){.island ul{display:none}}
+@media (max-width:600px){
+  .hero{padding-top:36px}
+  .hero h1{font-size:clamp(32px,9vw,40px)}
+  .hero h1 em{padding:0 4px}
+  .hero .sub{font-size:17px}
+  .island{gap:12px;padding-left:14px}
+  .stage .win{width:100%}
+  .cols{grid-template-columns:1fr}
+  .cols .nt{border-left:0;border-top:1px solid var(--line)}
+  .tabs{font-size:12px}.tabs span{padding:3px 8px}
+  .win .bar{gap:8px;padding:9px 10px}
+  .win .wave{overflow:hidden}
+}
+@media (prefers-reduced-motion:reduce){.marquee-track{animation:none}*{transition:none!important}}
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul><li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul>
+  <span class="go">View on GitHub</span>
+</header>
+<section class="hero">
+  <h1>Be in the conversation. <em>Trilsy writes the notes.</em></h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+</section>
+<div class="lower">
+  <div class="scene" id="scene"></div>
+  <section class="trust" aria-label="Apps Trilsy records"><p>Trilsy records whatever your Mac plays, from the apps you already use.</p><div class="marquee-mask"><div class="marquee-track" id="track"></div></div><p class="tm">App names and marks belong to their owners; no affiliation or endorsement is implied.</p></section>
+</div>
+<script src="../../hero-kit.js"></script><script src="../../hero-kit-ink.js"></script>
+<script>
+const K = Ink, INK = '#2b2118';
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MK=[['Zoom','zoom'],['Google Meet','googlemeet'],['Microsoft Teams','microsoftteams'],['Slack','slack'],['Discord','discord'],['Webex','webex'],['YouTube','youtube'],['Safari','safari'],['Google Chrome','googlechrome'],['FaceTime',null]];
+const row = '<ul>' + MK.map(m=>`<li>${m[1]?`<img src="../../logos/${m[1]}.svg" alt="" style="width:20px;height:20px;opacity:.6">`:''}<span>${m[0]}</span></li>`).join('') + '</ul>';
+document.getElementById('track').innerHTML = row + row + row + row;
+
+const SZ={r1c1:[190,500],r1c2:[160,500],r1c3:[195,500],r1c4:[190,500],r1c5:[165,505],r1c6:[190,505],r2c1:[190,470],r2c2:[175,470],r2c3:[160,470],r2c4:[155,470],r2c5:[170,470],r2c6:[240,470]};
+const FH=310;
+// Placeholder figures cut from the owner's cast sheet; white becomes see-through with multiply.
+const fig = (key, x, flip) => {
+  const [cw,ch]=SZ[key], w=Math.round(cw*FH/ch), h=FH, y=416-h;
+  const t = flip ? `translate(${x + w} ${y}) scale(-1 1)` : `translate(${x} ${y})`;
+  return `<image href="../../cast-cut-t/${key}.png" x="0" y="0" width="${w}" height="${h}" transform="${t}"/>`;
+};
+const say = (x, y, w, who, col, lines, tailX, anim) => {
+  const h = 18 + lines.length * 23 + 16, ty = y + h;
+  const text = lines.map((l,i)=>`<text x="${x+16}" y="${y+50+i*23}" font-family="'Bradley Hand','Segoe Print',cursive" font-size="19.5" fill="${INK}">${l}</text>`).join('');
+  return `<g${anim?' class="bub"':''}><g filter="url(#inkwob)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>` +
+    `<path d="M${tailX-9} ${ty} Q${tailX-2} ${ty+14} ${tailX+4} ${ty+24} Q${tailX+8} ${ty+10} ${tailX+14} ${ty}" fill="#fffdf8" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>` +
+    `<path d="M${tailX-7} ${ty+1.2} H${tailX+12}" stroke="#fffdf8" stroke-width="4.5"/></g>` +
+    `<rect x="${x+14}" y="${y+10}" width="${who.length*7.4+16}" height="19" rx="9.5" fill="${col}"/><text x="${x+22}" y="${y+24}" font-family="-apple-system,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff">${who}</text>` +
+    `<g class="bubtxt">${text}</g></g>`;
+};
+const scenes = {
+  lecture: {
+    svg:
+      `<g filter="url(#inkwob)"><rect x="1040" y="8" width="360" height="82" rx="6" fill="#fffdf8" stroke="${INK}" stroke-width="2.2"/>
+         <text x="1058" y="34" font-family="'Bradley Hand','Segoe Print',cursive" font-size="22" fill="${INK}">Mitosis</text>
+         ${['P','M','A','T'].map((c,i)=>`<g transform="translate(${1190+i*52} 52)"><ellipse rx="19" ry="14" fill="none" stroke="${INK}" stroke-width="2"/><path d="${['M-3 -4 q3 4 0 8','M0 -13 V13','M-15 0 H15','M-12 0 q12 -7 24 0'][i]}" fill="none" stroke="${INK}" stroke-width="1.6" stroke-dasharray="${i==0?'0':'3 3'}" stroke-linecap="round"/><text y="29" text-anchor="middle" font-family="'Bradley Hand',cursive" font-size="12" fill="${INK}">${c}</text></g>`).join('')}</g>` +
+      fig('r1c5',280) + fig('r1c4',1040) + fig('r2c5',1180) +
+      say(90,8,300,'Professor','#2f6f73',['Mitosis has four stages.','Prophase comes first.'],330,true),
+    title:'Biology 201, lecture 9', time:'00:34',
+    first:{who:'Professor',c:'#2f6f73',t:'00:21',text:'Mitosis has four stages. Prophase comes first.'},
+    notes:['Overview','Key terms','To review']
+  },
+  meeting: {
+    svg: fig('r2c6',130) + fig('r1c3',300) + fig('r1c6',1040) + fig('r2c1',1170,true) +
+      say(60,8,290,'Priya','#c8553d',['Can we move the launch','to the 14th?'],200) +
+      say(1090,8,290,'Marcus','#6b3f5a',['Legal needs two more','days on the review.'],1235),
+    title:'Product sync',time:'00:52',transcript:[
+      {who:'Priya',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'Marcus',c:'#6b3f5a',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Priya',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+    notes:{overview:'The launch moves to the 14th so legal can finish its review.',t2:'Decisions',decisions:['Launch date is the 14th','Legal gets two more days'],t3:'Actions',actions:['Dev: send revised timeline by Friday']}
+  },
+  interview: {
+    svg: fig('r2c4',290) + fig('r2c2',1050,true) +
+      say(70,8,310,'Ana','#c8553d',['We moved the whole team','to Lisbon in March.'],330) +
+      say(1030,8,250,'Sam','#2f6f73',['What changed first?'],1112),
+    title:'Ana Ribeiro, product designer',time:'12:15',transcript:[
+      {who:'Ana',c:'#c8553d',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Sam',c:'#2f6f73',t:'12:11',text:'What changed first?'},
+      {who:'Ana',c:'#c8553d',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+    notes:{overview:"Ana's team moved to Lisbon in March. The first change was meeting times.",t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}
+  }
+};
+const labels = {lecture:'Lecture',meeting:'Meeting',interview:'Interview'};
+const NB = 34;
+const shape = Array.from({length:NB},(_,i)=>6+Math.abs(Math.sin(i*1.7)*14+Math.sin(i*.6)*8));
+const idle = shape.map(h=>3+(h-3)*.18);
+const FLAT = 3;
+
+const windowHTML = (state, S) => {
+  const tabs = '<span class="tabs">' + Object.keys(labels).map(k=>`<span data-k="${k}" class="${k===state?'on':''}">${labels[k]}</span>`).join('') + '</span>';
+  const bars = shape.map(h=>`<i style="height:${state==='lecture'?FLAT:h}px"></i>`).join('');
+  let lines, notes;
+  if (state==='lecture') {
+    const f = S.first;
+    lines = `<div class="ln ln1"><span class="chip" style="--c:${f.c}">${f.who}</span><time>${f.t}</time><p><span class="dn"></span><i class="caret"></i><span class="pend">${f.text}</span></p></div>`;
+    notes = `<h4>Overview</h4><p class="blank" style="min-height:36px"></p><h4>${S.notes[1]}</h4><p class="blank" style="min-height:42px"></p><h4>${S.notes[2]}</h4><p class="blank" style="min-height:21px"></p>`;
+  } else {
+    lines = S.transcript.map((l,i)=>`<div class="ln"><span class="chip" style="--c:${l.c}">${l.who}</span><time>${l.t}</time><p>${l.text}${i===S.transcript.length-1?'<i class="caret"></i>':''}</p></div>`).join('');
+    const n = S.notes;
+    notes = `<h4>Overview</h4><p>${n.overview}</p><h4>${n.t2}</h4><ul>${n.decisions.map(d=>`<li>${d}</li>`).join('')}</ul><h4>${n.t3}</h4><ul class="todo">${n.actions.map(d=>`<li><b></b>${d}</li>`).join('')}</ul>`;
+  }
+  return `<div class="win"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><strong>${tabs}</strong><span class="rec"><i></i><b class="timer" style="font-weight:600">${S.time}</b></span></div>
+    <div class="doc">${S.title}</div>
+    <div class="cols"><section class="tr"><h3>Transcript</h3><div class="wave">${bars}</div>${lines}<button class="make">Create notes</button></section>
+    <section class="nt"><h3>Notes</h3>${notes}</section></div></div>`;
+};
+
+const sceneEl = document.getElementById('scene');
+let stage, timers = [], raf = 0, ready = false, state = 'lecture';
+const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+const fmt = n => '00:' + String(n).padStart(2,'0');
+
+function render(k) {
+  state = k;
+  stopAll();
+  const S = scenes[k];
+  sceneEl.innerHTML = '';
+  stage = document.createElement('div');
+  stage.className = 'stage';
+  stage.innerHTML = K.svg(1440,416,S.svg) + windowHTML(k,S);
+  sceneEl.appendChild(stage);
+  if (k === 'lecture') {
+    if (reduced) endState(); else { resetBeats(); if (ready) play(); }
+  }
+}
+function stopAll(){ timers.forEach(clearTimeout); timers=[]; cancelAnimationFrame(raf); }
+const $ = s => stage.querySelector(s);
+
+function setBars(arr){ stage.querySelectorAll('.wave i').forEach((b,i)=>b.style.height=arr[i]+'px'); }
+function resetBeats(){
+  stage.classList.add('reset');
+  stage.classList.remove('b2','b3');
+  $('.wave').classList.remove('settle'); setBars(shape.map(()=>FLAT));
+  $('.timer').textContent = '00:00';
+  $('.dn').textContent = ''; $('.pend').textContent = scenes.lecture.first.text;
+  void stage.offsetWidth;
+  stage.classList.remove('reset');
+}
+function endState(){
+  const f = scenes.lecture.first;
+  stage.classList.add('reset','b2','b3');
+  $('.dn').textContent = f.text; $('.pend').textContent = '';
+  $('.timer').textContent = '00:01';
+  setBars(idle);
+  void stage.offsetWidth; stage.classList.remove('reset');
+}
+
+// Typing schedule: about 1.4s in all, with a short breath after the full stop.
+const TEXT = scenes.lecture.first.text, TYPE_MS = 1400;
+const wts = [...TEXT].map((c,i)=> (i>0 && TEXT[i-1]===' ' && TEXT[i-2]==='.') ? 5 : (i>0 && TEXT[i-1]===' ') ? 1.6 : 1);
+const cum = []; wts.reduce((a,w,i)=> (cum[i]=a+w), 0);
+const total = cum[cum.length-1];
+const levelOf = c => c===' ' ? .12 : c==='.' ? .04 : ('aeiou'.includes(c.toLowerCase()) ? .75+Math.random()*.25 : .35+Math.random()*.35);
+
+function typeLine(){
+  const t0 = performance.now(), levels = Array(NB).fill(0);
+  let done = 0;
+  const step = now => {
+    const e = Math.min(1, (now-t0)/TYPE_MS) * total;
+    let n = done; while (n < TEXT.length && cum[n] <= e) n++;
+    if (n !== done) {
+      for (let j=done;j<n;j++){ levels.shift(); levels.push(levelOf(TEXT[j])); }
+      done = n;
+      $('.dn').textContent = TEXT.slice(0,n); $('.pend').textContent = TEXT.slice(n);
+      setBars(levels.map(v=>FLAT+v*25));
+    }
+    if (done < TEXT.length) raf = requestAnimationFrame(step);
+    else { $('.wave').classList.add('settle'); setBars(idle); }
+  };
+  raf = requestAnimationFrame(step);
+}
+
+function play(){
+  stopAll(); resetBeats();
+  at(600, ()=>stage.classList.add('b2'));                     // beat 2: bubble and chip draw in, 600ms
+  at(2000, ()=>{ stage.classList.add('b3'); typeLine(); });   // beat 3: words move into the transcript
+  for (let n=1;n<=4;n++) at(2000+1000*n, ()=>{ $('.timer').textContent = fmt(n); });
+  at(3400+3000, loop);                                        // hold 3s, then cross-fade
+}
+function loop(){
+  const ghost = stage.cloneNode(true);
+  ghost.classList.add('ghost');
+  sceneEl.appendChild(ghost);
+  play();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ghost.classList.add('out')));
+  setTimeout(()=>ghost.remove(), 460);
+}
+
+sceneEl.addEventListener('click', e => {
+  const t = e.target.closest('[data-k]');
+  if (t && !t.closest('.ghost') && t.dataset.k !== state) render(t.dataset.k);
+});
+function fit(){ document.documentElement.style.setProperty('--s', innerWidth>=1100 ? Math.min(1, innerWidth/1440) : 1); }
+addEventListener('resize', fit); fit();
+
+render('lecture');
+Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,1500))]).then(()=>{
+  ready = true;
+  if (state === 'lecture' && !reduced) play();
+});
+</script>
+</body></html>

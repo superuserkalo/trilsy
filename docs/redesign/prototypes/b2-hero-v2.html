@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 revised hero: concept 2 composition, concept 3 headline</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  :root{--paper:#fbf7ee;--acc:#f2c14e}
+  body{background:var(--paper);height:960px;position:relative}
+  /* square island header, after the Wispr notetaker page */
+  .island{position:relative;z-index:20;max-width:912px;margin:16px auto 0;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+  .island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+  .island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+  .island li{position:relative}
+  .island .dd{display:flex;align-items:center;gap:5px}
+  .island .dd svg{width:12px;height:12px}
+  .menu{display:none;position:absolute;left:-14px;top:36px;min-width:250px;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:6px;box-shadow:0 10px 24px rgba(43,33,24,.12)}
+  .menu a{display:block;padding:9px 12px;border-radius:7px;font-size:14.5px;color:var(--ink)}
+  .menu a small{display:block;color:var(--mute);font-size:12.5px}
+  .menu a:first-child{background:#f4ecdd}
+  body.open .menu{display:block}
+  .island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink)}
+  .grid{display:grid;grid-template-columns:640px 1fr;gap:48px;padding:30px 56px 0;align-items:center}
+  .copy h1{font-size:52px;line-height:1.06;text-wrap:balance}
+  .copy .sub{margin-top:20px;max-width:30em}
+  .copy .cta{margin-top:28px}
+  .btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:8px}
+  .card{position:relative;height:644px;background:#fffdf8;border:2.5px solid var(--ink);border-radius:20px;box-shadow:6px 7px 0 var(--ink)}
+  .tabs{position:absolute;left:20px;top:18px;display:flex;gap:8px;z-index:3}
+  .tab{font-weight:600;font-size:14px;padding:6px 13px;border-radius:8px;border:1.5px solid var(--ink);background:#fffdf8;position:relative;overflow:hidden}
+  .tab.on{background:var(--ink);color:#fffdf8}
+  .tab.on::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:62%;background:var(--acc)}
+  .card svg{position:absolute;left:0;top:0}
+  .card .win{position:absolute;left:40px;top:324px;z-index:2;text-align:left}
+  /* trust band shape: line, then a marquee with faded edges (see forwardpass-web trust-band.tsx) */
+  .trust{position:absolute;left:0;right:0;top:782px;border-top:1px solid rgba(43,33,24,.25)}
+  .trust p{margin:0;padding-top:20px;text-align:center;font-size:15px;color:var(--mute)}
+  .marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:18px 0 22px}
+  .marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+  .marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+  .marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+  .marquee-track li i{width:20px;height:20px;border:1.5px dashed rgba(43,33,24,.4);border-radius:5px;display:block}
+  @keyframes marquee-loop{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right;pointer-events:none}
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul>
+    <li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="menu"><a>Calls and meetings<small>Any app that plays sound</small></a><a>Lectures and study<small>Record the room, keep the notes</small></a><a>Interviews<small>Researchers, journalists, recruiters</small></a></div></li>
+    <li>Pricing</li>
+    <li>How it works</li>
+    <li>Students</li>
+  </ul>
+  <span class="go">View on GitHub</span>
+</header>
+<div class="grid">
+  <div class="copy">
+    <h1>Be in the conversation. Trilsy writes the notes.</h1>
+    <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+    <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  </div>
+  <div class="card" id="card"><div class="tabs"><span class="tab on">Call</span><span class="tab">Lecture</span><span class="tab">Interview</span></div></div>
+</div>
+<section class="trust" aria-label="Trust band placeholder">
+  <p>TODO: the line above the logos (B3, the owner picks)</p>
+  <div class="marquee-mask"><div class="marquee-track" id="track"></div></div>
+</section>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script><script src="hero-kit-line.js"></script>
+<script>
+  if (location.hash === '#menu') document.body.classList.add('open');
+  const row = '<ul>' + Array.from({length:13},()=>'<li><i></i>TODO: company</li>').join('') + '</ul>';
+  document.getElementById('track').innerHTML = row + row;
+  const K = Kit2, A = K.ACC;
+  const tileA = K.tile(404,84,104,86,'ta', K.person({x:456,y:128,s:.46,hair:'scarf',scarfAccent:A.sage}));
+  const tileB = K.tile(522,84,104,86,'tb', K.person({x:574,y:130,s:.46,hair:'bald',glasses:true,beard:true,accent:A.terra}));
+  const inner =
+    K.person({x:330,y:232,s:1.15,hair:'curly',talk:true,gesture:true,accent:A.mustard}) + tileA + tileB +
+    K.bubble(28,96,252,["Let's go through the","budget one more time."],{tail:'br'}) +
+    K.flow('M150 206 C158 250 150 290 150 320');
+  document.getElementById('card').insertAdjacentHTML('beforeend', K.svg(640,644,inner) + K.win({
+    w:560,title:'Budget review',time:'01:27',live:true,
+    transcript:[
+      {who:'Dana',c:'#2f6f73',t:'01:12',text:"Let's go through the budget one more time."},
+      {who:'Omar',c:'#c8553d',t:'01:19',text:'Travel is over by about four thousand.'},
+      {who:'Dana',c:'#2f6f73',t:'01:27',text:'Then we cut the October offsite.'}],
+    notes:{overview:'Travel is about $4,000 over budget, so the October offsite is cut.',
+      decisions:['Cut the October offsite'],actions:['Dana: update the forecast by Thursday']}
+  }));
+</script>
+</body></html>

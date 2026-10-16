@@ -1,0 +1,79 @@
+<!doctype html>
+<!--
+  Study prototype for docs/redesign/behavior-superwhisper.md, pattern 1 (the hero that becomes a framed stage).
+  Our own code and flat placeholder panels. Not site code.
+  Open through a local server: python3 -m http.server -d docs/redesign/prototypes 4173
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype: hero to framed stage</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 16px/1.4 ui-sans-serif, system-ui; background: #000; color: #fff; }
+  .wrap { height: 350vh; position: relative; }
+  .inner { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .frame { position: absolute; inset: 0; background: linear-gradient(#2f76e0, #cfd3ff); }
+  .intro { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 12px; }
+  .intro h1 { font-size: 48px; line-height: 1.05; }
+  .side { position: absolute; top: 0; width: 50%; height: 75%; }
+  .side.l { left: 0; background: radial-gradient(circle at 0 0, #111 0 34%, #0000 35%); }
+  .side.r { right: 0; background: linear-gradient(100deg, #0000 62%, #9aa3ad 63%); }
+  .inst { position: absolute; left: 0; right: 0; top: 44%; text-align: center; opacity: 0; }
+  .nav { position: fixed; top: 14px; left: 50%; padding: 8px 16px; border-radius: 99px; background: #1c1c1e; opacity: 0; transform: translate(-50%, -10px); transition: opacity .3s ease-out, transform .3s ease-out; }
+  .nav.on { opacity: 1; transform: translate(-50%, 0); }
+  .tail { height: 150vh; display: grid; place-items: center; color: #888; }
+  /* Narrow screens: the reference drops the scroll effect and shows a plain one-viewport hero. */
+  @media (max-width: 799px) { .wrap { height: 100vh; } .side { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap" data-p="wrap">
+  <div class="inner" data-p="inner">
+    <div class="frame" data-p="frame">
+      <div class="side l" data-p="left"></div>
+      <div class="side r" data-p="right"></div>
+      <div class="intro" data-p="intro"><h1>Headline<br>goes here.</h1><p>One line of support.</p></div>
+      <div class="inst" data-p="inst">The stage is ready.</div>
+    </div>
+    <nav class="nav" data-p="nav">Home · Docs · Pricing</nav>
+  </div>
+</div>
+<section class="tail">End</section>
+
+<script>
+const $ = s => document.querySelector(`[data-p="${s}"]`);
+const wrap = $('wrap'), frame = $('frame'), intro = $('intro'), left = $('left'), right = $('right'), inst = $('inst'), nav = $('nav');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const narrow = matchMedia('(max-width: 799px)');
+const map = (p, a, b, from, to) => from + (to - from) * Math.min(1, Math.max(0, (p - a) / (b - a)));
+// Each value follows its scroll-mapped target through a spring (stiffness 200, damping 30, mass 0.2).
+const K = 200, C = 30, M = 0.2;
+const springs = {};
+function spring(name, target, dt) {
+  const s = springs[name] ??= { x: target, v: 0 };
+  if (reduced) { s.x = target; return target; }
+  for (let i = 0, h = dt / 4; i < 4; i++) { const a = (-K * (s.x - target) - C * s.v) / M; s.v += a * h; s.x += s.v * h; }
+  return s.x;
+}
+let last = performance.now();
+function tick(now) {
+  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  if (!narrow.matches) {
+    const r = wrap.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+    intro.style.opacity = spring('io', map(p, 0, 0.15, 1, 0), dt);
+    intro.style.transform = `translateY(${spring('iy', map(p, 0, 0.2, 0, -15), dt)}%) scale(${spring('is', map(p, 0, 0.2, 1, 1.2), dt)})`;
+    const sx = spring('sx', map(p, 0, 0.3, 0, 100), dt), ss = spring('ss', map(p, 0, 0.3, 1, 1.15), dt);
+    left.style.transform = `translateX(${-sx}%) scale(${ss})`; right.style.transform = `translateX(${sx}%) scale(${ss})`;
+    const e = spring('clip', map(p, 0, 0.4, 0, 1), dt);
+    frame.style.clipPath = e < 0.0005 ? 'inset(0px round 0px)' : `inset(calc(${50 * e}% - ${313.5 * e}px) calc(${50 * e}% - min(${512 * e}px, calc(${50 * e}vw - ${40 * e}px))) round ${18 * e}px)`;
+    inst.style.opacity = spring('inst', map(p, 0.25, 0.55, 0, 1), dt);
+    nav.classList.toggle('on', p > 0.2);
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

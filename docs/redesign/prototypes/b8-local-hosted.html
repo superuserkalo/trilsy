@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B8 topic 1: what is local and what is hosted</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+:root{--ink:#241E18;--paper:#FBF7EE;--mute:#6E6354;--line:#D9CFBD;--mustard:#E6AB4F;--blue:#DCE6F2;--terra:#A4472D}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:13px/1.45 Figtree,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:20px 28px 28px}
+h1{font:600 12px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin:0 0 12px}
+.grid{display:grid;grid-template-columns:150px 1fr 1fr 1fr;border:1.5px solid var(--ink);background:#FFFDF8;border-radius:12px;overflow:hidden}
+.grid>div{padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.grid>div:nth-child(4n){border-right:0}
+.h{background:#F4ECDD;border-bottom:1.5px solid var(--ink)!important}
+.h h2{font:600 18px/1.2 Fraunces,serif;margin:0 0 3px}.h small{color:#4a3f33;font-size:12px;display:block}
+.tag{font:700 10px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:99px;padding:3px 7px;margin-left:6px;vertical-align:2px}
+.l{font-weight:600;color:var(--mute);background:#FBF7EE}
+.loc{display:inline-block;font:700 10.5px/1 Figtree;letter-spacing:.04em;text-transform:uppercase;border-radius:99px;padding:3px 8px;margin-bottom:3px;border:1.5px solid var(--ink)}
+.mac{background:var(--blue)}.cloud{background:var(--mustard)}.none{background:#fff;color:var(--mute);border-color:var(--line)}
+.cost{background:#FBF7EE}.say{background:#FBF7EE}
+.rec{outline:3px solid var(--ink);outline-offset:-3px}
+.note{margin-top:12px;font-size:12px;color:#4a3f33;max-width:120em}
+</style></head><body><div class="wrap">
+<h1>B8, topic 1: what lives on your Mac and what lives on Trilsy's servers. Today everything is on the Mac; the paid MCP, integrations and "keeping notes for search" all hang on this</h1>
+<div class="grid">
+<div class="h"></div>
+<div class="h rec"><h2>1. Local-first, hosted only for accounts and connections<span class="tag">recommended</span></h2><small>Audio, transcript and notes never leave the Mac. Paid plan unlocks a local MCP and app connections.</small></div>
+<div class="h"><h2>2. Notes kept on Trilsy's servers for search</h2><small>The notes (and perhaps transcripts) sync to an account so they can be searched anywhere and reached by any assistant.</small></div>
+<div class="h"><h2>3. Everything local, even the paid parts</h2><small>A licence key unlocks features; connections and the MCP run on the Mac using your own sign-ins.</small></div>
+
+<div class="l">Audio and recordings</div><div><span class="loc mac">Your Mac</span><br>Plain files, as today.</div><div><span class="loc mac">Your Mac</span><br>Audio stays local; only notes and text move.</div><div><span class="loc mac">Your Mac</span></div>
+<div class="l">Transcript and notes</div><div><span class="loc mac">Your Mac</span><br>As today.</div><div><span class="loc mac">Your Mac</span> <span class="loc cloud">+ Trilsy servers</span><br>A copy per account, encrypted or not (to decide).</div><div><span class="loc mac">Your Mac</span></div>
+<div class="l">Search</div><div><span class="loc mac">On the Mac</span><br>Today a filter over the list; real search is a build.</div><div><span class="loc cloud">On the server</span> and the Mac<br>Across devices.</div><div><span class="loc mac">On the Mac</span></div>
+<div class="l">The paid MCP (read, write, start and stop)</div><div><span class="loc mac">A server on your Mac</span><br>Reaches assistants that run on your Mac (for example Claude and Cursor). Start and stop work because it sits next to the recorder. A web-only assistant cannot reach it.</div><div><span class="loc cloud">A hosted endpoint</span><br>Reaches web assistants from anywhere, but start and stop need a relay down to the Mac, which then needs to be online and signed in.</div><div><span class="loc mac">A server on your Mac</span><br>Same as 1.</div>
+<div class="l">App connections (Calendar, Notion, Slack, Drive, Outlook)</div><div><span class="loc cloud">Trilsy holds the sign-in tokens</span><br>The data goes from the Mac to the app, through a connection service you do not need to build. Notes are not stored by Trilsy.</div><div><span class="loc cloud">Trilsy servers</span><br>Easiest: it already holds the notes.</div><div><span class="loc mac">Your Mac</span><br>Each app's sign-in is stored on the Mac. More work per app; no Trilsy account needed.</div>
+<div class="l">Accounts and billing</div><div><span class="loc cloud">Trilsy servers</span><br>Account, plan, student check.</div><div><span class="loc cloud">Trilsy servers</span></div><div><span class="loc none">A licence key</span><br>No account; the student check still needs a check somewhere.</div>
+<div class="l">Cost to Trilsy</div><div class="cost">Low: accounts, billing, a connection service. No storage of your notes.</div><div class="cost">High and growing: storage, backups, a security and privacy programme, support for lost data. You flagged this cost yourself.</div><div class="cost">Lowest, but the most client work for each app connection.</div>
+<div class="l">What the site can honestly say</div><div class="say">"Your audio, transcript and notes stay on your Mac." Plus: paid plans connect to your apps (account required).</div><div class="say">That sentence must go. It becomes "your notes are stored with your account".</div><div class="say">"Everything stays on your Mac", even on paid plans.</div>
+<div class="l">The catch</div><div class="say">No cross-device sync or notes-anywhere. A web-only assistant cannot use the MCP.</div><div class="say">Becomes a different product: a notes app with servers, accounts, a security promise and data protection duties. Hardest to walk back.</div><div class="say">Account-less paid plans are harder to enforce, and student verification needs a service.</div>
+</div>
+<p class="note">Facts from the fact check (docs/redesign/b8-fact-check.md): today there is no API, key field, account, billing, sync or integration code, and no networking call in Trilsy's own code; the only network use is the model download. Whether a particular assistant can use a local MCP server, or a web-only one needs a hosted endpoint, has to be checked per assistant before the site says anything. Everything here is a proposal; nothing is on the site until it exists.</p>
+</div></body></html>

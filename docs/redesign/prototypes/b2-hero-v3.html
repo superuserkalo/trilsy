@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 hero v3: table scene, three settings</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  :root{--paper:#fbf7ee;--acc:#f2c14e}
+  body{background:var(--paper);height:960px;position:relative}
+  .island{position:relative;z-index:20;max-width:912px;margin:16px auto 0;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+  .island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+  .island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+  .island li{position:relative}.island .dd{display:flex;align-items:center;gap:5px}.island .dd svg{width:12px;height:12px}
+  .menu{display:none;position:absolute;left:-14px;top:36px;min-width:250px;background:#fffdf8;border:1.5px solid rgba(43,33,24,.35);border-radius:10px;padding:6px}
+  .island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px;color:var(--ink)}
+  .hero{text-align:center;padding-top:26px}
+  .hero h1{font-size:52px;line-height:1.06;max-width:15em;margin:0 auto}
+  .hero .sub{margin:14px auto 0;max-width:36em;font-size:19px;text-wrap:balance}
+  .hero .cta{justify-content:center;margin-top:20px}
+  .btn{background:var(--acc);color:var(--ink);border:2px solid var(--ink);border-radius:8px}
+  .scene{position:relative;height:430px;margin-top:6px}
+  .scene svg{position:absolute;left:0;top:0}
+  .scene .win{position:absolute;left:420px;top:10px;text-align:left}
+  .seg{position:absolute;left:50%;top:398px;transform:translateX(-50%);display:flex;background:#fffdf8;border:2px solid var(--ink);border-radius:8px;padding:3px;gap:3px;z-index:3}
+  .seg span{padding:5px 14px;border-radius:5px;font-weight:600;font-size:14px;position:relative;overflow:hidden}
+  .seg .on{background:var(--ink);color:#fffdf8}
+  .seg .on::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:62%;background:var(--acc)}
+  body.notabs .seg{display:none}
+  .trust{position:absolute;left:0;right:0;top:796px;border-top:1px solid rgba(43,33,24,.25)}
+  .trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute)}
+  .marquee-mask{mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);overflow:hidden;padding:16px 0 20px}
+  .marquee-track{display:flex;width:max-content;animation:marquee-loop 70s linear infinite}
+  .marquee-track ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none;flex:none;align-items:center}
+  .marquee-track li{display:flex;align-items:center;gap:10px;white-space:nowrap;color:rgba(43,33,24,.45);font-weight:600;font-size:16px}
+  .marquee-track li i{width:20px;height:20px;border:1.5px dashed rgba(43,33,24,.4);border-radius:5px;display:block}
+  @keyframes marquee-loop{to{transform:translateX(-50%)}}
+  .fold{position:absolute;left:0;right:0;top:900px;border-top:1px dashed rgba(43,33,24,.3);font-size:11px;color:var(--mute);padding:2px 8px;text-align:right}
+</style></head>
+<body>
+<header class="island">
+  <span class="logo">Trilsy</span>
+  <ul><li class="dd">Use cases <svg viewBox="0 0 12 12"><path d="M2 4.5 L6 8.5 L10 4.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul>
+  <span class="go">View on GitHub</span>
+</header>
+<section class="hero">
+  <h1>Be in the conversation. Trilsy writes the notes.</h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="scene" id="scene"></div>
+</section>
+<section class="trust" aria-label="Trust band placeholder"><p>TODO: the line above the logos (B3, the owner picks)</p><div class="marquee-mask"><div class="marquee-track" id="track"></div></div></section>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script><script src="hero-kit-ink.js"></script>
+<script>
+const K = Ink, A = K.ACC, INK = '#2b2118';
+const state = (location.hash || '#meeting').slice(1);
+if (location.search.includes('notabs')) document.body.classList.add('notabs');
+const row = '<ul>' + Array.from({length:13},()=>'<li><i></i>TODO: company</li>').join('') + '</ul>';
+document.getElementById('track').innerHTML = row + row;
+
+const cover = '<rect x="0" y="394" width="1440" height="80" fill="#fbf7ee"/>';
+const scenes = {
+  meeting: {
+    svg:
+      K.person({dir:'engraved',x:150,y:190,hair:'bun',hatch:true,talk:true,gesture:true,pocket:true,accent:A.mustard}) +
+      K.person({dir:'engraved',x:318,y:200,hair:'curly',glasses:true,chin:true}) +
+      K.person({dir:'engraved',x:1150,y:196,hair:'scarf',scarfAccent:A.sage,talk:true,gesture:true,flip:true,hatch:true}) +
+      K.person({dir:'engraved',x:1310,y:200,hair:'bald',beard:true,glasses:true,chin:true,flip:true,mug:A.terra}) +
+      cover + K.table(0,394,1440,40) +
+      K.bubble(34,24,296,['Can we move the launch','to the 14th?']) +
+      K.bubble(1090,34,312,['Legal needs two more','days on the review.'],{tail:'br'}) +
+      K.flow('M336 60 C372 52 386 30 416 24') + K.flow('M1084 76 C1060 52 1050 30 1026 24'),
+    win:{title:'Product sync',time:'00:52',transcript:[
+      {who:'Priya',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'Marcus',c:'#6b3f5a',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Priya',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+      notes:{overview:'The launch moves to the 14th so legal can finish its review.',decisions:['Launch date is the 14th','Legal gets two more days'],actions:['Dev: send revised timeline by Friday']}}
+  },
+  lecture: {
+    svg:
+      // the board, a diagram of a cell dividing, and a hand up in the second row
+      `<g filter="url(#inkwob)"><rect x="1080" y="14" width="320" height="150" rx="6" fill="#fffdf8" stroke="${INK}" stroke-width="2.6"/>
+         <path d="M1100 44 H1250 M1100 66 H1210" stroke="${INK}" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+         <ellipse cx="1300" cy="92" rx="30" ry="22" fill="none" stroke="${INK}" stroke-width="2.4"/><path d="M1300 70 V114" stroke="${INK}" stroke-width="2.4" stroke-dasharray="3 5"/>
+         <path d="M1340 92 H1368 M1360 84 L1368 92 L1360 100" fill="none" stroke="${A.terra}" stroke-width="2.4" stroke-linecap="round"/>
+         <path d="M1100 118 q22 -26 44 0 t44 0" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/></g>` +
+      K.person({dir:'engraved',x:210,y:190,hair:'crop',hatch:true,talk:true,gesture:true,pocket:true}) +
+      K.person({dir:'engraved',x:1160,y:228,s:.9,hair:'curly',glasses:true,gesture:true,flip:true,accent:A.terra}) +
+      K.person({dir:'engraved',x:1300,y:232,s:.9,hair:'long',chin:false,rest:true,flip:true,hatch:true}) +
+      cover + K.table(980,394,460,40) + `<path d="M0 394 H900" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>` +
+      `<g filter="url(#inkwob)"><path d="M70 394 V336 L90 322 H330 L350 336 V394" fill="#fffdf8" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/></g>` + // lectern
+      K.bubble(34,24,320,['Mitosis has four stages.','Prophase comes first.']) +
+      K.flow('M360 60 C390 50 400 32 418 26'),
+    win:{title:'Biology 201, lecture 9',time:'00:34',transcript:[
+      {who:'Okafor',c:'#2f6f73',t:'00:21',text:'Mitosis has four stages. Prophase comes first.'},
+      {who:'Student',c:'#c8553d',t:'00:34',text:'Is prophase the longest?'},
+      {who:'Okafor',c:'#2f6f73',t:'00:38',text:'Usually, yes. The chromosomes condense there.'}],
+      notes:{overview:'Mitosis has four stages. Prophase comes first and is usually the longest.',t2:'Key terms',decisions:['Prophase: chromosomes condense','Metaphase: chromosomes line up'],t3:'To review',actions:['Read chapter 7 before Thursday']}}
+  },
+  interview: {
+    svg:
+      // two armchairs and a low table between them
+      `<g filter="url(#inkwob)"><path d="M70 394 V200 Q70 160 110 160 H300 Q340 160 340 200 V394" fill="#fffdf8" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M1100 394 V200 Q1100 160 1140 160 H1330 Q1370 160 1370 200 V394" fill="#fffdf8" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/></g>` +
+      K.person({dir:'engraved',x:205,y:200,hair:'long',hatch:false,talk:true,gesture:true,accent:A.sage}) +
+      K.person({dir:'engraved',x:1235,y:204,hair:'crop',glasses:true,chin:true,flip:true,hatch:true}) +
+      cover + K.table(0,394,1440,40) +
+      K.bubble(34,14,300,['We moved the whole team','to Lisbon in March.'],{tail:'br'}) +
+      K.bubble(1100,34,230,['What changed first?'],{tail:'br'}) +
+      K.flow('M340 50 C372 44 392 30 416 24') + K.flow('M1094 56 C1064 46 1052 32 1026 24'),
+    win:{title:'Ana Ribeiro, product designer',time:'12:15',transcript:[
+      {who:'Ana',c:'#c8553d',t:'12:04',text:'We moved the whole team to Lisbon in March.'},
+      {who:'Sam',c:'#2f6f73',t:'12:11',text:'What changed first?'},
+      {who:'Ana',c:'#c8553d',t:'12:15',text:'Honestly, our standups. Eight a.m. became two p.m.'}],
+      notes:{overview:"Ana's team moved to Lisbon in March. The first change was meeting times.",t2:'Key points',decisions:['Team relocated in March','Standups moved from 8 a.m. to 2 p.m.'],t3:'Follow-ups',actions:['Ask about hiring in the new time zone']}}
+  }
+};
+const S = scenes[state] || scenes.meeting;
+const labels = {meeting:'Meeting',lecture:'Lecture',interview:'Interview'};
+document.getElementById('scene').innerHTML = K.svg(1440,430,S.svg) + K.win(Object.assign({w:600,live:true},S.win)) +
+  '<div class="seg">' + Object.keys(labels).map(k=>`<span class="${k===state?'on':''}">${labels[k]}</span>`).join('') + '</div>';
+</script>
+</body></html>

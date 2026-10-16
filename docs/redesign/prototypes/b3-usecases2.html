@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B3 use cases, reworked from the catalog</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf7ee;--mute:#7a6f60;--acc:#f2c14e;--line:rgba(43,33,24,.35)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 -apple-system,system-ui,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:16px 30px 30px}
+h1{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+.island{max-width:912px;margin:0 auto;background:#fffdf8;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+.island .logo{font:700 24px/1 "Iowan Old Style",Georgia,serif;letter-spacing:-.02em;margin-right:auto}
+.island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33;align-items:center}
+.island .on{color:var(--ink);font-weight:600;display:flex;gap:5px;align-items:center}.island svg{width:12px;height:12px}
+.island .go{background:var(--acc);border:2px solid var(--ink);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px}
+.mega{max-width:912px;margin:6px auto 0;background:#fffdf8;border:1.5px solid var(--line);border-radius:10px;padding:18px 22px 12px;box-shadow:0 12px 28px rgba(43,33,24,.12);display:grid;grid-template-columns:repeat(2,1fr);gap:8px 30px}
+.mega h3{margin:0 0 8px;font:700 11px/1 ui-sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.mega a{display:block;padding:7px 9px;margin:0 -9px 2px;border-radius:7px}
+.mega a b{display:block;font-size:14.5px}.mega a span{display:block;font-size:12.5px;color:#4a3f33;line-height:1.35}
+.mega a:first-of-type{background:#f4ecdd}
+.mega .foot{grid-column:1/-1;border-top:1px solid var(--line);margin-top:6px;padding-top:9px;font-size:13px;color:#4a3f33;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse;background:#fffdf8;border:1.5px solid var(--line);font-size:12.5px;margin-bottom:14px}
+th{text-align:left;font:700 11px/1 ui-sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding:9px 10px;border-bottom:1.5px solid var(--ink);background:#f4ecdd}
+td{padding:7px 10px;border-bottom:1px solid rgba(43,33,24,.15);vertical-align:top}td b{display:block}td i{font-style:normal;color:var(--mute)}
+.note{margin:10px 0;font-size:12.5px;color:#4a3f33;max-width:112em}.note b{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.box{background:#fffdf8;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px}.box h2{margin:0 0 6px;font:700 14px/1.2 ui-sans-serif}.box li{font-size:12.5px;margin:4px 0;color:#4a3f33}
+</style></head><body><div class="wrap" id="w"></div>
+<script>
+const R=[
+ ['Work','Sales calls','Record the call, get a transcript and notes, and search what the customer said.','Reference "Sales" (notes capture); T038 Sales Call Intelligence; T063 Sales Call Analysis (Gong to Slack); T136 Salesforce Pipeline Updater ("extracts call notes"); T247 and T284 Sales Call Coach; T308 Sales-call queries; T368 Country-specific call analysis; T403 Gusto sales coaching.','Took: capturing the call and finding what was said. Left out: CRM updates, follow-ups, scoring and coaching, posting to Slack.'],
+ ['Work','Customer calls','Keep every call as a transcript, and find the question people keep asking.','T213 Call FAQ Miner (Grok); T243 Product Feedback Analyst (Grok).','Took: calls as searchable transcripts. Left out: the automatic mining and ticket creation.'],
+ ['Work','Team meetings','Take part while Trilsy writes the notes; edit them and search past meetings.','T261 Meeting Recap Deck (Grok marketplace); T297 Meeting follow-through (Lindy); T470 Team update desk (Radian design).','Took: the recap. Left out: the deck, the admin, the task chasing.'],
+ ['Work','Client meetings','A record of what was agreed, to read before the next call.','T522 Client-context meeting preparation (Hermes); T424 Deal commitment tracker (Radian); T178 Office Hours (Keiki).','Took: a searchable record of earlier meetings and what was promised. Left out: building the context from other tools, the action register.'],
+ ['Work','Recruiting','An interview transcript and notes you can compare across candidates.','Reference "Recruiting Agent" (candidate insights); T323 Interview notes (Beam AI); T333 Candidate voice screening (Beam AI).','Took: the interview record. Left out: Greenhouse sync, automatic follow-ups, scheduling, scoring.'],
+ ['Work','Incident calls','Record the call, then search the transcript when you write the postmortem.','T526 Incident notes and postmortem drafts (Hermes); T481 Incident context desk (Radian design).','Took: a timed record of what was said. Left out: pulling in alerts and changes, drafting the postmortem.'],
+ ['Learning and media','Lectures','Lecture transcripts and notes you can edit and search before the exam.','Reference "Education" (lecture transcripts, note organization, summaries); T182 Study Coach (Keiki); T035 Generate video transcript and summary.','Took: the lecture record and notes. Left out: recall practice, reminders, insight extraction.'],
+ ['Learning and media','Talks, courses and webinars','Record what your Mac plays and keep the transcript and notes.','T011 YouTube Transcript Analysis; T035 Generate video transcript and summary; T078 Analyze and summarize a YouTube video; T179 Event Companion (Keiki, attendee notes).','Took: transcript and notes from anything that plays sound. Left out: content generation from the transcript.'],
+ ['Learning and media','Research interviews','Interview transcripts to quote from, notes to code, audio kept on your Mac.','Reference "Media" (interview transcription); T323 Interview notes (Beam AI); T243 Product Feedback Analyst.','Took: interviews as transcripts and notes. Left out: automatic analysis of themes.'],
+ ['Learning and media','Journalism','Interview transcripts you can quote from, search and export as text.','Reference "Media": "Interview transcription, thought organization, and content creation".','Took: the interview record. Left out: content creation. Backed by your screenshot; the catalog has no journalist template.'],
+ ['Learning and media','Podcasts and video','A transcript and subtitles (SRT) from a recorded conversation.','T446 Content reuse desk (captions, clips; Radian design); T011 and T021 (YouTube transcript to content); T509 Content ideas from calls (Hermes).','Took: transcript and subtitle export. Left out: clips, posts, ideas.'],
+ ['Learning and media','Voice notes','Think out loud; get a transcript and Markdown notes.','T544 Dictation to collaborative document (Hermes: outline, Markdown); T503 Film-production voice-note dispatch (Hermes); T554 Dictated quote capture (Hermes).','Took: press record, talk, get text and Markdown notes (your call: it is the same job as any recording). Left out: sorting into projects, CRM capture, shareable documents.'],
+];
+const BENCH=[];
+const ALL=R.slice();
+const R2=R.filter(r=>!BENCH.includes(r[1]));
+const v=new URLSearchParams(location.search).get('v')||'menu';
+const groups=['Work','Learning and media'];
+let h='';
+if(v==='menu'){
+ h+=`<h1>Header: Use cases open (12 pages, one flat list, no categories; each a plain name and one line, after the reference)</h1>
+ <header class="island"><span class="logo">Trilsy</span><ul><li class="on">Use cases <svg viewBox="0 0 12 12"><path d="M2 7.5 L6 3.5 L10 7.5" fill="none" stroke="#2b2118" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></li><li>Pricing</li><li>How it works</li><li>Students</li></ul><span class="go">View on GitHub</span></header>
+ <div class="mega">`+R2.map(r=>`<a><b>${r[1]}</b><span>${r[2]}</span></a>`).join('')+`<div class="foot"><span>All use cases</span><span>The student offer is its own header item: Students</span></div></div>`;
+}else if(v==='table'){
+ h+=`<h1>Reworked list (12): why each is there and which catalog templates it came from</h1><table><tr><th>Page</th><th>One line (true outcomes only)</th><th>Where the demand shows</th><th>What was taken and what was left out</th></tr>`;
+ R2.forEach(r=>{h+=`<tr><td><b>${r[1]}</b></td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`});
+ h+=`</table><p class="note"><b>Relation to the Students header item:</b> /students stays the offer page. The Lectures page, and Talks, courses and webinars, each end with one line pointing to it; the offer is not repeated on them. <b>Facts every page rests on:</b> records your microphone and your Mac's sound, transcribes, writes notes you can edit, search recordings, jump to timestamps, export Markdown, text or SRT, audio saved on your Mac (README and the master). Whether notes pull out action items automatically is not stated, so no page says it (<i>TODO: confirm</i>).</p>`;
+}else{
+ h+=`<h1>What was dropped from my earlier thirteen, and which catalog jobs were rejected</h1><div class="two">
+ <div class="box"><h2>Dropped from my earlier list of thirteen</h2><ul>
+ <li><b>Study groups and seminars:</b> no signal beyond "Education"; folded into Lectures.</li>
+ <li><b>Founders:</b> one weak signal (T178 Office Hours); its calls are covered by Customer calls and Client meetings.</li>
+ <li><b>Consultants and agencies:</b> renamed Client meetings, because the real signal is the meeting, not the job title (T522, T424).</li>
+ <li><b>Legal professionals:</b> nothing in the catalog backs a conversation use case (its legal templates read documents, T082, T377), and it needed compliance care. Dropped.</li>
+ <li><b>UX and market researchers, Researchers and academics:</b> merged into Research interviews.</li>
+ <li><b>Sales, Recruiters, Team meetings, Podcasters, Online courses:</b> kept, renamed or merged. <b>Journalists:</b> kept (owner's screenshot, core interview situation).</li></ul></div>
+ <div class="box"><h2>Catalog jobs rejected, because Trilsy does not do them</h2><ul>
+ <li><b>CRM and pipeline updates:</b> T136 (the CRM half), T102, T309, T537, T554; the reference's "CRM sync" and "notes sync with Greenhouse".</li>
+ <li><b>Follow-ups, outreach, drafting email:</b> T297, T375, T421, T076 to T081, T345; the reference's "automatic follow-ups".</li>
+ <li><b>Scheduling and booking:</b> T212, T295, T335, T467, T488 to T490; the reference's "automatically booked meetings" and live demos (SDR Agent).</li>
+ <li><b>Meeting prep and research from calendars and the web:</b> T034, T119, T128, T133, T234, T292, T539.</li>
+ <li><b>Scoring, coaching and analytics across calls:</b> T247, T284, T403, and the analysis half of T038, T063, T308, T368.</li>
+ <li><b>Posting to other tools:</b> Slack digests and recaps (T017, T414), Gong to Slack (T063).</li>
+ <li><b>Documents, invoices, finance, contracts, compliance:</b> T008, T082, T449 to T456, T478, T497.</li>
+ <li><b>Front-desk, intake and dispatch agents:</b> T180, T183, T185, T488 to T495.</li>
+ <li><b>Support triage and ticketing:</b> T009, T029, T253, T434.</li>
+ <li><b>Healthcare:</b> T180, T342; left out as before (it would need privacy and compliance claims).</li></ul></div></div>
+ <p class="note"><b>Result:</b> almost all agent templates act on other systems or on documents, which Trilsy does not do (no integrations are decided; B7 is open). What survives is the front of each job: capturing a conversation and keeping a transcript and notes that you can edit, search and export. The catalog's own coverage notes call its entries "source entries and proposals, not unique business use cases" and its demand claims "analyst judgment, not validated demand", so I used it as a list of situations people automate around conversations, not as proof of volume.</p>`;
+}
+document.getElementById('w').innerHTML=h;
+</script></body></html>

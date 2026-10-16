@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 concept 1: The table</title>
+<link rel="stylesheet" href="hero-kit.css">
+<style>
+  .hero{position:relative;text-align:center;padding:14px 0 0}
+  .hero h1{max-width:15em;margin:0 auto}
+  .hero .sub{margin:16px auto 0;max-width:38em}
+  .hero .cta{justify-content:center;margin:22px 0 20px}
+  .scene{position:relative;height:500px;margin-top:0}
+  .scene svg{position:absolute;left:0;top:0}
+  .scene .win{position:absolute;left:400px;top:22px;text-align:left}
+</style></head>
+<body>
+<nav><span class="logo">Trilsy</span><ul><li>How it works</li><li>Use cases</li><li>Pricing</li></ul><span class="gh">GitHub</span></nav>
+<section class="hero">
+  <h1 style="font-size:56px">Notes for every call, lecture and interview.</h1>
+  <p class="sub">Trilsy records your microphone and your Mac's sound together, transcribes it, and writes notes you can edit.</p>
+  <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  <div class="scene" id="scene"></div>
+</section>
+<div class="logos"><p>TODO: one line, true of every logo (B3)</p><div class="row"><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span><span>TODO: logo</span></div></div>
+<div class="fold">900px fold (marker only)</div>
+<script src="hero-kit.js"></script>
+<script>
+  const K = Kit;
+  const chars =
+    K.person({x:175,y:250,s:1.25,skin:'c',hair:'bun',hairColor:'#2b2118',shirt:'#c8553d',talk:true,gesture:true,flip:true}) +
+    K.person({x:325,y:277,s:1.08,skin:'a',hair:'curly',hairColor:'#7a4a2a',shirt:'#e0a83a',glasses:true,flip:true}) +
+    K.person({x:1115,y:272,s:1.1,skin:'b',hair:'scarf',hairColor:'#6b3f5a',shirt:'#9bb08a',talk:true}) +
+    K.person({x:1268,y:244,s:1.25,skin:'d',hair:'bald',shirt:'#2f6f73',glasses:true,gesture:true});
+  const inner =
+    chars + K.table(0,452,1440,48,'#d9a86a') +
+    K.bubble(34,34,296,['Can we move the launch','to the 14th?']) +
+    K.bubble(1090,44,312,['Legal needs two more','days on the review.'],{tail:'br'}) +
+    K.flow('M336 70 C372 62 386 40 424 32') +
+    K.flow('M1084 86 C1060 62 1050 40 1020 32');
+  const s = document.getElementById('scene');
+  s.innerHTML = K.svg(1440,500,inner) + K.win({
+    w:640,title:'Product sync',time:'00:52',live:true,
+    transcript:[
+      {who:'Priya',c:'#c8553d',t:'00:38',text:'Can we move the launch to the 14th?'},
+      {who:'Marcus',c:'#6b3f5a',t:'00:44',text:'Legal needs two more days on the review.'},
+      {who:'Priya',c:'#c8553d',t:'00:52',text:'Fine. Dev sends the timeline by Friday.'}],
+    notes:{overview:'The launch moves to the 14th so legal can finish its review.',
+      decisions:['Launch date is the 14th','Legal gets two more days'],
+      actions:['Dev: send revised timeline by Friday']}
+  });
+</script>
+</body></html>

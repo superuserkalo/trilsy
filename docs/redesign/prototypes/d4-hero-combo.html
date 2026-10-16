@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero, Granola combinations (ticket 04 question): ?v=1 | 2 | 3</title>
+<!-- Throwaway preview for the owner's choice. Prototype fonts from Google; the site loads them through next/font. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&display=block" rel="stylesheet">
+<style>
+:root{--paper:#fbf7ee;--card:#fffdf8;--ink:#241e18;--field:#dce6f2;--mustard:#e6ab4f;--blue:#4a6784;--terra:#a4472d;--muted:#f4ecdd;--mute:#6e6354;--line:#d9cfbd;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.5 Figtree,system-ui,sans-serif;overflow-x:hidden}
+.island{position:fixed;z-index:50;left:50%;top:16px;transform:translateX(-50%);width:912px;background:var(--paper);border:3px solid var(--field);border-radius:12px;padding:9px 12px 9px 18px;display:flex;align-items:center;gap:28px}
+.island b{font:600 24px/1 Fraunces,serif;margin-right:auto;letter-spacing:-.01em}
+.island ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:15px;color:#4a3f33}
+.island .go{background:var(--mustard);border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-weight:600;font-size:15px}
+.hero{position:relative;z-index:5;text-align:center;padding-top:124px;pointer-events:none}
+.hero>*{pointer-events:auto}
+h1{font:600 52px/1.08 Fraunces,serif;letter-spacing:-.015em;margin:0 auto;max-width:15em;text-wrap:balance}
+h1 em{font-style:normal;position:relative;display:inline-block;padding:0 .3em;margin:0 -.2em;z-index:0}
+h1 em::before{content:"";position:absolute;inset:4% 0;background:url("b4-marker-A.svg") center/100% 100% no-repeat;z-index:-1;clip-path:inset(0 100% 0 0);animation:mark .6s var(--ease) .3s forwards}
+@keyframes mark{to{clip-path:inset(0 0 0 0)}}
+.sub{margin:14px auto 0;max-width:34em;font-size:19px;color:#4a3f33;text-wrap:balance}
+.cta{display:flex;gap:16px;align-items:center;justify-content:center;margin-top:18px}
+.btn{background:var(--mustard);border:2px solid var(--ink);border-radius:999px;padding:13px 26px;font:600 17px Figtree,sans-serif;color:var(--ink)}
+.helper{font-size:14px;color:var(--mute)}
+
+/* stage: everything drawn in 1440-wide coordinates */
+.track{position:relative}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;margin-top:-100vh;z-index:1}
+.v3 .stage{position:absolute;top:0;left:0;right:0;margin:0;height:900px}
+.box{position:absolute;left:50%;top:0;width:1440px;height:900px;transform-origin:50% 0}
+.band{position:absolute;left:-400px;right:-400px;top:452px;height:448px;background:var(--field);border-top:1.5px dotted var(--ink)}
+.fig{position:absolute;overflow:hidden}
+.fig .in{position:absolute;left:0;top:0;transform-origin:0 0}
+.fig img{display:block;animation:idle var(--d) ease-in-out var(--dl) infinite;transform-origin:50% 62%}
+@keyframes idle{0%,100%{transform:rotate(0) translateY(0)}22%{transform:rotate(-.9deg) translateY(-1.5px)}40%{transform:rotate(.3deg) translateY(0)}58%{transform:rotate(0) translateY(-.8px)}74%{transform:rotate(1.3deg) translateY(1px)}86%{transform:rotate(0) translateY(0)}}
+.fig .chip{position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);opacity:0;white-space:nowrap}
+.bub{position:absolute;z-index:5;background:var(--card);border:2.2px solid var(--ink);border-radius:14px;padding:10px 16px 12px;opacity:0;transform-origin:var(--tx) 100%}
+.bub::after{content:"";position:absolute;left:calc(var(--tx) - 9px);bottom:-14px;width:18px;height:14px;background:var(--card);border:2.2px solid var(--ink);border-top:0;clip-path:polygon(0 0,100% 0,40% 100%);border-radius:0 0 4px 4px}
+.bub p{margin:6px 0 0;font:19px/1.25 "Bradley Hand","Segoe Print",cursive}
+.chip{display:inline-block;font:700 11.5px/1 Figtree,sans-serif;color:#fff;background:var(--c);border-radius:99px;padding:4px 8px}
+.photo{position:absolute;border-radius:18px;overflow:hidden;border:1.5px solid var(--ink);opacity:0}
+.photo div{position:absolute;inset:0;display:grid;place-items:start end;padding:16px;text-align:center;font:600 13px/1.4 Figtree,sans-serif;color:rgba(36,30,24,.7);transition:opacity .6s var(--ease)}
+.photo div span{background:rgba(255,253,248,.8);padding:6px 10px;border-radius:8px}
+
+/* product window */
+.win{position:absolute;width:580px;background:var(--card);border:2px solid var(--ink);border-radius:14px;box-shadow:6px 7px 0 var(--ink);overflow:hidden;font-size:13px;line-height:1.4;transform-origin:0 0;z-index:3}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);background:#f7f1e6}
+.dots{display:flex;gap:6px}.dots i{width:11px;height:11px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+.tabs{display:inline-flex;background:#ece4d3;border-radius:8px;padding:2px;gap:2px;font-weight:600;font-size:12.5px}
+.tabs button{all:unset;cursor:pointer;padding:3px 12px;border-radius:6px;color:#4a3f33;position:relative;overflow:hidden}
+.tabs .on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(36,30,24,.25)}
+.tabs .on i{position:absolute;left:0;bottom:0;height:2px;background:var(--mustard);width:0}
+.state{justify-self:end;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--terra);font-variant-numeric:tabular-nums}
+.state i{width:8px;height:8px;border-radius:50%;background:#d6402f;display:block}
+.head{display:flex;align-items:center;gap:8px;padding:10px 16px 8px}
+.head strong{font:600 15px/1.2 Fraunces,serif;margin-right:auto}
+.src{font-size:11px;font-weight:600;border-radius:99px;padding:2px 8px;border:1.5px solid var(--blue);color:var(--blue)}
+.src.on{background:var(--blue);color:#fff}
+.src.off{border-color:var(--line);color:var(--mute)}
+.cols{display:grid;grid-template-columns:1.1fr 1fr;border-top:1px solid var(--line);height:252px}
+.pane{padding:12px 16px;position:relative;overflow:hidden}
+.pane+.pane{border-left:1px solid var(--line);background:#fdfaf3}
+.pane h3{margin:0 0 8px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.strip{position:relative;height:34px;margin-bottom:8px}
+.strip>div{position:absolute;inset:0;display:flex;align-items:center;gap:8px}
+.wave{display:flex;align-items:center;justify-content:flex-end;gap:2px;height:30px;flex:1;min-width:0;overflow:hidden}
+.wave i{width:3px;border-radius:2px;background:#bf6a4e;display:block}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;font-size:12px;color:var(--terra);min-width:36px}
+.stop{all:unset;background:var(--ink);color:var(--card);font-weight:600;font-size:11.5px;border-radius:7px;padding:4px 10px}
+.prog{flex:1;height:4px;background:var(--muted);border-radius:4px;overflow:hidden}.prog i{display:block;height:100%;background:var(--blue);width:0}
+.hint{color:var(--mute);font-size:12.5px}
+.ln{margin-bottom:9px;opacity:0}
+.ln time{font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums;margin-left:6px}
+.ln p{margin:2px 0 0}
+.notes{position:relative}
+.notes .blk{margin-bottom:9px;border-radius:4px;padding:0 4px;margin-left:-4px}
+.notes h4{margin:0 0 2px;font-size:12.5px}
+.notes ul{margin:0;padding-left:16px}.notes li{margin-bottom:1px}
+.writing{position:absolute;left:12px;right:12px;height:26px;border:1.5px solid var(--ink);background:var(--card);border-radius:99px;display:flex;align-items:center;gap:8px;padding:0 12px;font-weight:600;font-size:12px;opacity:0;box-shadow:0 2px 0 var(--ink)}
+.writing b{display:flex;gap:3px}.writing b i{width:4px;height:4px;border-radius:50%;background:var(--ink);animation:dot 1s ease-in-out infinite}
+.writing b i:nth-child(2){animation-delay:.15s}.writing b i:nth-child(3){animation-delay:.3s}
+@keyframes dot{50%{opacity:.25}}
+/* chapters (options 1 and 2) */
+.flow{position:relative;z-index:4;pointer-events:none}
+.chap{height:80vh;display:flex;align-items:center;width:1440px;margin:0 auto;padding-left:120px}
+.chap>div{width:440px;transition:opacity .4s var(--ease);opacity:.25}
+.chap.on>div{opacity:1}
+.chap h2{font:600 44px/1.1 Fraunces,serif;margin:0 0 12px;letter-spacing:-.01em}
+.chap p{margin:0;font-size:18px;color:#4a3f33}
+.quiet{text-align:center;color:var(--mute);font-size:15px;padding:12px 0 40px}
+.trust{background:var(--field);border-top:1.5px dotted var(--ink);border-bottom:1.5px dotted var(--ink);position:relative;z-index:6}
+.trust p{margin:0;padding-top:18px;text-align:center;font-size:15px;color:var(--mute)}
+.mask{overflow:hidden;padding:16px 0 20px;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mtrack{display:flex;width:max-content;animation:mq 70s linear infinite}
+.mtrack ul{display:flex;gap:48px;padding-right:48px;margin:0;list-style:none}
+.mtrack li{display:flex;gap:10px;align-items:center;white-space:nowrap;font-weight:600;color:rgba(36,30,24,.55)}
+.mtrack img{width:20px;height:20px;filter:grayscale(1);opacity:.6}
+@keyframes mq{to{transform:translateX(-50%)}}
+.v3 .trust{margin-top:0}
+.order{position:relative;z-index:6;max-width:900px;margin:0 auto;padding:40px 24px 80px;color:var(--mute);font-size:14px}
+.order ol{margin:6px 0 0;padding-left:20px}
+.order b{color:var(--ink)}
+.order .chg{color:var(--terra);font-weight:600}
+.tag{position:fixed;left:12px;bottom:12px;z-index:60;background:var(--ink);color:var(--card);font:600 12px/1.3 Figtree,sans-serif;padding:6px 10px;border-radius:8px;max-width:420px}
+.tiles-p{display:none}
+
+/* phone */
+@media (max-width:700px){
+  .island{width:auto;left:10px;right:10px;transform:none;top:10px;gap:12px;padding:8px 10px}.island ul{display:none}
+  .island .go{font-size:13px;padding:6px 12px}
+  .hero{padding-top:92px;padding-left:16px;padding-right:16px}
+  h1{font-size:34px}.sub{font-size:16px}.cta{flex-direction:column;gap:8px}
+  .stage{display:none}
+  .pstage{position:relative;padding:150px 12px 0;background:var(--paper)}
+  .pstage .win{z-index:3}
+  .pphoto{position:absolute;right:12px;top:0;width:180px;height:225px;border-radius:14px;border:1.5px solid var(--ink);overflow:hidden;opacity:0;transition:opacity .4s var(--ease);z-index:1}
+  .pphoto div{position:absolute;inset:0;display:grid;place-items:start end;padding:10px;font:600 11px/1.35 Figtree,sans-serif;color:rgba(36,30,24,.7);text-align:right;transition:opacity .4s var(--ease)}.pphoto div span{background:rgba(255,253,248,.8);padding:4px 7px;border-radius:6px}
+  .pcap{height:136px;padding:18px 4px 0;opacity:0;transition:opacity .4s var(--ease)}
+  .pcap h2{font:600 26px/1.1 Fraunces,serif;margin:0 0 6px}.pcap p{margin:0;font-size:15px;color:#4a3f33}
+  h1 em{display:inline;padding:0 .2em;margin:0;background:url("b4-marker-A.svg") center/100% 92% no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone}h1 em::before{display:none}
+  .opt1 .pstage,.opt2 .pstage{position:sticky;top:58px;z-index:3}
+  .pstage .win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;transform:none;box-shadow:4px 5px 0 var(--ink)}
+  .cols{grid-template-columns:1fr;height:214px}
+  .pane+.pane{border-left:0;position:absolute;inset:0;top:auto;height:100%}
+  .cols{position:relative}
+  .bar{grid-template-columns:auto 1fr;gap:8px}.bar .dots{display:none}.tabs{justify-self:start}
+  .state{grid-column:2;justify-self:end}
+  .bar{grid-template-columns:1fr auto}
+  .pbub{position:absolute;z-index:4;left:170px;top:10px;background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:6px 10px 8px;max-width:196px;opacity:0}
+  .pbub p{margin:4px 0 0;font:16px/1.2 "Bradley Hand",cursive}
+  .tiles-p{display:flex;position:absolute;left:12px;top:14px;z-index:4;gap:6px}
+  .opt2 .tiles-p,.opt3 .tiles-p{display:none}
+  .tiles-p span{width:44px;height:44px;border-radius:12px;border:2px solid var(--ink);background:var(--field);overflow:hidden;position:relative;transition:box-shadow .4s var(--ease)}
+  .tiles-p span.talk{box-shadow:0 0 0 3px var(--mustard)}
+  .tiles-p img{position:absolute;width:76px;left:-16px;top:2px}
+  .chap{width:auto;height:70vh;padding:0 20px;align-items:flex-end;padding-bottom:6vh}
+  .chap>div{width:auto;padding:12px 0;visibility:hidden}.flow{z-index:2}
+  .chap h2{font-size:30px}.chap p{font-size:16px}
+  .tag{max-width:none;right:12px;font-size:11px}
+  .box,.flow .spacer{display:none}
+  .hero{margin-top:0!important;height:auto!important}.flow{margin-top:0!important}
+}
+@media (min-width:701px){.pstage{display:contents}.pbub,.pphoto,.pcap{display:none}}
+@media (prefers-reduced-motion:reduce){.chap>div,.photo div,.pphoto,.pphoto div,.pcap,.tiles-p span{transition:none!important}.writing b i{animation:none}.fig img{animation:none}h1 em::before{animation:none;clip-path:none}.mtrack{animation:none}}
+</style></head>
+<body>
+<header class="island"><b>Trilsy</b><ul><li>Use cases ▾</li><li>Pricing</li><li>How it works</li><li>Students</li></ul><span class="go">View on GitHub</span></header>
+
+<div class="track" id="track">
+  <section class="hero" id="hero">
+    <h1>Be in the conversation. <em>Trilsy writes the notes.</em></h1>
+    <p class="sub">Record your microphone, your Mac's sound or both. Trilsy transcribes it and writes notes you can edit.</p>
+    <div class="cta"><button class="btn">View on GitHub</button><span class="helper">Apple silicon, macOS 15 or later</span></div>
+  </section>
+  <div class="pstage" id="pstage"></div>
+  <div class="stage" id="stage"><div class="box" id="box"><div class="band" id="band"></div></div></div>
+  <div class="flow" id="flow"></div>
+</div>
+<div id="after"></div>
+<div class="tag" id="tag"></div>
+
+<script>
+const V = +(new URLSearchParams(location.search).get('v') || 1);
+document.body.className = 'opt' + V + (V === 3 ? ' v3' : '');
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PHONE = () => innerWidth <= 700;
+const PACK = '../refs/characters-owner/svg-pack/optimised/';
+const MIC = '#a4472d', SYS = '#4a6784';
+const PHOTOS = [['#c9b79c', 'story-record.jpg'], ['#a9b8a6', 'story-transcribe.jpg'], ['#b6c4d4', 'story-notes.jpg']];
+
+// cubic-bezier for the one easing token
+function bez(x1, y1, x2, y2) { return x => { let a = 0, b = 1, t = x; for (let i = 0; i < 24; i++) { t = (a + b) / 2; const xt = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t; xt < x ? a = t : b = t; } return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t; }; }
+const E = bez(.22, 1, .36, 1), lin = x => x;
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d, f = E) => f(cl((t - a) / d));
+const lerp = (a, b, k) => a + (b - a) * k;
+const fmt = s => '00:' + String(Math.floor(s)).padStart(2, '0');
+
+// figures: x is the left edge in stage coordinates, waist on the floor line (y 820)
+const F = (id, x, flip) => ({ src: id === 'prof' ? 'cast-cut-t/r1c5.png' : PACK + id + '.svg', w: id === 'prof' ? 163 : 269, x, flip });
+const SETS = {
+  lecture: { label: 'Lecture', title: 'Biology 201, lecture 9', sys: false,
+    figs: [F('prof', 249), F('04-blue-wave', 964), F('11-blue-headscarf', 1164)],
+    names: ['Professor', 'Student', 'Student'],
+    lines: [
+      { f: 0, who: 'Professor', src: 'Microphone', text: 'Mitosis has four stages. Prophase comes first.', bx: 90, bw: 300 },
+      { f: 1, who: 'Student', src: 'Microphone', text: 'Is prophase the longest?', bx: 1040, bw: 250 },
+      { f: 0, who: 'Professor', src: 'Microphone', text: 'Usually, yes. The chromosomes condense there.', bx: 90, bw: 330 }],
+    notes: [{ h: 'Overview', p: 'Mitosis has four stages. Prophase comes first and is usually the longest.' },
+      { h: 'Key terms', li: ['Prophase: chromosomes condense', 'Metaphase: chromosomes line up'] },
+      { h: 'To review', li: ['Read chapter 7 before Thursday'] }] },
+  meeting: { label: 'Meeting', title: 'Product sync', sys: true,
+    figs: [F('12-mustard-gesture', 24), F('03-sage-glasses', 194), F('06-terracotta-beard', 989), F('07-sage-curls', 1119, true)],
+    names: ['Marcus', 'Dev', 'Jon', 'Priya'],
+    lines: [
+      { f: 0, who: 'Marcus', src: 'Microphone', text: 'Can we move the launch to the 14th?', bx: 60, bw: 290 },
+      { f: 3, who: 'Priya', src: 'System', text: 'Legal needs two more days on the review.', bx: 1090, bw: 290 },
+      { f: 0, who: 'Marcus', src: 'Microphone', text: 'Fine. Dev sends the timeline by Friday.', bx: 60, bw: 300 }],
+    notes: [{ h: 'Overview', p: 'The launch moves to the 14th so legal can finish its review.' },
+      { h: 'Decisions', li: ['Launch date is the 14th', 'Legal gets two more days'] },
+      { h: 'Next', li: ['Dev sends the revised timeline by Friday'] }] },
+  interview: { label: 'Interview', title: 'Ana Ribeiro, product designer', sys: true,
+    figs: [F('10-sage-long-hair', 239), F('08-blue-crop', 999, true)],
+    names: ['Ana', 'Sam'],
+    lines: [
+      { f: 0, who: 'Ana', src: 'System', text: 'We moved the whole team to Lisbon in March.', bx: 70, bw: 320 },
+      { f: 1, who: 'Sam', src: 'Microphone', text: 'What changed first?', bx: 1040, bw: 240 },
+      { f: 0, who: 'Ana', src: 'System', text: 'Honestly, our standups. Eight a.m. became two p.m.', bx: 70, bw: 330 }],
+    notes: [{ h: 'Overview', p: "Ana's team moved to Lisbon in March. The first thing to change was meeting times." },
+      { h: 'Key points', li: ['Team relocated in March', 'Standups moved from 8 a.m. to 2 p.m.'] },
+      { h: 'Follow-ups', li: ['Ask about hiring in the new time zone'] }] }
+};
+const ORDER = ['lecture', 'meeting', 'interview'];
+// storyboard (seconds): three spoken lines, Stop, Transcribing, lines, Writing notes, hold
+const SPEAK = [[0.6, 2.6], [2.9, 4.7], [5.0, 7.0]];
+const T_STOP = 7.4, T_TR = 7.8, T_LINES = 9.4, T_NOTES = 10.2, T_DONE = 12.2, T_END = 15;
+const REC_LEN = 21; // compressed: 7.4s of animation reads as 00:00 to 00:21
+const stamp = i => Math.floor((SPEAK[i][0] + 0.4) / T_STOP * REC_LEN);
+
+// ---------- build the window once ----------
+const win = document.createElement('div');
+win.className = 'win';
+win.innerHTML = `<div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="tabs" role="tablist">${ORDER.map(k => `<button role="tab" data-k="${k}">${SETS[k].label}<i></i></button>`).join('')}</span><span class="state" id="state"></span></div>
+<div class="head"><strong id="title"></strong><span class="src on">Microphone</span><span class="src" id="sys">System</span></div>
+<div class="cols"><div class="pane" id="tp"><h3>Transcript</h3><div class="strip"><div id="recS"><span class="timer" id="timer">00:00</span><span class="wave" id="wave"></span><button class="stop" id="stop" tabindex="-1">Stop</button></div><div id="trS" style="opacity:0"><span class="hint" style="font-weight:600;color:var(--ink)">Transcribing</span><span class="prog"><i id="prog"></i></span></div><div id="doneS" style="opacity:0"><span class="hint">00:21 recorded</span></div></div><div id="thint" class="hint">The transcript appears when you stop.</div><div id="lines"></div></div>
+<div class="pane" id="np"><h3>Notes</h3><div id="nhint" class="hint">Notes follow the transcript.</div><div class="notes" id="notes"></div><div class="writing" id="writing"><b><i></i><i></i><i></i></b>Writing notes</div></div></div>`;
+const $ = id => win.querySelector('#' + id) || document.getElementById(id);
+const waveEl = win.querySelector('#wave');
+for (let i = 0; i < 40; i++) waveEl.appendChild(document.createElement('i'));
+const bars = [...waveEl.children];
+
+const box = document.getElementById('box');
+let figEls = [], bubEls = [], photoEl, pbub, ptiles;
+// photo frame behind the pinned window: the story's three photographs (owner images, not made yet)
+function buildPhoto() {
+  photoEl = document.createElement('div'); photoEl.className = 'photo';
+  photoEl.innerHTML = PHOTOS
+    .map(([c, n], i) => `<div style="background:${c};opacity:${i ? 0 : 1}"><span>TODO: image<br>${n} (4:5)</span></div>`).join('');
+  box.appendChild(photoEl);
+}
+if (V !== 3) buildPhoto();
+box.appendChild(win);
+
+let setKey = 'lecture';
+function buildSet() {
+  figEls.forEach(e => e.remove()); bubEls.forEach(e => e.remove());
+  const S = SETS[setKey];
+  figEls = S.figs.map((f, i) => {
+    const el = document.createElement('div'); el.className = 'fig';
+    const h = 500;
+    el.innerHTML = `<div class="in"><img src="${f.src}" width="${f.w}" height="${h}" alt="" style="--d:${[6.2, 7.9, 5.3, 9.1][i]}s;--dl:-${i * 1.7}s;${f.flip ? 'scale:-1 1' : ''}"></div><span class="chip" style="--c:${MIC}">${S.names[i]}</span>`;
+    win.parentNode === box ? box.insertBefore(el, win) : box.appendChild(el); return el;
+  });
+  bubEls = S.lines.map(l => {
+    const el = document.createElement('div'); el.className = 'bub';
+    const fig = S.figs[l.f], tx = cl(fig.x + fig.w / 2 - l.bx, 30, l.bw - 30);
+    el.style.cssText = `left:${l.bx}px;top:412px;width:${l.bw}px;--tx:${tx}px`;
+    el.innerHTML = `<span class="chip" style="--c:${l.src === 'System' ? SYS : MIC}">${l.who}</span><p>${l.text}</p>`;
+    box.appendChild(el); return el;
+  });
+  $('title').textContent = S.title;
+  $('sys').className = 'src ' + (S.sys ? 'on' : 'off');
+  $('lines').innerHTML = S.lines.map((l, i) => `<div class="ln"><span class="chip" style="--c:${l.src === 'System' ? SYS : MIC}">${l.src}</span><time>${fmt(stamp(i))}</time><p>${l.text}</p></div>`).join('');
+  $('notes').innerHTML = S.notes.map(n => `<div class="blk"><h4>${n.h}</h4>${n.p ? `<p style="margin:0">${n.p}</p>` : `<ul>${n.li.map(x => `<li>${x}</li>`).join('')}</ul>`}</div>`).join('');
+  win.querySelectorAll('.tabs button').forEach(b => { b.className = b.dataset.k === setKey ? 'on' : ''; b.setAttribute('aria-selected', b.dataset.k === setKey); });
+  if (pbub) pbub.innerHTML = '';
+  if (ptiles) ptiles.innerHTML = S.figs.map(f => `<span><img src="${f.src}" alt=""></span>`).join('');
+  noteTops = null;
+}
+// phone extras
+const pstage = document.getElementById('pstage');
+pbub = document.createElement('div'); pbub.className = 'pbub';
+ptiles = document.createElement('div'); ptiles.className = 'tiles-p';
+const pphoto = document.createElement('div'); pphoto.className = 'pphoto';
+const pcap = document.createElement('div'); pcap.className = 'pcap';
+const CH = [['Press record.', 'Trilsy captures your microphone, your Mac\u2019s sound or both. Pick one app or all of them.'], ['Get the transcript.', 'When you stop, Trilsy transcribes on your Mac. Every line has a timestamp that plays the audio from that point.'], ['Read the notes.', 'Notes come section by section with a short overview on top. They are plain text, so you edit them like any note.']];
+pphoto.innerHTML = PHOTOS.map(([c, n], i) => `<div style="background:${c};opacity:${i ? 0 : 1}"><span>TODO: image<br>${n}</span></div>`).join('');
+pstage.append(pbub, ptiles, pphoto);
+if (V !== 3) { pstage.appendChild(pcap); }
+function placeWin() { if (PHONE()) pstage.insertBefore(win, pcap.parentNode ? pcap : null); else box.appendChild(win); }
+
+// waveform: a level per character of the line being spoken, eased between characters, scrolling right to left
+const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+function level(tau) {
+  const S = SETS[setKey];
+  for (let i = 0; i < 3; i++) {
+    const a = SPEAK[i][0] + 0.4, b = SPEAK[i][1];
+    if (tau >= a && tau <= b) {
+      const txt = S.lines[i].text, f = (tau - a) / (b - a) * (txt.length - 1), k = Math.floor(f), fr = f - k;
+      const lv = c => { const ch = txt[c] || ' '; return ch === ' ' ? .18 : '.,?'.includes(ch) ? .06 : .38 + .62 * hash(c + i * 31); };
+      const s = fr * fr * (3 - 2 * fr);
+      return lerp(lv(k), lv(k + 1), s) * (.88 + .12 * Math.sin(tau * 37));
+    }
+  }
+  return .05 + .03 * Math.sin(tau * 23);
+}
+let noteTops = null;
+
+// ---------- the clock: render(t) sets every element from storyboard time ----------
+let speakingFig = -1;
+function render(t) {
+  const S = SETS[setKey];
+  // state pill
+  const st = t < T_STOP ? `<i></i>Recording` : t < T_LINES ? 'Transcribing' : t >= T_NOTES && t < T_DONE ? 'Writing notes' : '';
+  $('state').innerHTML = st; $('state').style.color = t < T_STOP ? 'var(--terra)' : 'var(--blue)';
+  // strip
+  const rec = cl(t / T_STOP);
+  $('timer').textContent = fmt(Math.min(REC_LEN, rec * REC_LEN));
+  const wt = Math.min(t, T_STOP);
+  bars.forEach((b, i) => { b.style.height = (3 + 25 * level(wt - (bars.length - 1 - i) * 0.06)) + 'px'; });
+  const press = t > T_STOP - .2 && t < T_STOP + .2 ? .96 : 1;
+  $('stop').style.transform = `scale(${press})`; $('stop').style.transition = 'transform .2s var(--ease)';
+  const sw = seg(t, T_STOP, .4), sw2 = seg(t, T_LINES, .4);
+  $('recS').style.opacity = 1 - sw; $('trS').style.opacity = sw * (1 - sw2); $('doneS').style.opacity = sw2;
+  $('prog').style.width = cl((t - T_TR) / (T_LINES - T_TR)) * 100 + '%';
+  $('thint').style.opacity = 1 - seg(t, T_STOP, .4);
+  $('thint').style.display = t >= T_LINES ? 'none' : '';
+  // transcript lines, uncovered at machine pace
+  win.querySelectorAll('.ln').forEach((el, i) => { const k = seg(t, T_LINES + i * .18, .4); el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 4}px)`; });
+  // notes: laid out in full, uncovered by the travelling row with a mustard pass
+  const notes = $('notes');
+  if (!noteTops) noteTops = [...notes.children].map(c => c.offsetTop);
+  const H = notes.offsetHeight || 200, r = cl((t - T_NOTES) / (T_DONE - T_NOTES));
+  const rr = r * r * (3 - 2 * r);
+  notes.style.clipPath = `inset(0 0 ${(1 - rr) * 100}% 0)`;
+  [...notes.children].forEach((c, i) => {
+    const pass = T_NOTES + (T_DONE - T_NOTES) * (noteTops[i] / H) + .15;
+    const a = t > pass ? Math.max(0, 1 - (t - pass) / .6) : 0;
+    c.style.background = a ? `rgba(230,171,79,${.45 * a})` : 'transparent';
+  });
+  $('nhint').style.display = t >= T_NOTES ? 'none' : ''; $('nhint').style.opacity = 1 - seg(t, T_STOP, .4) * .0;
+  const wr = $('writing');
+  wr.style.opacity = t < T_NOTES ? 0 : t < T_DONE ? seg(t, T_NOTES, .4) : 1 - seg(t, T_DONE, .4);
+  wr.style.top = (36 + rr * H) + 'px';
+  // bubbles and who is speaking
+  speakingFig = -1;
+  bubEls.forEach((b, i) => {
+    const [a, e] = SPEAK[i];
+    const kin = seg(t, a, .6), kout = seg(t, e + .3, .4);
+    const k = kin * (1 - kout);
+    b.style.opacity = k * (b.dataset.fade ?? 1); b.style.transform = `scale(${.96 + .04 * kin})`;
+    if (t >= a && t < e + .3) speakingFig = S.lines[i].f;
+  });
+  // phone bubble beat
+  if (PHONE()) {
+    const i = SPEAK.findIndex(([a, e]) => t >= a && t < e + .3);
+    if (i >= 0) { const l = S.lines[i]; const html = `<span class="chip" style="--c:${l.src === 'System' ? SYS : MIC}">${l.who}</span><p>${l.text}</p>`; if (pbub.dataset.i != i + setKey) { pbub.innerHTML = html; pbub.dataset.i = i + setKey; } }
+    const k = i >= 0 ? Math.min(seg(t, SPEAK[i][0], .6), 1 - seg(t, SPEAK[i][1] + .3, .4)) : 0;
+    pbub.style.opacity = chapter >= 0 ? 0 : k; pbub.style.transform = `translateY(${(1 - k) * 4}px)`;
+    [...ptiles.children].forEach((s, j) => s.classList.toggle('talk', j === speakingFig));
+    const nk = seg(t, T_NOTES, .4); $('np').style.opacity = nk; $('tp').style.opacity = 1 - nk;
+  }
+  // tab underline: shows how far the setting has played
+  const u = win.querySelector('.tabs .on i'); if (u) u.style.width = (manual ? 100 : cl(t / (T_END - .6)) * 100) + '%';
+}
+
+// ---------- scroll: hero geometry to pinned geometry ----------
+const HERO = { win: [430, 414, 580] }, PIN = { win: [690, 392, 560], photo: [880, 112, 452, 565] };
+let p = 0, chapter = -1, rmState = 0, rmFade = 0, stageO = 1;
+const flow = document.getElementById('flow');
+if (V !== 3) {
+  flow.innerHTML = `<div class="spacer" style="height:calc(100vh - 0px)"></div>` + [['Press record.', 'Trilsy captures your microphone, your Mac’s sound or both. Pick one app or all of them.'], ['Get the transcript.', 'When you stop, Trilsy transcribes on your Mac. Every line has a timestamp that plays the audio from that point.'], ['Read the notes.', 'Notes come section by section with a short overview on top. They are plain text, so you edit them like any note.']]
+    .map(([h, b]) => `<section class="chap"><div><h2>${h}</h2><p>${b}</p></div></section>`).join('') + `<div style="height:30vh"></div>`;
+  // the hero copy sits in the first 100vh of the track; the stage is pulled up under it
+  document.getElementById('track').insertBefore(document.getElementById('stage'), document.getElementById('hero'));
+  document.getElementById('stage').style.marginTop = '0';
+  document.getElementById('hero').style.marginTop = '-100vh';
+  document.getElementById('hero').style.height = '0';
+}
+const chaps = [...flow.querySelectorAll('.chap')];
+function figHero(i) { const f = SETS[setKey].figs[i]; return { x: f.x, y: 520, w: f.w, h: 300, s: 1, ix: 0, iy: 0, r: 0 }; }
+function figTile(i, wx, wy) {
+  const f = SETS[setKey].figs[i], s = .36;
+  return { x: wx - 88, y: wy + 30 + i * 84, w: 72, h: 72, s, ix: 36 - f.w * s / 2, iy: 7, r: 16 };
+}
+function layout() {
+  if (PHONE()) {
+    win.style.transform = '';
+    p = V === 3 ? 0 : 1; pickChapter();
+    pphoto.style.opacity = chapter >= 0 ? 1 : 0; pcap.style.opacity = chapter >= 0 ? 1 : 0;
+    return;
+  }
+  const sc = Math.min(1, innerWidth / 1440);
+  box.style.transform = `translateX(-50%) scale(${sc})`;
+  const y = window.scrollY, vh = innerHeight;
+  const raw = V === 3 ? 0 : cl(y / (vh * .95));
+  stageO = 1;
+  if (RM) {
+    // reduced motion: no travel or scale. The hero and pinned layouts swap by an opacity cross-fade, 200ms out and 200ms in.
+    const target = raw > .5 ? 1 : 0, now = performance.now();
+    if (target !== rmState && !rmFade) rmFade = now;
+    if (rmFade) { const el = (now - rmFade) / 1000;
+      if (el < .2) stageO = 1 - E(el / .2); else { rmState = target; stageO = el < .4 ? E((el - .2) / .2) : 1; if (el >= .4) rmFade = 0; } }
+    p = rmState;
+  } else p = raw;
+  const e = p; // window is linear with scroll, like the reference; the people use the eased curve
+  const [hx, hy, hw] = HERO.win, [px, py, pw] = PIN.win;
+  const wx = lerp(hx, px, e), wy = lerp(hy, py, e);
+  win.style.left = wx + 'px'; win.style.top = (RM && p === 0 ? wy - y : wy) + 'px';
+  win.style.transform = `scale(${lerp(1, pw / hw, e)})`; win.style.opacity = stageO;
+  document.getElementById('band').style.transform = `translateY(${-y}px)`;
+  bubEls.forEach(b => { b.style.translate = `0 ${-y}px`; b.style.filter = ''; b.dataset.fade = cl(1 - p * 3); });
+  figEls.forEach((el, i) => {
+    let g;
+    if (V === 1) { const a = figHero(i), b = figTile(i, wx, wy), k = E(cl((p - .15 * i / 3) / .85)); g = {}; for (const key in a) g[key] = lerp(a[key], b[key], k); g.yoff = -y * (1 - k); g.k = k; }
+    else { g = figHero(i); g.yoff = -y; g.k = 0; }
+    el.style.cssText = `z-index:${g.k > .3 ? 4 : 1};left:${g.x}px;top:${g.y + g.yoff}px;width:${g.w}px;height:${g.h}px;border-radius:${g.r}px;border:${g.k > .5 ? 2 : 0}px solid var(--ink);background:rgba(220,230,242,${g.k})`;
+    el.firstChild.style.transform = `translate(${g.ix}px,${g.iy}px) scale(${g.s})`;
+    el.style.boxShadow = V === 1 && g.k > .95 && i === speakingFig ? '0 0 0 3px #e6ab4f' : 'none';
+    if (RM) el.style.opacity = stageO;
+  });
+  if (photoEl) {
+    const k = seg(p, V === 2 ? .55 : .35, V === 2 ? .45 : .65, lin), [fx, fy, fw, fh] = PIN.photo;
+    photoEl.style.cssText = `left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;opacity:${k * stageO};transform:translate(${(1 - k) * -180}px,${(1 - k) * 160}px) scale(${.8 + .2 * k})`;
+  }
+  pickChapter();
+}
+function pickChapter() {
+  const vh = innerHeight;
+  let c = -1; chaps.forEach((s, i) => { if (s.getBoundingClientRect().top < vh * (PHONE() ? .7 : .45)) c = i; });
+  if (p < .98) c = -1;
+  if (c !== chapter) { chapter = c; chapClock = 0; chaps.forEach((s, i) => s.classList.toggle('on', i === c));
+    [photoEl, pphoto].forEach(ph => ph && [...ph.children].forEach((d, i) => d.style.opacity = i === Math.max(0, c) ? 1 : 0));
+    if (c >= 0) pcap.innerHTML = `<h2>${CH[c][0]}</h2><p>${CH[c][1]}</p>`; }
+}
+
+// ---------- loop ----------
+let t = 0, last = performance.now(), visible = true, manual = false, chapClock = 0, fade = 1;
+new IntersectionObserver(es => es.forEach(e => visible = e.isIntersecting), { rootMargin: '100px' }).observe(win);
+function storyT() {
+  if (RM) return chapter === 0 ? 7.35 : chapter === 1 ? 10.18 : 13;
+  if (chapter === 0) return chapClock % 7.6;                 // Record: the recording beat loops
+  if (chapter === 1) return 7.2 + Math.min(chapClock, 2.98);  // Transcribe: Stop, Transcribing, the lines
+  if (chapter === 2) return 10.0 + Math.min(chapClock, 2.8); // Notes: written and held
+  return t;
+}
+function frame(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  if (visible && !RM) {
+    if (chapter >= 0) chapClock += dt;
+    else {
+      t += dt;
+      if (t >= T_END) { if (manual) t = T_END - .01; else { setKey = ORDER[(ORDER.indexOf(setKey) + 1) % 3]; buildSet(); t = 0; } }
+    }
+  }
+  const T = storyT();
+  // setting swap: 600ms cross-fade at the seam
+  const k = chapter >= 0 || manual ? 1 : Math.min(seg(T, 0, .6), 1 - seg(T, T_END - .6, .6));
+  win.querySelector('.cols').style.opacity = k; win.querySelector('.head').style.opacity = k;
+  figEls.forEach(f => f.style.opacity = k);
+  layout(); render(T);
+  requestAnimationFrame(frame);
+}
+win.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; setKey = b.dataset.k; manual = true; t = 0; chapClock = 0; buildSet(); });
+
+// trust band and the order list
+const MK = [['Zoom', 'zoom'], ['Google Meet', 'googlemeet'], ['Microsoft Teams', 'microsoftteams'], ['Slack', 'slack'], ['Discord', 'discord'], ['Webex', 'webex'], ['YouTube', 'youtube'], ['Safari', 'safari'], ['Google Chrome', 'googlechrome'], ['FaceTime', null]];
+const row = '<ul>' + MK.map(m => `<li>${m[1] ? `<img src="logos/${m[1]}.svg" alt="">` : ''}${m[0]}</li>`).join('') + '</ul>';
+const trust = `<section class="trust"><p>Trilsy records whatever your Mac plays, from the apps you already use.</p><div class="mask"><div class="mtrack">${row}<ul aria-hidden="true">${row.slice(4, -5)}</ul></div></div></section>`;
+const orders = {
+  1: ['Hero and story are one stage: the people fold into tiles on the window, the window pins, the three chapters scroll beside it', 'Trust band <span class="chg">(moves: from under the hero to after the story)</span>', 'Questions', 'Closing band'],
+  2: ['Hero and story are one stage: the room scrolls away, the window pins, the three chapters scroll beside it', 'Trust band <span class="chg">(moves: from under the hero to after the story)</span>', 'Questions', 'Closing band'],
+  3: ['Hero', 'Trust band (unchanged, directly under the hero)', 'Pinned story with its own product card (ticket 06)', 'Questions', 'Closing band']
+};
+const names = { 1: 'Option 1 (approved 2026-10-15): the room folds into the window', 2: 'Option 2: the room scrolls away, the window stays', 3: 'Option 3: approved order, the room comes alive' };
+document.getElementById('after').innerHTML = (V === 3 ? '' : `<p class="quiet">Your recordings stay on your Mac.</p>`) + trust + `<div class="order"><b>Section order in this option</b><ol>${orders[V].map(x => `<li>${x}</li>`).join('')}</ol></div>`;
+if (V === 3) { const h = document.getElementById('hero'); h.style.height = '826px'; }
+document.getElementById('tag').textContent = names[V] + ' · preview label, not site content';
+
+placeWin(); buildSet(); addEventListener('resize', () => { placeWin(); noteTops = null; });
+requestAnimationFrame(frame);
+// capture hooks: ?t=seconds freezes the clock; ?set=meeting picks a setting
+const qs = new URLSearchParams(location.search);
+if (qs.get('set')) { setKey = qs.get('set'); buildSet(); }
+if (qs.get('t')) { const ft = +qs.get('t'); window.__freeze = ft; storyT = () => chapter === -1 ? ft : ({0: ft % 7.6, 1: Math.min(10.18, ft), 2: Math.min(12.8, ft)})[chapter]; manual = true; }
+</script>
+</body></html>

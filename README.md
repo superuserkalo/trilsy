@@ -1,18 +1,18 @@
 # Trilsy
 
-Be here. We’ll take the notes. A private, botless notetaker for Apple silicon Macs.
+Be here. We’ll take the notes. A private notetaker for Apple silicon Macs.
 
-**Developer preview.** Native source is implemented but has not yet been compiled or exercised on a Mac. Do not use it as the only recorder for an important conversation until the [acceptance checks](docs/acceptance.md) pass. No signed download is available yet.
+**Developer preview.** Native source builds and its five unit tests pass on the macOS 15 CI runner, but recording, transcription and notes have not yet been exercised on a real Mac. Do not use it as the only recorder for an important conversation until the [acceptance checks](docs/acceptance.md) pass. No signed download is available yet.
 
 The existing website design is not approved; its replacement is specified in the [redesign brief](docs/redesign-brief/README.md). Agent guidance is in [CLAUDE.md](CLAUDE.md).
 
 ## One app, one job
 
-Record microphone and application audio, or import an audio/video file. Stop, then transcribe and generate detailed notes locally. Edit notes and transcript, search recordings, jump to timestamps, and export Markdown, text, or SRT. No meeting bot, dictation, account, server, subscription, or analytics in the native app.
+Record microphone and application audio, or import an audio/video file. Stop, then transcribe and generate detailed notes locally. Edit notes and transcript, search recordings, jump to timestamps, and export Markdown, text, or SRT. No dictation, account, server, subscription, or analytics in the native app.
 
 ## Run the Mac app
 
-Requires Apple silicon, macOS 15+, Xcode with Swift 6.1+, and XcodeGen (`brew install xcodegen`). 16 GB RAM recommended; reserve several GB for models and recording storage.
+Requires Apple silicon, macOS 15+, Xcode 16.4 or later (the project builds in Swift 5 language mode), and XcodeGen (`brew install xcodegen`). 16 GB RAM recommended; reserve several GB for models and recording storage.
 
 ```sh
 ./scripts/build-mac.sh
@@ -21,7 +21,7 @@ open build/Build/Products/Debug/Trilsy.app
 
 Or run `xcodegen generate`, open `Trilsy.xcodeproj`, select your development team, and Run. The script makes an ad-hoc signed local debug build, not a distributable release. Enable model downloads in Settings, then generate notes. First use downloads Whisper small and Qwen2.5 3B 4-bit from Hugging Face. No audio is uploaded. Network may still be used for model resolution/cache checks; fully offline behavior must be verified on the target Mac.
 
-On a first build, resolve compiler or SDK API issues, then verify one complete recording-to-notes flow before anything else. The five native tests and the Mac CI job have not yet had an observed passing run. No code-signing credentials, model weights or recordings are included in the repo.
+On a first build, resolve compiler or SDK API issues, then verify one complete recording-to-notes flow before anything else. The Mac CI job builds the app and passes the five native tests, which cover storage, recovery, note chunking and export order; none of them exercises recording, transcription or notes. No code-signing credentials, model weights or recordings are included in the repo.
 
 System audio uses ScreenCaptureKit and needs macOS Screen & System Audio Recording permission. No screen video is stored. The microphone follows the system default. Use headphones when recording both sources. Recorded source labels are not speaker diarization.
 
@@ -33,7 +33,7 @@ npm ci
 npm run dev
 ```
 
-Next.js App Router, Tailwind 4, shadcn/ui, Motion, vgpu. `npm run build` checks production compilation and TypeScript. The original raymarched glass artwork caps at 30 FPS, responds to the pointer, and skips offscreen/hidden frames. Unsupported browsers play a seamless video rendered from the same shader; reduced-motion browsers show its poster. Regenerate both with `node scripts/render-shader.mjs --video` (requires ffmpeg). Brand constants live in `web/lib/brand.ts`. See [website design and verification](docs/website-design.md) for the Mobbin references and checks of this first, rejected design.
+Next.js App Router, Tailwind 4, shadcn/ui, Motion, Hugeicons. `npm run build` checks production compilation and TypeScript. The site has no shader. Brand constants live in `web/lib/brand.ts`. See [website design and verification](docs/website-design.md) for the Mobbin references and checks of this first, rejected design.
 
 ### Deployment
 
@@ -53,7 +53,7 @@ Detailed notes are generated in bounded sections and retained alongside an overv
 
 ## Scope and release gates
 
-No live transcription, individual speaker recognition, calendar integration, iPhone app, cloud AI, billing, notarization, updater, or signed installer yet. Optional paid processing is a future product decision, not a hidden API dependency. Third-party SDKs and model licenses apply independently; inspect them before distribution. See [acceptance](docs/acceptance.md) and [architecture](docs/architecture.md).
+Not in the app yet: live transcription, individual speaker recognition, any calendar or app integration, an MCP server, an iPhone app, sync, cloud or hosted AI, an account, billing, notarization, an updater or a signed installer. Direction decided with the site redesign (2026-10-15), none of it built: the free app stays local with no account; a paid Pro layer would add sync of transcripts and notes (audio stays on the Mac), a read-and-write MCP server and connections to apps. Third-party SDKs and model licenses apply independently; inspect them before distribution. See [acceptance](docs/acceptance.md) and [architecture](docs/architecture.md).
 
 ## Original development history
 

@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>B4 palette from the cast sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Figtree,sans-serif;color:#241E18;background:#fff}
+.wrap{display:grid;grid-template-columns:1fr 1fr}.mode{padding:22px 26px 26px}
+.mode.l{background:#FBF7EE}.mode.d{background:#1C1713;color:#F4EEE2}
+h1{font:600 12px/1 Figtree;letter-spacing:.05em;text-transform:uppercase;margin:0 0 12px;opacity:.7}
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.s{border-radius:9px;padding:8px 9px;height:78px;font-size:11.5px;line-height:1.3;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(0,0,0,.12)}
+.s b{font-size:12.5px}
+.src{display:flex;gap:7px;margin:10px 0 14px;align-items:center;font-size:11.5px;opacity:.85}
+.src i{width:26px;height:26px;border-radius:6px;display:block;border:1px solid rgba(0,0,0,.18)}
+.demo{margin-top:16px;border-radius:12px;padding:16px;border:1.5px solid}
+.l .demo{background:#FFFDF8;border-color:#241E18}.d .demo{background:#26201A;border-color:#F4EEE2}
+.demo h2{font:600 26px/1.1 Fraunces,serif;margin:0 0 6px}.demo p{margin:0 0 10px;font-size:14px}
+.btn{display:inline-block;border:2px solid;border-radius:8px;padding:8px 14px;font-weight:600;font-size:14px;margin-right:6px}
+.l .btn.p{background:#E6AB4F;border-color:#241E18;color:#241E18}.d .btn.p{background:#E6AB4F;border-color:#F4EEE2;color:#1C1713}
+.l .btn.s2{background:#4A6784;border-color:#4A6784;color:#fff}.d .btn.s2{background:#7F99B3;border-color:#7F99B3;color:#1C1713}
+.chip{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;margin-right:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:10px}.tbl td{padding:3px 4px;border-top:1px solid rgba(128,128,128,.25)}
+.note{font-size:12px;margin:12px 0 0;max-width:62em;opacity:.9}
+</style></head><body><div class="wrap">
+<section class="mode l"><h1>Light (default)</h1>
+<div class="src"><span>From the cast sheet:</span><i style="background:#E6AB4F"></i><i style="background:#BF6A4E"></i><i style="background:#8D9F8B"></i><i style="background:#7F99B3"></i><i style="background:#EDC4A3"></i><i style="background:#A7775B"></i><i style="background:#5F3B25"></i></div>
+<div class="sw">
+<div class="s" style="background:#FBF7EE"><b>background</b>#FBF7EE paper</div>
+<div class="s" style="background:#FFFDF8"><b>card</b>#FFFDF8</div>
+<div class="s" style="background:#241E18;color:#fff"><b>foreground, ink</b>#241E18</div>
+<div class="s" style="background:#6E6354;color:#fff"><b>muted-foreground</b>#6E6354 5.5:1</div>
+<div class="s" style="background:#E6AB4F"><b>primary</b>#E6AB4F, ink text 8.1:1</div>
+<div class="s" style="background:#4A6784;color:#fff"><b>secondary</b>#4A6784 dusty blue, 5.9:1 with white</div>
+<div class="s" style="background:#A4472D;color:#fff"><b>accent / destructive</b>#A4472D deep terracotta 5.6:1</div>
+<div class="s" style="background:#8D9F8B"><b>sage</b>#8D9F8B, fills and tints only</div>
+<div class="s" style="background:#F4ECDD"><b>muted</b>#F4ECDD</div>
+<div class="s" style="background:#D9CFBD"><b>border</b>#D9CFBD</div>
+<div class="s" style="background:#BF6A4E;color:#fff"><b>terracotta</b>#BF6A4E, fills only (3.6:1 as text fails)</div>
+<div class="s" style="background:#7F99B3"><b>dusty blue</b>#7F99B3, fills only</div>
+</div>
+<div class="demo"><h2>Be in the conversation.</h2><p>Trilsy records your microphone and your Mac's sound together.</p><span class="btn p">View on GitHub</span><span class="btn s2">Create notes</span><p style="margin-top:12px"><span class="chip" style="background:#4A6784;color:#fff">Professor</span><span class="chip" style="background:#A4472D;color:#fff">Student</span><span class="chip" style="background:#8D9F8B;color:#241E18">Sage tag</span></p></div></section>
+<section class="mode d"><h1>Dark</h1>
+<div class="src"><span>Same hues, lifted:</span><i style="background:#E6AB4F"></i><i style="background:#E08A6C"></i><i style="background:#A5B8A3"></i><i style="background:#7F99B3"></i></div>
+<div class="sw">
+<div class="s" style="background:#1C1713;border-color:#554a3d"><b>background</b>#1C1713</div>
+<div class="s" style="background:#26201A"><b>card</b>#26201A</div>
+<div class="s" style="background:#F4EEE2;color:#1C1713"><b>foreground</b>#F4EEE2 15.4:1</div>
+<div class="s" style="background:#A99C88;color:#1C1713"><b>muted-foreground</b>#A99C88 6.6:1</div>
+<div class="s" style="background:#E6AB4F;color:#1C1713"><b>primary</b>#E6AB4F, 8.7:1</div>
+<div class="s" style="background:#7F99B3;color:#1C1713"><b>secondary</b>#7F99B3</div>
+<div class="s" style="background:#E08A6C;color:#1C1713"><b>accent / destructive</b>#E08A6C 6.8:1</div>
+<div class="s" style="background:#A5B8A3;color:#1C1713"><b>sage</b>#A5B8A3</div>
+<div class="s" style="background:#312920"><b>muted</b>#312920</div>
+<div class="s" style="background:#4A3F33"><b>border</b>#4A3F33</div>
+</div>
+<div class="demo"><h2>Be in the conversation.</h2><p>Trilsy records your microphone and your Mac's sound together.</p><span class="btn p">View on GitHub</span><span class="btn s2">Create notes</span><p style="margin-top:12px"><span class="chip" style="background:#7F99B3;color:#1C1713">Professor</span><span class="chip" style="background:#E08A6C;color:#1C1713">Student</span></p></div>
+<p class="note">The characters are drawn on white with black outline and white trousers. On the dark page their white would glow, so in dark mode they sit on a paper-coloured card (a tile) rather than the page. Open decision for the owner, small.</p></section>
+</div>
+<p style="margin:0;padding:12px 26px;background:#fff;font-size:12px;color:#4a3f33">Rules taken: the palette is the owner's character sheet (sampled from the image: mustard, terracotta, dusty blue, sage, skin tones, black outline), warm paper instead of the sheet's pure white so the page does not look clinical; terracotta and sage are fill colours and a deeper terracotta carries text so contrast stays above 4.5:1; gradients are not used anywhere; no teal (the earlier preview's teal was mine and is dropped). All values are placeholders until the owner agrees.</p>
+</body></html>
