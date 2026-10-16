@@ -20,7 +20,7 @@ const figures = [
 ] as const;
 
 // New copy for review (not in the copy deck). The behavior is what the Mac's
-// owner can do with audio that never leaves it: the app's own Delete, with its own
+// owner can do with audio that never leaves it: Delete recording in the recording's "…" menu, with the app's
 // confirmation ("Permanently delete this recording, audio, and notes?"). The page
 // claims nothing about ethics boards, consent or data-protection law.
 const behavior =

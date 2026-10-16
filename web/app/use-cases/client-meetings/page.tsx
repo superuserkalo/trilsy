@@ -20,10 +20,10 @@ const figures = [
 ] as const;
 
 // New copy for review. The behavior is the order of use: read the last meeting's
-// notes, then press Record. Decisions are written into the notes only when the
+// notes, then press New recording. Decisions are written into the notes only when the
 // recording supports them; there is no separate list of agreements.
 const behavior =
-  "Every meeting stays in your list. Before the next one, open the last meeting’s notes and read what was agreed, then press Record.";
+  "Every meeting stays in your list. Before the next one, open the last meeting’s notes and read what was agreed, then press New recording.";
 
 const questions: Faq[] = [
   {
@@ -36,7 +36,7 @@ const questions: Faq[] = [
     id: "pause",
     question: "Can I pause when the client asks me to?",
     answer:
-      "Yes. Pause and resume are in the app and in its menu bar item, and what is said while the recording is paused is not recorded.",
+      "Yes. Pause and resume are in the app’s toolbar while you record, and what is said while the recording is paused is not recorded.",
   },
 ];
 

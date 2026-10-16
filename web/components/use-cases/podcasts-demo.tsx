@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MockWindow } from "@/components/how-it-works/mock";
+import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { cn } from "@/lib/utils";
-import { MenuButton, PopMenu } from "./app-controls";
+import { RecordingHeader, RecordingMenu } from "./app-chrome";
 import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
 
 // Illustration content. A subtitle file is what the app writes: a number, the
@@ -16,14 +16,13 @@ const cues = [
   { start: "00:00:12,980", end: "00:00:17,060", text: "So, where do we start?" },
 ] as const;
 
-const exports = ["Markdown with transcript", "Plain text transcript", "SRT subtitles"] as const;
-const SRT = 2;
+const SRT = 2; // "SRT subtitles", the third entry of Export
 const STEP_MS = 1700;
 
 /**
- * Podcasts and video: one export gives a subtitle file. Export is pressed, "SRT
- * subtitles" is chosen, the file appears beside a drawn video frame, and the
- * cues play in turn, each marked in the file and shown as the frame's caption
+ * Podcasts and video: one export gives a subtitle file. The "…" menu is opened,
+ * Export is chosen and then "SRT subtitles", the file appears beside a drawn video
+ * frame, and the cues play in turn, each marked in the file and shown as the frame's caption
  * while a thin bar crosses the frame. Plays once, 40% in view; the finished
  * state at once under reduced motion. The file's cues and the frame are laid
  * out from the start, the caption slot has a fixed height, and the menu opens
@@ -32,8 +31,9 @@ const STEP_MS = 1700;
 export function PodcastsDemo() {
   const { ref, inView } = usePlayOnce();
   const [open, setOpen] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const [highlight, setHighlight] = useState<number | undefined>(undefined);
+  const [highlight, setHighlight] = useState<"export" | undefined>(undefined);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportHighlight, setExportHighlight] = useState<number | undefined>(undefined);
   const [written, setWritten] = useState(false);
   const [cue, setCue] = useState(0); // 0 none, 1 to 3 the cue on screen
 
@@ -45,17 +45,19 @@ export function PodcastsDemo() {
       return;
     }
     const timers = [
+      setTimeout(() => setOpen(true), 800),
       setTimeout(() => {
-        setPressed(true);
-        setOpen(true);
-      }, 800),
-      setTimeout(() => setHighlight(SRT), 1500),
+        setHighlight("export");
+        setExportOpen(true);
+      }, 1400),
+      setTimeout(() => setExportHighlight(SRT), 2000),
       setTimeout(() => {
         setOpen(false);
-        setPressed(false);
-      }, 2100),
-      setTimeout(() => setWritten(true), 2500),
-      ...cues.map((_, i) => setTimeout(() => setCue(i + 1), 3300 + i * STEP_MS)),
+        setExportOpen(false);
+        setHighlight(undefined);
+      }, 2600),
+      setTimeout(() => setWritten(true), 3000),
+      ...cues.map((_, i) => setTimeout(() => setCue(i + 1), 3800 + i * STEP_MS)),
     ];
     return () => timers.forEach(clearTimeout);
   }, [inView]);
@@ -63,17 +65,17 @@ export function PodcastsDemo() {
   return (
     <MockWindow
       ref={ref}
-      title="Kitchen table, episode 12"
+      title="Trilsy"
       role="img"
-      aria-label="The Export menu is opened and SRT subtitles is chosen. The subtitle file it writes has three numbered cues, each with a start time, an end time and a line of text. Beside it, a plain frame shows each cue as a caption in its turn, with a thin bar crossing the frame."
+      aria-label="The menu of a recording is opened, Export is chosen and then SRT subtitles. The subtitle file it writes has three numbered cues, each with a start time, an end time and a line of text. Beside it, a plain frame shows each cue as a caption in its turn, with a thin bar crossing the frame."
     >
       <div aria-hidden>
-        <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
-          <p className="text-xs text-muted-foreground">00:00:17 · Recorded</p>
-          <span className="relative">
-            <MenuButton label="Export" pressed={pressed} />
-            <PopMenu items={exports} open={open} highlighted={highlight} className="right-0" />
-          </span>
+        <div className="flex flex-col gap-3 px-4 pt-4">
+          <RecordingHeader title="Kitchen table, episode 12" date="15 Oct, 18:00" length="17 sec" status="Ready" />
+          <ViewControl
+            active="Transcript"
+            menu={<RecordingMenu open={open} highlight={highlight} exportOpen={exportOpen} exportHighlight={exportHighlight} />}
+          />
         </div>
         <div
           className={cn(

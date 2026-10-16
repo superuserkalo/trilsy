@@ -5,9 +5,9 @@
 // `answer` is plain text; a `backtick` span is a file path and renders as code
 // (the JSON-LD strips the backticks). `todo` is a fact the owner has not
 // confirmed yet (copy deck 13). It is never printed on the page and never goes
-// into JSON-LD. The owner confirmed every other open fact on 2026-10-16 (the
-// apps, offline use, the student discount, the languages); only the licence
-// is still open.
+// into JSON-LD. No answer carries one now: the owner confirmed every open fact on
+// 2026-10-16 (the apps, offline use, the student discount, the languages) and
+// chose the MIT licence the same day.
 // `schemaAnswer` replaces `answer` in JSON-LD where the page text carries a
 // price figure (master: no price in JSON-LD, OG or llms.txt).
 
@@ -58,14 +58,13 @@ export const faqs: Faq[] = [
     id: "open-source",
     question: "Is it open source?",
     answer:
-      "Not yet. The source is on GitHub, where anyone can read it, but we have not chosen a licence, so we do not call it open source. That decision is still to be made, and until it is, the code is there to read and nothing should be assumed about reusing it.",
-    todo: "Re-word once the licence is chosen (copy deck 13, item 6).",
+      "Yes. Trilsy is open source under the MIT licence, and the source is on GitHub. Anyone may read, use, change and share the code, even commercially, if the licence notice stays with it. The Trilsy name and this website’s drawings are not part of that grant, and the app’s models have their own licences.",
   },
   {
     id: "live-transcript",
     question: "Does it transcribe while I talk?",
     answer:
-      "No. Trilsy records first, and when you stop it transcribes the recording on your Mac and then writes the notes. You get the transcript and the notes after the recording ends, not line by line while you talk. An audio or video file you import goes through the same steps.",
+      "No. Trilsy records first. Stopping only saves the recording; when you press Create notes, it transcribes it on your Mac and then writes the notes. You get the transcript and the notes after the recording ends, not line by line while you talk. An audio or video file you import goes through the same steps.",
   },
   {
     id: "who-said-what",

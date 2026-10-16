@@ -19,24 +19,27 @@ const figures = [
 ] as const;
 
 // New copy for review (not in the copy deck). The behavior is the microphone
-// alone, in the app's own order: Record, Stop & save, Transcribe & create notes
-// (the app does not start on its own after Stop). The Pause and menu bar claims
-// were read from the code and confirmed by the owner on 2026-10-16.
+// alone, in the app's order: New recording, Stop & save, Create notes. Stop only
+// saves: nothing is transcribed until Create notes is pressed
+// (Sources/ContentView.swift). Pause and Resume are in the app's toolbar while a
+// recording runs; the menu bar item has only Open Trilsy, New Recording or Stop
+// Recording, and Quit (Sources/App.swift), so the page does not put Pause there.
+// Note instructions… is in the recording's "…" menu and opens a popover.
 const behavior =
-  "With your Mac’s sound off, which is how Trilsy starts, only your microphone is recorded. Talk, press Stop & save, then Transcribe & create notes, and read the notes.";
+  "With your Mac’s sound off, which is how Trilsy starts, only your microphone is recorded. Press New recording, talk, press Stop & save, then Create notes, and read the notes.";
 
 const questions: Faq[] = [
   {
     id: "pause",
     question: "Can I pause while I think?",
     answer:
-      "Yes. Pause and resume are in the app and in its menu bar item. What is said while the recording is paused is not recorded.",
+      "Yes. Pause and resume are in the app’s toolbar while you record. What is said while the recording is paused is not recorded.",
   },
   {
     id: "instructions",
     question: "Can I tell it how to write the notes?",
     answer:
-      "Yes. Above the notes there is a field for optional instructions, for example “include examples and open questions”. Type them before you press Transcribe & create notes. The notes model takes them as preferences, which is a request and not a guarantee.",
+      "Yes. Open Note instructions… from the recording’s … menu and type what you want, for example “include examples and open questions”. Do it before you press Create notes. The notes model takes them as preferences, which is a request and not a guarantee.",
   },
 ];
 

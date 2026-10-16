@@ -13,6 +13,7 @@ import {
   T_END,
   T_LINES,
   T_NOTES,
+  T_CREATE,
   T_STOP,
   T_TRANSCRIBE,
   beat,
@@ -43,6 +44,8 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
     timer: useRef<HTMLSpanElement>(null),
     stop: useRef<HTMLSpanElement>(null),
     rec: useRef<HTMLDivElement>(null),
+    saved: useRef<HTMLDivElement>(null),
+    create: useRef<HTMLSpanElement>(null),
     transcribing: useRef<HTMLDivElement>(null),
     progress: useRef<HTMLSpanElement>(null),
     done: useRef<HTMLDivElement>(null),
@@ -74,7 +77,7 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
 
       // Title bar: the state, and how far this setting has played.
       set(r.state, (n) => {
-        const label = t < T_STOP ? "Recording" : t < T_LINES ? "Transcribing" : t >= T_NOTES && t < T_DONE ? "Writing notes" : "";
+        const label = t < T_STOP ? "Recording" : t >= T_TRANSCRIBE && t < T_LINES ? "Transcribing" : t >= T_NOTES && t < T_DONE ? "Writing notes" : "";
         if (n.dataset.label !== label) {
           n.dataset.label = label;
           n.lastChild!.textContent = label;
@@ -84,16 +87,20 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
       set(r.underline, (n) => (n.style.width = `${manual ? 100 : clamp(t / (T_END - 0.6)) * 100}%`));
       set(r.body, (n) => (n.style.opacity = String(seam)));
 
-      // The strip: timer, waveform and Stop; then Transcribing; then the recorded length.
+      // The strip: timer, waveform and Stop & save; then the recorded length with Create notes
+      // (transcription starts only when it is pressed); then Transcribing; then the recorded length.
       set(r.timer, (n) => (n.textContent = clockText(Math.min(REC_SECONDS, clamp(t / T_STOP) * REC_SECONDS))));
       const wt = Math.min(t, T_STOP);
       bars.current.forEach((b, i) => {
         if (b) b.style.height = `${3 + 25 * level(s, wt - (BARS - 1 - i) * 0.06)}px`;
       });
       set(r.stop, (n) => (n.style.transform = `scale(${t > T_STOP - 0.2 && t < T_STOP + 0.2 ? 0.96 : 1})`));
-      const toTranscribing = beat(t, T_STOP, 0.4);
+      const toSaved = beat(t, T_STOP, 0.3);
+      const toTranscribing = beat(t, T_CREATE + 0.12, 0.3);
       const toDone = beat(t, T_LINES, 0.4);
-      set(r.rec, (n) => (n.style.opacity = String(1 - toTranscribing)));
+      set(r.create, (n) => (n.style.transform = `scale(${t > T_CREATE - 0.15 && t < T_CREATE + 0.15 ? 0.96 : 1})`));
+      set(r.rec, (n) => (n.style.opacity = String(1 - toSaved)));
+      set(r.saved, (n) => (n.style.opacity = String(toSaved * (1 - toTranscribing))));
       set(r.transcribing, (n) => (n.style.opacity = String(toTranscribing * (1 - toDone))));
       set(r.done, (n) => (n.style.opacity = String(toDone)));
       set(r.progress, (n) => (n.style.width = `${clamp((t - T_TRANSCRIBE) / (T_LINES - T_TRANSCRIBE)) * 100}%`));
@@ -221,7 +228,16 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
                       ))}
                     </span>
                     <span ref={r.stop} className="rounded-md bg-ink px-2.5 py-1 text-[11.5px] font-semibold text-card">
-                      Stop
+                      Stop &amp; save
+                    </span>
+                  </div>
+                  <div ref={r.saved} className="absolute inset-0 flex items-center gap-2 opacity-0">
+                    <span className="text-[12.5px] text-muted-foreground">00:21 recorded</span>
+                    <span
+                      ref={r.create}
+                      className="ml-auto rounded-md border-[1.5px] border-ink bg-primary px-2.5 py-px text-[11.5px] font-semibold text-ink"
+                    >
+                      Create notes
                     </span>
                   </div>
                   <div ref={r.transcribing} className="absolute inset-0 flex items-center gap-2 opacity-0">
@@ -235,7 +251,7 @@ export function DemoWindow({ variant, className }: { variant: "desktop" | "phone
                   </div>
                 </div>
                 <p ref={r.transcriptHint} className="text-[12.5px] text-muted-foreground">
-                  The transcript appears when you stop.
+                  The transcript appears when you press Create notes.
                 </p>
                 <div>
                   {setting.lines.map((line, i) => (

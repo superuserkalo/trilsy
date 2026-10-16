@@ -30,6 +30,23 @@ import {
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
+ * Between 1024px and about 1274px the window is drawn larger than the stage scale (`--wf`,
+ * set on the section: how many times larger, 1 from 1274px up) so its text stays near 11.5px.
+ * It grows about its centre, so the people and their bubbles step outward by `--push`, the
+ * growth of one window half in stage units, never past the stage edge (they may bleed off it
+ * by the transparent margin of their drawing). All of it is CSS, so the first paint is right.
+ */
+const BLEED = 40;
+const CENTER = HERO_WINDOW.x + HERO_WINDOW.w / 2;
+/** A leftward (-1) or rightward (1) step of `--push`, held back to `room` stage units, fading out with `k`. */
+const step = (dir: 1 | -1, room: number, k = 0) =>
+  `calc(${dir * (1 - k)} * min(var(--push), ${Math.max(0, room)}) * 1px)`;
+const figureStep = (fig: { x: number; w: number }, k = 0) =>
+  fig.x + fig.w / 2 < CENTER ? step(-1, fig.x + BLEED, k) : step(1, 1440 + BLEED - fig.x - fig.w, k);
+const bubbleStep = (line: { bx: number; bw: number }, fig: { x: number; w: number }) =>
+  fig.x + fig.w / 2 < CENTER ? step(-1, line.bx - 8) : step(1, 1432 - line.bx - line.bw);
+
+/**
  * The desktop stage (lg and up): the hero scene and the pinned story drawn on
  * one 1440 by 900 stage, scaled to the viewport by CSS (`--stage-s`).
  * `progress` folds it from the hero (0) to the pinned layout (1); `scrollY`
@@ -72,19 +89,21 @@ export function FoldStage({
     const wx = lerp(HERO_WINDOW.x, PIN_WINDOW.x, p);
     const wy = reduced && p === 0 ? HERO_WINDOW.y - ys : lerp(HERO_WINDOW.y, PIN_WINDOW.y, p);
     if (win.current) {
-      win.current.style.transform = `translate(${wx}px, calc(${wy}px + var(--dy) * ${keep})) scale(${lerp(1, PIN_WINDOW.w / HERO_WINDOW.w, p)})`;
+      win.current.style.transform = `translate(calc(${wx}px - ${keep} * var(--push) * 1px), calc(${wy}px + var(--dy) * ${keep})) scale(calc(${lerp(1, PIN_WINDOW.w / HERO_WINDOW.w, p)} * var(--wf, 1)))`;
     }
     if (band.current) band.current.style.transform = `translateY(calc(${BAND_TOP - ys}px + var(--dy)))`;
     f.bubbleFade = clamp(1 - p * 3);
     bubbles.current.forEach((b, i) => {
       if (!b) return;
-      b.style.transform = `translate(${setting.lines[i].bx}px, calc(${BUBBLE_TOP - ys}px + var(--dy)))`;
+      const line = setting.lines[i];
+      b.style.transform = `translate(calc(${line.bx}px + ${bubbleStep(line, setting.figures[line.fig])}), calc(${BUBBLE_TOP - ys}px + var(--dy)))`;
     });
     // People fold into tiles on the window's left edge, one a little after another.
     f.tiles = setting.figures.map((fig, i) => {
       const k = easeTrilsy(clamp((p - 0.05 * i) / 0.85));
       const heroY = FLOOR - FIGURE_VISIBLE - ys;
       const tileY = wy + TILE.dy + TILE.gap * i;
+      // The tile target sits on the window's left edge, which moves with the window's growth (keep of --push).
       const x = lerp(fig.x, wx + TILE.dx, k);
       const y = lerp(heroY, tileY, k);
       const w = lerp(fig.w, TILE.size, k);
@@ -93,7 +112,7 @@ export function FoldStage({
       const el = figures.current[i];
       const inner = inners.current[i];
       if (el) {
-        el.style.transform = `translate(${x}px, calc(${y}px + var(--dy) * ${lerp(1, keep, k)}))`;
+        el.style.transform = `translate(calc(${x}px + ${figureStep(fig, k)} - ${keep * k} * var(--push) * 1px), calc(${y}px + var(--dy) * ${lerp(1, keep, k)}))`;
         el.style.width = `${w}px`;
         el.style.height = `${h}px`;
         el.style.borderRadius = `${TILE.radius * k}px`;
@@ -186,7 +205,7 @@ export function FoldStage({
   return (
     <div
       className={cn(
-        "pointer-events-none overflow-hidden [--dy:calc(404px/var(--stage-s)-404px)]",
+        "pointer-events-none overflow-hidden [--dy:calc(404px/var(--stage-s)-404px)] [--push:calc(290*(var(--wf,1)_-_1))] [--pf:calc(1_+_0.75*(var(--wf,1)_-_1))]",
         className,
       )}
     >
@@ -205,7 +224,7 @@ export function FoldStage({
           role="img"
           aria-label={chapters[Math.max(0, chapter)].alt}
           className="overflow-hidden rounded-[18px] border-[1.5px] border-ink opacity-0"
-          style={{ width: PHOTO.w, height: PHOTO.h }}
+          style={{ width: `calc(${PHOTO.w}px * var(--pf, 1))`, height: `calc(${PHOTO.h}px * var(--pf, 1))` }}
         >
           {chapters.map((c, i) => (
             // TODO: image `{c.photo}` (4:5). A plain colour field at the final size
@@ -231,7 +250,7 @@ export function FoldStage({
             style={{
               width: fig.w,
               height: FIGURE_VISIBLE,
-              transform: `translate(${fig.x}px, calc(${FLOOR - FIGURE_VISIBLE}px + var(--dy)))`,
+              transform: `translate(calc(${fig.x}px + ${figureStep(fig)}), calc(${FLOOR - FIGURE_VISIBLE}px + var(--dy)))`,
             }}
           >
             <div
@@ -255,14 +274,14 @@ export function FoldStage({
         <div
           ref={win}
           className="z-[3] w-[580px] origin-top-left pointer-events-auto"
-          style={{ transform: `translate(${HERO_WINDOW.x}px, calc(${HERO_WINDOW.y}px + var(--dy)))` }}
+          style={{ transform: `translate(calc(${HERO_WINDOW.x}px - var(--push) * 1px), calc(${HERO_WINDOW.y}px + var(--dy))) scale(var(--wf, 1))` }}
         >
           <DemoWindow variant="desktop" />
         </div>
 
         {setting.lines.map((line, i) => {
           const fig = setting.figures[line.fig];
-          const tail = clamp(fig.x + fig.w / 2 - line.bx, 30, line.bw - 30);
+          const tail = fig.x + fig.w / 2 - line.bx;
           return (
             <div
               key={`${setting.key}-${i}`}
@@ -273,8 +292,9 @@ export function FoldStage({
               style={
                 {
                   width: line.bw,
-                  "--tail": `${tail}px`,
-                  transform: `translate(${line.bx}px, calc(${BUBBLE_TOP}px + var(--dy)))`,
+                  // The tail follows the figure: both step outward, the bubble held back by its own room.
+                  "--tail": `clamp(30px, calc(${tail}px + ${figureStep(fig)} - ${bubbleStep(line, fig)}), ${line.bw - 30}px)`,
+                  transform: `translate(calc(${line.bx}px + ${bubbleStep(line, fig)}), calc(${BUBBLE_TOP}px + var(--dy)))`,
                 } as React.CSSProperties
               }
             >

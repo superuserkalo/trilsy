@@ -7,6 +7,20 @@ export const site = {
   github: "https://github.com/superuserkalo/trilsy",
 } as const;
 
+// The person who provides Trilsy and this website, as the owner gave them on
+// 2026-10-16: Kaloyan Gantchev, Baslergasse 50-66. Printed on /terms (the imprint)
+// and /privacy. That is all the owner has given.
+// TODO: confirm, left off the page on purpose (an Austrian or EU imprint usually
+// also names these; none is invented here):
+// - the postcode and city of Baslergasse 50-66, and the country
+// - a contact email (until then the contact route is GitHub issues)
+// - whether an imprint needs more for this kind of site (trade registration or
+//   VAT number, if one exists; a lawyer or the owner to confirm)
+export const operator = {
+  name: "Kaloyan Gantchev",
+  street: "Baslergasse 50-66",
+} as const;
+
 // Copy: docs/redesign/02-copy-deck.md section 7, word for word. `lead` is the
 // dropdown line and the page's lead; `learning` pages end with the Students line.
 export type UseCase = {

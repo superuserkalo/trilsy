@@ -21,6 +21,7 @@ const siteLinks = [...headerLinks, { href: "/faq", label: "FAQ" }] as const;
 const legalLinks = [
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
+  { href: "/terms#imprint", label: "Imprint" },
 ] as const;
 
 const useCases = useCaseGroups.flatMap((group) => group.items);

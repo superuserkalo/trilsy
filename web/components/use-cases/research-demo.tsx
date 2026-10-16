@@ -2,23 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { m } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Delete02Icon, PlayIcon } from "@hugeicons/core-free-icons";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { transitionBase, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { MenuButton } from "./app-controls";
+import { AppBody, AudioPlayer, NotesDoc, RecordingHeader, RecordingMenu, SidebarRow } from "./app-chrome";
 import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
 
 // Illustration content: a study of where students work. Interviews are listed
-// newest first, as the app lists them. Delete removes the recording's folder
-// (audio, transcript and notes) after one confirmation, and the app then selects
-// the first recording that is left.
+// newest first, as the app lists them. Delete recording is in the "…" menu; it
+// removes the recording's folder (audio, transcript and notes) after one
+// confirmation, and the app then selects the first recording that is left.
 const recordings = [
-  { title: "Participant 7", date: "14 Oct 2026", length: "00:47:12" },
-  { title: "Participant 6", date: "12 Oct 2026", length: "00:52:40" },
-  { title: "Participant 5", date: "11 Oct 2026", length: "00:41:03" },
-  { title: "Participant 4", date: "9 Oct 2026", length: "00:38:25", wide: true },
+  { title: "Participant 7", date: "14 Oct, 11:00", length: "47 min" },
+  { title: "Participant 6", date: "12 Oct, 15:30", length: "52 min" },
+  { title: "Participant 5", date: "11 Oct, 09:15", length: "41 min" },
+  { title: "Participant 4", date: "9 Oct, 14:00", length: "38 min", wide: true },
 ] as const;
 
 const notes = [
@@ -38,25 +36,27 @@ const notes = [
   ],
 ] as const;
 
-const ROW = 56;
-const T_PRESS = 900; // the trash button is pressed
-const T_DIALOG = 1300; // the confirmation opens
-const T_CONFIRM = 2800; // "Delete recording" is pressed
-const T_GONE = 3250; // the sheet closes, the row collapses, the next recording opens
+const ROW = 32;
+const T_MENU = 800; // the "…" menu opens
+const T_PICK = 1400; // "Delete recording" is under the pointer
+const T_DIALOG = 2000; // the menu closes, the confirmation opens
+const T_CONFIRM = 3500; // "Delete recording" is pressed in the confirmation
+const T_GONE = 3950; // the sheet closes, the row collapses, the next recording opens
 
 /**
  * Research interviews: the audio is on the Mac, and the Mac's owner decides what
- * happens to it. A participant's interview is open; Delete is pressed, the app
- * asks once ("Permanently delete this recording, audio, and notes?"), the
- * interview leaves the list and the next one opens. Plays once, 40% in view; the
- * state after the delete at once under reduced motion. Both interviews are laid
- * out in one grid cell, the list keeps the height of its rows, and the sheet sits
- * over the window, so nothing shifts.
+ * happens to it. A participant's interview is open; the "…" menu is opened and
+ * Delete recording chosen, the app asks once ("Permanently delete this recording,
+ * audio, and notes?"), the interview leaves the list and the next one opens. Plays
+ * once, 40% in view; the state after the delete at once under reduced motion. Both
+ * interviews are laid out in one grid cell, the list keeps the height of its rows,
+ * and the menu and the sheet sit over the window, so nothing shifts.
  */
 export function ResearchDemo() {
   const { ref, inView } = usePlayOnce();
   const tBase = useMotionTransition(transitionBase);
-  const [pressed, setPressed] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [picked, setPicked] = useState(false);
   const [asking, setAsking] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [gone, setGone] = useState(false);
@@ -68,8 +68,13 @@ export function ResearchDemo() {
       return;
     }
     const timers = [
-      setTimeout(() => setPressed(true), T_PRESS),
-      setTimeout(() => setAsking(true), T_DIALOG),
+      setTimeout(() => setMenu(true), T_MENU),
+      setTimeout(() => setPicked(true), T_PICK),
+      setTimeout(() => {
+        setMenu(false);
+        setPicked(false);
+        setAsking(true);
+      }, T_DIALOG),
       setTimeout(() => setConfirmed(true), T_CONFIRM),
       setTimeout(() => {
         setAsking(false);
@@ -84,85 +89,57 @@ export function ResearchDemo() {
       ref={ref}
       title="Trilsy"
       role="img"
-      aria-label="A list of four interview recordings with the first one open. Its delete button is pressed and the app asks: Permanently delete this recording, audio, and notes? The recording is deleted, it leaves the list, and the next interview opens."
+      aria-label="A list of four interview recordings with the first one open. In its menu, Delete recording is chosen and the app asks: Permanently delete this recording, audio, and notes? The recording is deleted, it leaves the list, and the next interview opens."
       className="relative"
     >
-      <div aria-hidden className="grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <ul className="flex h-[200px] flex-col overflow-hidden border-b border-border px-4 py-4 md:h-auto md:min-h-[300px] md:border-r md:border-b-0">
-          {recordings.map((r, i) => (
+      <div aria-hidden>
+        <AppBody
+          allSelected={false}
+          collapse={false}
+          list={recordings.map((r, i) => (
             <m.li
               key={r.title}
               initial={false}
               animate={{ height: i === 0 && gone ? 0 : ROW, opacity: i === 0 && gone ? 0 : 1 }}
               transition={tBase}
-              className={cn("shrink-0 overflow-hidden", "wide" in r && "max-md:hidden")}
+              className={cn("shrink-0 overflow-hidden", "wide" in r && "max-sm:hidden")}
             >
-              <div
-                className={cn(
-                  "flex h-14 flex-col justify-center rounded-md px-2.5 transition-colors duration-(--duration-base) ease-trilsy",
-                  (i === 0 && !gone) || (i === 1 && gone) ? "bg-field" : "",
-                )}
-              >
-                <p className="truncate font-semibold">{r.title}</p>
-                <p className="text-xs text-muted-foreground">{r.date}</p>
-              </div>
+              <SidebarRow title={r.title} selected={(i === 0 && !gone) || (i === 1 && gone)} />
             </m.li>
           ))}
-        </ul>
-
-        <div className="grid">
-          {[0, 1].map((n) => {
-            const r = recordings[n];
-            const visible = n === 0 ? !gone : gone;
-            return (
-              <div
-                key={r.title}
-                className={cn(
-                  "col-start-1 row-start-1 flex flex-col gap-4 px-4 py-4 transition-opacity duration-(--duration-base) ease-trilsy",
-                  !visible && "opacity-0",
-                )}
-              >
-                <div>
-                  <p className="font-display text-lg leading-tight font-semibold">{r.title}</p>
-                  <div className="mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                    <p className="text-xs whitespace-nowrap text-muted-foreground">{r.length} · Recorded</p>
-                    <span className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-semibold">
-                        <HugeiconsIcon icon={PlayIcon} strokeWidth={2} className="size-3.5" />
-                        Play
-                      </span>
-                      <MenuButton label="Export" />
-                      <span
-                        className={cn(
-                          "inline-flex size-7 items-center justify-center rounded-md border border-border transition-colors duration-(--duration-base) ease-trilsy",
-                          n === 0 && pressed && "border-ink bg-primary text-primary-foreground",
-                        )}
-                      >
-                        <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5" />
-                      </span>
-                    </span>
-                  </div>
+          listClassName="h-32 overflow-hidden sm:h-32"
+        >
+          <div className="grid">
+            {[0, 1].map((n) => {
+              const r = recordings[n];
+              const visible = n === 0 ? !gone : gone;
+              return (
+                <div
+                  key={r.title}
+                  className={cn(
+                    "col-start-1 row-start-1 flex flex-col gap-4 px-4 py-4 transition-opacity duration-(--duration-base) ease-trilsy",
+                    !visible && "opacity-0",
+                  )}
+                >
+                  <RecordingHeader title={r.title} date={r.date} length={r.length} status="Ready" />
+                  <AudioPlayer position={0} duration={2832} />
+                  <ViewControl
+                    active="Notes"
+                    menu={<RecordingMenu open={n === 0 && menu} highlight={n === 0 && picked ? "delete" : undefined} />}
+                  />
+                  <NotesDoc sections={notes[n]} />
                 </div>
-                <ViewControl active="Notes" />
-                <div className="flex flex-col gap-3.5 text-[13px] leading-[1.55]">
-                  {notes[n].map((s) => (
-                    <div key={s.h}>
-                      <p className="font-semibold">## {s.h}</p>
-                      <p>{s.p}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </AppBody>
       </div>
 
       {/* The confirmation, over the window. The app's own words. */}
       <div
         aria-hidden
         className={cn(
-          "absolute inset-x-0 top-12 flex justify-center px-4 transition-opacity duration-(--duration-base) ease-trilsy",
+          "absolute inset-x-0 top-24 flex justify-center px-4 transition-opacity duration-(--duration-base) ease-trilsy",
           asking ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >

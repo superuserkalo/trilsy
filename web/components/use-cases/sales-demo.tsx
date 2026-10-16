@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PlayIcon, StopIcon } from "@hugeicons/core-free-icons";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
-import { cn } from "@/lib/utils";
+import { AudioPlayer } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
 import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
 
@@ -21,13 +19,16 @@ const lines = [
 ] as const;
 
 const PLAYED = 1; // the line whose timestamp is pressed
+const PLAYED_AT = 14 * 60 + 32; // 00:14:32
+const LENGTH = 32 * 60 + 10; // 00:32:10
 
 /**
  * Sales calls: press a timestamp and the audio plays from that line. The window
- * starts with the Play button idle; after a beat the second line's timestamp is
- * pressed, the line is marked and the button becomes "Stop playback", as the app
- * shows it. Plays once, when the window is 40% in view; the finished state at
- * once under reduced motion. Nothing in the window changes size.
+ * starts with the player idle, its button a play icon and the slider at the start;
+ * after a beat the second line's timestamp is pressed, the line is marked, the
+ * button becomes the stop icon and the slider moves to 00:14:32, as the app does.
+ * Plays once, when the window is 40% in view; the finished state at once under
+ * reduced motion. Nothing in the window changes size.
  */
 export function SalesDemo() {
   const { ref, inView } = usePlayOnce();
@@ -50,25 +51,11 @@ export function SalesDemo() {
       ref={ref}
       title="Pricing call, 12 Oct"
       role="img"
-      aria-label="A transcript of four lines, each with a timestamp and the source it came from. The timestamp 00:14:32 on a line from System is pressed, the line is marked and the Play button becomes Stop playback, because the audio is now playing from that point."
+      aria-label="A transcript of four lines, each with a timestamp and the source it came from. The timestamp 00:14:32 on a line from System is pressed, the line is marked, the player's play button becomes a stop button and its slider moves to 00:14:32, because the audio is now playing from that point."
     >
       <div aria-hidden className="flex flex-col gap-3 px-4 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <ViewControl active="Transcript" />
-          <span
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-semibold transition-colors duration-(--duration-base) ease-trilsy",
-              playing && "border-ink bg-primary text-primary-foreground",
-            )}
-          >
-            <HugeiconsIcon icon={playing ? StopIcon : PlayIcon} strokeWidth={2} className="size-3.5" />
-            {/* Both labels share one grid cell, so the button keeps the width of the longer one. */}
-            <span className="grid">
-              <span className={cn("col-start-1 row-start-1", playing && "invisible")}>Play</span>
-              <span className={cn("col-start-1 row-start-1", !playing && "invisible")}>Stop playback</span>
-            </span>
-          </span>
-        </div>
+        <AudioPlayer position={playing ? PLAYED_AT : 0} duration={LENGTH} playing={playing} />
+        <ViewControl active="Transcript" />
         <ul className="flex flex-col">
           {lines.map((l, i) => (
             <TranscriptLine key={l.at} {...l} active={playing && i === PLAYED} pressed={pressed && i === PLAYED} />

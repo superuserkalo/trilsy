@@ -22,7 +22,7 @@ const figures = [
 // New copy for review (not in the copy deck). The behavior is the product's
 // timestamp: every transcript line has one, and pressing it plays the audio from
 // that line. Questions: headphones (no echo cancellation, per the fact check) and
-// when the transcript is ready (after you stop, never live).
+// when the transcript is ready (after you press Create notes, never live).
 const behavior =
   "Every line of the transcript has a timestamp. Press it and the audio plays from that line, so the customer’s exact words are one press away.";
 
@@ -37,7 +37,7 @@ const questions: Faq[] = [
     id: "ready",
     question: "Is the transcript ready when the call ends?",
     answer:
-      "Not quite. Trilsy transcribes after you stop, not while you talk, and writes the notes after that. How long it takes depends on the length of the call and on your Mac.",
+      "Not quite. Stopping saves the recording. Trilsy transcribes it when you press Create notes, not while you talk, and writes the notes after that. How long it takes depends on the length of the call and on your Mac.",
   },
 ];
 

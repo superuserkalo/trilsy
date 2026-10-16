@@ -20,7 +20,8 @@ const figures = [
 ] as const;
 
 // New copy for review (not in the copy deck). The behavior is the plain text
-// export: one line per transcript line, "[HH:MM:SS] [Source] text", in time order
+// export: one line per transcript line, "[HH:MM:SS] [source] text" with the source in
+// lower case, in time order
 // across sources (Sources/AppModel.swift export, Recording.transcript). The notes
 // are not in it. The page does not say the transcript is accurate enough to quote
 // unchecked.
@@ -38,7 +39,7 @@ const questions: Faq[] = [
     id: "both-sides",
     question: "If I interview someone by phone or video call, are both sides in the file?",
     answer:
-      "Yes, if you record your microphone and your Mac’s sound together. Both are in one file in time order, each line marked Microphone or System. Wear headphones, so your microphone does not pick the other person up a second time.",
+      "Yes, if you record your microphone and your Mac’s sound together. Both are in one file in time order, each line marked microphone or system in the file. Wear headphones, so your microphone does not pick the other person up a second time.",
   },
 ];
 

@@ -19,12 +19,13 @@ const figures = [
   { src: "/characters/08-blue-crop.svg", alt: "A person in a blue top, listening in a meeting" },
 ] as const;
 
-// New copy for review. The behavior is editing: the notes are a plain-text
-// Markdown editor, and the title and each transcript line are editable too. The
+// New copy for review. The behavior is editing: the notes are shown rendered, and
+// the Edit button opens them in a Markdown editor (Sources/ContentView.swift); the
+// title and each transcript line are editable in place. The
 // page does not say edits are safe from a re-run ("Continue processing" replaces
 // them without asking, b8 fact check).
 const behavior =
-  "The notes are plain text you can edit like any note: fix a name, cut a line, add what the notes model missed. The title and the transcript lines are editable too.";
+  "Press Edit and the notes open in a Markdown editor: fix a name, cut a line, add what the notes model missed. The title and the transcript lines are editable too.";
 
 const questions: Faq[] = [
   {

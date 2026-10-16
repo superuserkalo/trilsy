@@ -5,7 +5,8 @@ import { chapters, type Chapter } from "./story";
  * The story's three chapters (copy deck section 4). Pinned (ticket 07): on
  * desktop, 80vh blocks in the left column beside the pinned window, the active
  * one at full strength; on the phone, invisible 70vh scroll markers, because the
- * phone stage shows the caption itself. Flow: plain blocks in reading order, for
+ * phone stage shows the caption itself. The text column narrows with the stage, so below
+ * 1440px it stops short of the portrait tiles on the window's left edge. Flow: plain blocks in reading order, for
  * the page before ticket 07 wires the scroll.
  */
 export function StoryChapters({
@@ -37,7 +38,7 @@ export function StoryChapters({
           data-chapter={i}
           className="flex h-[70vh] items-end pb-[6vh] max-lg:invisible lg:mx-auto lg:h-[80vh] lg:w-full lg:max-w-[1440px] lg:items-center lg:pb-0 lg:pl-[calc(120px*var(--stage-s,1))]"
         >
-          <div className="flex max-w-[440px] flex-col gap-3">
+          <div className="flex max-w-[440px] flex-col gap-3 lg:max-w-[calc(440px*var(--stage-s,1))]">
             {/* The other two chapters step back to the muted ink (5.5:1 on paper, so they still
                 read), not to a fade: the active one leads by colour. */}
             <h2

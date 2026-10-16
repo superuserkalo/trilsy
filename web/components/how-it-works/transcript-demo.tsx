@@ -9,7 +9,9 @@ const lines = [
 
 /**
  * Block 3: a transcript, and the two settings the text mentions (the language and
- * the words it should know). Labels are the app's own: sources, not people.
+ * the words it should know). The source labels are the app's: sources, not
+ * people. The settings are its Transcription section: the field "Language code"
+ * (empty it shows "Auto-detect") and "Names & vocabulary".
  */
 export function TranscriptDemo() {
   return (
@@ -35,10 +37,10 @@ export function TranscriptDemo() {
       <dl aria-hidden className="grid gap-3 border-t border-border bg-muted/40 px-4 py-3 text-xs sm:grid-cols-[1fr_2fr]">
         <div className="flex flex-col gap-1">
           <dt className="font-semibold text-muted-foreground">Language code</dt>
-          <dd className="rounded-md border border-border bg-card px-2 py-1 text-muted-foreground">blank = detect</dd>
+          <dd className="rounded-md border border-border bg-card px-2 py-1 text-muted-foreground">Auto-detect</dd>
         </div>
         <div className="flex flex-col gap-1">
-          <dt className="font-semibold text-muted-foreground">Names and specialist vocabulary</dt>
+          <dt className="font-semibold text-muted-foreground">Names &amp; vocabulary</dt>
           <dd className="truncate rounded-md border border-border bg-card px-2 py-1">Okonkwo, Figma, onboarding</dd>
         </div>
       </dl>

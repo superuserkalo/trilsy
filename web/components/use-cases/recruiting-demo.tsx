@@ -5,6 +5,7 @@ import { m } from "motion/react";
 import { MockWindow } from "@/components/how-it-works/mock";
 import { transition, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { NoteBlock } from "./app-chrome";
 import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
 
 // Illustration content: two interviews for the same role. The notes model picks
@@ -34,7 +35,8 @@ const interviews = [
 ] as const;
 
 /**
- * Recruiting: two interviews' notes side by side, each starting with its overview.
+ * Recruiting: two interviews' notes side by side, rendered as the app shows them
+ * (headings, not Markdown), each starting with its overview.
  * Both columns sit on the same three grid rows (a subgrid), so the overviews
  * line up whatever their length. The first interview is there; the second comes
  * in beside it, and a field-coloured band marks the two overviews as one row.
@@ -82,15 +84,11 @@ export function RecruitingDemo() {
               <p className="text-xs text-muted-foreground">{iv.date}</p>
             </div>
             <div className={cn("px-4 py-3 text-[13px] leading-[1.55] transition-colors duration-(--duration-base) ease-trilsy", band && "bg-field")}>
-              <p className="font-semibold">## Overview</p>
-              <p>{iv.overview}</p>
+              <NoteBlock h="Overview" p={iv.overview} />
             </div>
             <div className="flex flex-col gap-3.5 px-4 pt-3 pb-4 text-[13px] leading-[1.55]">
               {iv.sections.map((s) => (
-                <div key={s.h}>
-                  <p className="font-semibold">## {s.h}</p>
-                  <p>{s.p}</p>
-                </div>
+                <NoteBlock key={s.h} {...s} />
               ))}
             </div>
           </m.div>

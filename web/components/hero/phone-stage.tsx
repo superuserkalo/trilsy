@@ -59,7 +59,7 @@ export function PhoneStage({ chapter, className }: { chapter: Chapter; className
       <div className="absolute top-3.5 left-3 z-[4] flex gap-1.5">
         {setting.figures.map((fig, i) => {
           // Same scale as the stage's figures (500px tall there), so every figure keeps
-          // its own aspect ratio: the pack SVGs come out 76px wide, the professor 46px.
+          // its own aspect ratio: the pack SVGs come out 76px wide, the professor (a narrower canvas) 46px.
           const tileW = Math.round((fig.w * TILE_FIGURE_H) / FIGURE_H);
           return (
             <span

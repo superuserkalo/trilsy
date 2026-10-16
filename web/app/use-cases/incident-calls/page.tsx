@@ -29,7 +29,7 @@ const questions: Faq[] = [
     id: "clock-time",
     question: "Are the timestamps the time of day?",
     answer:
-      "No. They count from the start of the recording, so 00:11:20 is eleven minutes and twenty seconds in. Note the clock time when you press Record and you can turn any timestamp into a time of day.",
+      "No. They count from the start of the recording, so 00:11:20 is eleven minutes and twenty seconds in. Note the clock time when you press New recording and you can turn any timestamp into a time of day.",
   },
   {
     id: "postmortem",

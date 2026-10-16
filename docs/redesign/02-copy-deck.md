@@ -2,7 +2,7 @@
 
 Written to `copy-playbook.md` and the product facts in `docs/redesign-brief/00-master.md` as updated on 2026-10-15. Every claim is true of the app today per `b8-fact-check.md`, or is a plain "not yet" in an FAQ answer. No roadmap list. No claim about bots. No prices in OG images, JSON-LD or llms.txt. Every `TODO: confirm` is collected at the end. Nothing here is approved until the owner approves it; no code starts before then.
 
-Words not used: AI-powered, seamless, effortless, magic, supercharge, unlock, #1, best, revolutionary, "for students" in the hero, "open source" (until a licence exists), "integrates", any badge.
+Words not used: AI-powered, seamless, effortless, magic, supercharge, unlock, #1, best, revolutionary, "for students" in the hero, "integrates", any badge.
 
 ## 1. Header
 
@@ -73,7 +73,7 @@ Learning pages end with: Students get 50% off every paid plan. See the Students 
 Heading: **Press record. Read the notes.**
 - **What is recorded.** Your microphone, your Mac's sound or both. System sound is a switch, off until you turn it on, and needs macOS's Screen & System Audio Recording permission. Wear headphones when you record both. You can also import an audio or video file.
 - **Where it lives.** Audio is saved as short files in a folder on your Mac, `Library/Application Support/Trilsy/Recordings`. The transcript and notes are files next to it. Trilsy has no account and uploads nothing. Your Mac's disk encryption protects them; Trilsy does not add its own.
-- **How the transcript is made.** After you stop, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.
+- **How the transcript is made.** After you stop and press Create notes, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.
 - **How the notes are written.** A language model on your Mac writes detailed notes section by section, then puts a short overview on top. Check them against the audio; the model can be wrong, and a timestamp it writes into the notes is not a link.
 - **What you can do with them.** Edit the notes, the transcript and the title. Search your recordings by title, transcript and notes. Export Markdown (notes and transcript), text (transcript) or SRT subtitles (transcript).
 - **What you need.** Apple silicon, macOS 15 or later, 16 GB of memory recommended. The two models download once from Hugging Face and take several GB; recordings are saved uncompressed, so they are large.
@@ -101,8 +101,8 @@ Synced 2026-10-16 (Phase E) to the shipped answers in `web/lib/faq.ts`, lengthen
 3. **Where are my recordings kept?** On your Mac, as ordinary files in `Library/Application Support/Trilsy/Recordings`, one folder for each recording. Trilsy does not encrypt them itself; your disk encryption does. Delete the folder and the recording is gone. Nothing is kept anywhere else, because there is no account and no upload.
 4. **Does anything leave my Mac?** No. Your audio, transcript and notes stay on your Mac as files. Trilsy has no account, no upload and no analytics. The only download is the two models, once from Hugging Face before first use, which needs a connection; after that it works offline. Nothing you record is sent anywhere, and nothing is kept for you on a server. (Offline use confirmed by the owner, 2026-10-16.)
 5. **What does it cost?** The app is free, with no time limit, and it needs no account. A paid Pro plan is not available yet. Students get 50% off every paid plan. The free app always stays local, with your recordings kept as files on your Mac, so what you pay for later never decides whether you can keep them. `TODO: confirm` (Student discount of 50% and its verification method (copy deck 13, item 2)).
-6. **Is it open source?** Not yet. The source is on GitHub, where anyone can read it, but we have not chosen a licence, so we do not call it open source. That decision is still to be made, and until it is, the code is there to read and nothing should be assumed about reusing it. `TODO: confirm` (Re-word once the licence is chosen (copy deck 13, item 6)).
-7. **Does it transcribe while I talk?** No. Trilsy records first, and when you stop it transcribes the recording on your Mac and then writes the notes. You get the transcript and the notes after the recording ends, not line by line while you talk. An audio or video file you import goes through the same steps.
+6. **Is it open source?** Yes. Trilsy is open source under the MIT licence, and the source is on GitHub. Anyone may read, use, change and share the code, even commercially, if the licence notice stays with it. The Trilsy name and this website’s drawings are not part of that grant, and the app’s models have their own licences. (MIT chosen by the owner, 2026-10-16.)
+7. **Does it transcribe while I talk?** No. Trilsy records first. Stopping only saves the recording; when you press Create notes, it transcribes it on your Mac and then writes the notes. You get the transcript and the notes after the recording ends, not line by line while you talk. An audio or video file you import goes through the same steps.
 8. **Does it know who said what?** No. Trilsy does not identify speakers. Each transcript line is labelled by where the sound came from: Microphone, System or Import, not by person. With your Mac's sound switched on, your own voice arrives through the microphone and the people you hear through your Mac arrive as System, unnamed.
 9. **What do I need?** An Apple silicon Mac with macOS 15 or later; 16 GB of memory is recommended. The two models take several GB and recordings are saved uncompressed, so leave room on your disk. You also need an internet connection once, to download the models before first use, so allow for that download the first time.
 10. **Can it connect to my apps or my AI assistant?** Not yet. A paid plan is planned to add connections to Google Calendar, Notion, Slack, Google Drive and Microsoft apps, and an MCP server so an assistant can search, read and write your notes and start and stop a recording. None of it exists yet. A recording an assistant starts is still a recording: tell people.
@@ -115,7 +115,7 @@ Also on the page, one line each: **Is there an iPhone app?** Not yet. **What lan
 - **Footer:** the use-case list in plain columns, the legal links, and the trademark line above. `TODO: confirm` the legal pages exist before launch.
 - **Page title (home):** Trilsy: notes for every call, lecture and interview. **Meta description:** Trilsy is a Mac app that records your microphone, your Mac's sound or both, transcribes it on your Mac and writes notes you can edit. Free, no account.
 - **OG title:** Be in the conversation. Trilsy writes the notes. (no price)
-- **llms.txt summary:** Trilsy is a Mac app for Apple silicon (macOS 15 or later). It records the microphone, the Mac's sound or both, transcribes the recording after it ends with Whisper on the Mac, and writes editable notes with a local language model. Files stay on the Mac. Export: Markdown, text, SRT. Source on GitHub. No signed release yet. (no prices, no unbuilt features)
+- **llms.txt summary:** Trilsy is a Mac app for Apple silicon (macOS 15 or later). It records the microphone, the Mac's sound or both, transcribes the recording after it ends with Whisper on the Mac, and writes editable notes with a local language model. Files stay on the Mac. Export: Markdown, text, SRT. Open source under the MIT licence, on GitHub. No signed release yet. (no prices, no unbuilt features)
 - **Alt text for characters:** each figure is described by role and what it does in the scene ("A professor with clasped hands, speaking").
 
 ## 13. Everything marked TODO: confirm, in one list (for the owner)
@@ -125,7 +125,7 @@ Also on the page, one line each: **Is there an iPhone app?** Not yet. **What lan
 3. The pricing comparison: re-read Otter, Granola and Wispr Flow before launch; Fireflies and Superwhisper need a readable price or stay out.
 4. Each named app in the trust band and FAQ 2: tried on a real Mac.
 5. Whether the app works fully offline after the model download.
-6. The licence, and so the wording "open source" and any star count.
+6. ~~The licence~~ Closed 2026-10-16: MIT, "open source" is allowed. A star count is still not shown (not asked).
 7. Which languages are tested.
 8. Whether the app has a "Create notes" button, or writes notes automatically (the hero window wording).
 9. That the legal pages (privacy, terms) exist.

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { Marker } from "@/components/hero/marker";
 import { LegalPage, Path, TextLink } from "@/components/legal/legal-page";
-import { site } from "@/lib/site";
+import { operator, site } from "@/lib/site";
 
 // Title, description and every line below are new copy for review (not in the
 // copy deck). Written from the code: the app reads no network except Hugging
@@ -18,9 +18,11 @@ export const metadata: Metadata = pageMetadata({
 });
 
 // TODO: confirm, left off the page on purpose:
-// - who is the controller (a company name, an address, a jurisdiction and a
-//   contact email): none is in the master or the repo, so none is printed. The
-//   page points to GitHub issues instead.
+// - the controller is named: Kaloyan Gantchev, Baslergasse 50-66 (lib/site.ts
+//   `operator`, given by the owner on 2026-10-16). Still missing, and not
+//   invented: postcode, city, country and a contact email, so the page points to
+//   GitHub issues. A private route for a data request (an email) is the one
+//   missing piece that matters here, because issues are public.
 // - an effective or "last updated" date: the owner has not set one, and a date
 //   would be a promise. The page says the history is in the repository.
 // - the Vercel project's settings: the page says the host keeps ordinary server
@@ -108,19 +110,31 @@ export default function PrivacyPage() {
           ),
         },
         {
+          id: "controller",
+          title: "Who is responsible.",
+          body: (
+            <>
+              <p>
+                {operator.name}, <span className="whitespace-nowrap">{operator.street}</span>, runs the Trilsy app and this website, and is responsible for the data
+                protection of what the website handles, described above. The app sends the provider nothing.
+              </p>
+              <p>
+                To ask about your data, <TextLink href={`${site.github}/issues`} external>open an issue on GitHub</TextLink>.
+                Issues there are public, so do not put personal details in one; ask for a private way to reply.
+              </p>
+            </>
+          ),
+        },
+        {
           id: "changes",
-          title: "Changes and questions.",
+          title: "Changes.",
           body: (
             <p>
               This page changes when the app or the site does, and its history is in the repository on{" "}
               <TextLink href={site.github} external>
                 GitHub
               </TextLink>
-              , next to the code it describes. For a question or a correction,{" "}
-              <TextLink href={`${site.github}/issues`} external>
-                open an issue there
-              </TextLink>
-              .
+              , next to the code it describes.
             </p>
           ),
         },

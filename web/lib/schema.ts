@@ -39,6 +39,7 @@ export const homeSchema = {
       processorRequirements: "Apple silicon",
       memoryRequirements: "16 GB recommended",
       isAccessibleForFree: true,
+      license: "https://opensource.org/license/mit",
       sameAs: [site.github],
       publisher: { "@id": orgId },
       featureList: [

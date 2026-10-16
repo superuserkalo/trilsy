@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PlayIcon } from "@hugeicons/core-free-icons";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { cn } from "@/lib/utils";
-import { MenuButton, PopMenu } from "./app-controls";
+import { AudioPlayer, RecordingHeader, RecordingMenu } from "./app-chrome";
 import { TranscriptLine } from "./transcript-line";
 import { prefersReducedMotion, usePlayOnce } from "./use-play-once";
 
 // Illustration content: an interview by phone, so both sources are in the file.
 // The text export is exactly what the app writes: one line per transcript line,
-// "[HH:MM:SS] [Source] text", in time order. The notes are not in it.
+// "[HH:MM:SS] [source] text", in time order, with the source in lower case
+// ("[microphone]", "[system]", Sources/Recording.swift). The notes are not in it.
 const lines = [
   { at: "00:18:04", src: "Microphone", text: "Did the council know the cost before the vote?" },
   { at: "00:18:11", src: "System", text: "We saw an estimate in March. The final figure came after the vote." },
@@ -19,23 +18,23 @@ const lines = [
   { at: "00:18:36", src: "System", text: "Yes, and I said so at the time." },
 ] as const;
 
-const exports = ["Markdown with transcript", "Plain text transcript", "SRT subtitles"] as const;
-const TEXT = 1;
+const TEXT = 1; // "Plain text transcript", the second entry of Export
 const QUOTE = 1; // the line the reporter picks out
 
 /**
  * Journalism: the transcript as plain text, with its timestamps. The window is
- * the app with an interview open; Export is pressed, "Plain text transcript" is
- * chosen, and the file it writes appears below it, where one line is selected
- * as the quote. Plays once, 40% in view; the finished state at once under
+ * the app with an interview open; the "…" menu is opened, Export is chosen, then
+ * "Plain text transcript", and the file it writes appears below, where one line is
+ * selected as the quote. Plays once, 40% in view; the finished state at once under
  * reduced motion. The file's lines are laid out from the start and fade in, and
  * the menu opens over the transcript, so nothing shifts.
  */
 export function JournalismDemo() {
   const { ref, inView } = usePlayOnce();
   const [open, setOpen] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const [highlight, setHighlight] = useState<number | undefined>(undefined);
+  const [highlight, setHighlight] = useState<"export" | undefined>(undefined);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportHighlight, setExportHighlight] = useState<number | undefined>(undefined);
   const [written, setWritten] = useState(false);
   const [quoted, setQuoted] = useState(false);
 
@@ -46,17 +45,19 @@ export function JournalismDemo() {
       return;
     }
     const timers = [
+      setTimeout(() => setOpen(true), 800),
       setTimeout(() => {
-        setPressed(true);
-        setOpen(true);
-      }, 800),
-      setTimeout(() => setHighlight(TEXT), 1500),
+        setHighlight("export");
+        setExportOpen(true);
+      }, 1400),
+      setTimeout(() => setExportHighlight(TEXT), 2000),
       setTimeout(() => {
         setOpen(false);
-        setPressed(false);
-      }, 2100),
-      setTimeout(() => setWritten(true), 2500),
-      setTimeout(() => setQuoted(true), 3600),
+        setExportOpen(false);
+        setHighlight(undefined);
+      }, 2600),
+      setTimeout(() => setWritten(true), 3000),
+      setTimeout(() => setQuoted(true), 4100),
     ];
     return () => timers.forEach(clearTimeout);
   }, [inView]);
@@ -65,30 +66,17 @@ export function JournalismDemo() {
     <div
       ref={ref}
       role="img"
-      aria-label="An interview with four transcript lines, each with a timestamp and a source, Microphone or System. The Export menu is opened and Plain text transcript is chosen. Below, the file it writes, with the same four lines, each beginning with its timestamp and its source in square brackets. One line is selected as the quote."
+      aria-label="An interview with four transcript lines, each with a timestamp and a source, Microphone or System. The menu is opened, Export is chosen and then Plain text transcript. Below, the file it writes, with the same four lines, each beginning with its timestamp and its source in square brackets. One line is selected as the quote."
       className="flex flex-col gap-5"
     >
       <MockWindow title="Trilsy">
         <div aria-hidden className="flex flex-col gap-3 px-4 py-4">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex flex-col">
-              <p className="font-display text-lg leading-tight font-semibold">Bus route funding, 9 Oct</p>
-              <p className="text-xs text-muted-foreground">00:41:58 · Recorded</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-between gap-3">
-            <ViewControl active="Transcript" />
-            <span className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-semibold">
-                <HugeiconsIcon icon={PlayIcon} strokeWidth={2} className="size-3.5" />
-                Play
-              </span>
-              <span className="relative">
-                <MenuButton label="Export" pressed={pressed} />
-                <PopMenu items={exports} open={open} highlighted={highlight} className="right-0" />
-              </span>
-            </span>
-          </div>
+          <RecordingHeader title="Bus route funding, 9 Oct" date="9 Oct, 16:20" length="41 min" status="Ready" />
+          <AudioPlayer position={0} duration={2518} />
+          <ViewControl
+            active="Transcript"
+            menu={<RecordingMenu open={open} highlight={highlight} exportOpen={exportOpen} exportHighlight={exportHighlight} />}
+          />
           <ul className="flex flex-col">
             {lines.map((l) => (
               <TranscriptLine key={l.at} {...l} />
@@ -113,7 +101,7 @@ export function JournalismDemo() {
                   quoted && i === QUOTE && "bg-primary/45",
                 )}
               >
-                [{l.at}] [{l.src}] {l.text}
+                [{l.at}] [{l.src.toLowerCase()}] {l.text}
               </span>
             </li>
           ))}

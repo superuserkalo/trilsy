@@ -13,7 +13,7 @@ const url = (path: string) => `${siteUrl}${path === "/" ? "" : path}`;
 
 // Copy deck section 12, the llms.txt summary, word for word.
 const summary =
-  "Trilsy is a Mac app for Apple silicon (macOS 15 or later). It records the microphone, the Mac's sound or both, transcribes the recording after it ends with Whisper on the Mac, and writes editable notes with a local language model. Files stay on the Mac. Export: Markdown, text, SRT. Source on GitHub. No signed release yet.";
+  "Trilsy is a Mac app for Apple silicon (macOS 15 or later). It records the microphone, the Mac's sound or both, transcribes the recording after it ends with Whisper on the Mac, and writes editable notes with a local language model. Files stay on the Mac. Export: Markdown, text, SRT. Open source under the MIT licence, on GitHub. No signed release yet.";
 
 const facts = [
   "Records the microphone, the Mac's sound or both. Recording the Mac's sound is one switch, off by default, and needs macOS's Screen & System Audio Recording permission.",
@@ -28,7 +28,7 @@ const facts = [
   "Audio, transcript and notes are ordinary files in ~/Library/Application Support/Trilsy/Recordings. No account, no upload, no analytics. The two models download once from Hugging Face before first use.",
   "Needs an Apple silicon Mac with macOS 15 or later; 16 GB of memory is recommended.",
   "The app is free, with no time limit. A paid plan is not available yet.",
-  `The source is on GitHub (${site.github}). No licence has been chosen yet. There is no signed installer or public release yet.`,
+  `Open source under the MIT licence; the source is on GitHub (${site.github}). The Trilsy name and the website's drawings are not part of the MIT grant. There is no signed installer or public release yet.`,
 ];
 
 const pages = [
@@ -79,7 +79,7 @@ const howItWorks = [
   ],
   [
     "How the transcript is made",
-    "After you stop, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.",
+    "After you stop and press Create notes, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.",
   ],
   [
     "How the notes are written",
@@ -105,7 +105,7 @@ export function llmsFullTxt() {
     "",
     "## What Trilsy is",
     "",
-    "Trilsy is a notetaker for the Mac. You press record during a call, a lecture, an interview or a meeting; when you stop, Trilsy transcribes the recording on your Mac and writes notes you can edit. Nothing is uploaded and there is no account.",
+    "Trilsy is a notetaker for the Mac. You press New recording during a call, a lecture, an interview or a meeting; when you stop, Trilsy saves it, and when you press Create notes it transcribes the recording on your Mac and writes notes you can edit. Nothing is uploaded and there is no account.",
     "",
     "## Facts",
     "",

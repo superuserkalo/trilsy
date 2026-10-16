@@ -17,6 +17,8 @@ const LINE_PHONE = 0.7;
 const FOLDED = 0.98;
 /** Reduced motion: the hero and pinned layouts swap here. */
 const SWAP = 0.5;
+/** The window is never drawn smaller than this scale, so its 13px text stays near 11.5px. */
+const WINDOW_MIN = 0.885;
 
 /**
  * The home page's first section (ticket 07): one sticky track that carries the
@@ -102,8 +104,16 @@ export function HeroSection({ copy }: { copy: ReactNode }) {
       // first paint; this repeats it for engines that read neither form correctly
       // (WebKit before typed division returns tan(atan2(vw, px)) with the angle taken
       // as radians when it was degrees, a negative scale that throws the stage off screen).
-      if (wide.matches) root.current?.style.setProperty("--stage-s", String(Math.min(1, window.innerWidth / 1440)));
-      else root.current?.style.removeProperty("--stage-s");
+      // --wf is the window's size over the stage's: 1 from 1274px up, more below it (the same
+      // rule as the CSS on the section).
+      if (wide.matches) {
+        const s = Math.min(1, window.innerWidth / 1440);
+        root.current?.style.setProperty("--stage-s", String(s));
+        root.current?.style.setProperty("--wf", String(Math.max(1, WINDOW_MIN / s)));
+      } else {
+        root.current?.style.removeProperty("--stage-s");
+        root.current?.style.removeProperty("--wf");
+      }
       top.set(trackTop);
       vh.set(window.innerHeight);
       sync();
@@ -133,11 +143,12 @@ export function HeroSection({ copy }: { copy: ReactNode }) {
   return (
     <StoryClock chapter={chapter} rootRef={root}>
       {/* --stage-s: typed division where supported (Chrome 140+, Safari 26+), else
-          tan(atan2()), which WebKit resolves wrongly for viewport units. */}
+          tan(atan2()), which WebKit resolves wrongly for viewport units. --wf: how many times
+          larger than the stage scale the window is drawn (0.885 is the least scale it gets). */}
       <section
         ref={root}
         aria-label="Trilsy"
-        className="relative [--stage-s:1] lg:[--stage-s:min(1,tan(atan2(100vw,1440px)))] lg:supports-[scale:calc(1px/1px)]:[--stage-s:min(1,100vw/1440px)]"
+        className="relative [--stage-s:1] [--wf:1] lg:[--stage-s:min(1,tan(atan2(100vw,1440px)))] lg:supports-[scale:calc(1px/1px)]:[--stage-s:min(1,100vw/1440px)] lg:[--wf:max(1,0.885/var(--stage-s))]"
       >
         {/* The track starts at the top of the page on desktop: the 96px header sits over it. */}
         <div ref={track} className="relative lg:-mt-24">

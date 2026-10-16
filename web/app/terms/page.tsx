@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { Marker } from "@/components/hero/marker";
 import { LegalPage, TextLink } from "@/components/legal/legal-page";
-import { site } from "@/lib/site";
+import { operator, site } from "@/lib/site";
 
 // Title, description and every line below are new copy for review (not in the
 // copy deck). The recording-consent section matches FAQ 1; the notes section
@@ -17,14 +17,18 @@ export const metadata: Metadata = pageMetadata({
 });
 
 // TODO: confirm, left off the page on purpose:
-// - the legal entity that offers Trilsy (a company name and address), the
-//   governing law and courts, and a contact email: none is in the master or the
-//   repo. The page says "Trilsy" and "its authors" and points to GitHub issues.
+// - the imprint is the "Who provides Trilsy" section: the owner gave a name and
+//   a street (lib/site.ts `operator`). Still missing, and not invented: postcode,
+//   city, country, a contact email, and any trade or VAT number an Austrian or EU
+//   imprint may need. Until an email is given the contact route is GitHub issues.
+// - governing law and courts: none is given, so none is printed.
 // - an effective or "last updated" date, for the same reason as the privacy page.
 // - the exact liability wording and whether it holds in the owner's
-//   jurisdiction: "to the extent the law allows" is a stand-in until a lawyer
-//   or the owner reads it.
-// - the licence: until one is added the code section stays as written (FAQ 6).
+//   jurisdiction (consumer law in Austria and the EU limits what a disclaimer can
+//   exclude): "to the extent the law allows" is a stand-in until a lawyer or the
+//   owner reads it.
+// - the licence: MIT, chosen by the owner on 2026-10-16 (LICENSE at the repo root,
+//   FAQ 6). The name and this site's drawings stay outside the grant; the page says so.
 export default function TermsPage() {
   return (
     <LegalPage
@@ -94,8 +98,8 @@ export default function TermsPage() {
           body: (
             <p>
               Trilsy is early software, provided as it is, without warranty of any kind. Do not use it as the only recorder for an
-              important conversation. To the extent the law allows, its authors are not liable for any loss from using it, including
-              a recording that is lost, cut short or damaged.
+              important conversation. To the extent the law allows, {operator.name}, who provides it, is not liable for any loss from using it,
+              including a recording that is lost, cut short or damaged.
             </p>
           ),
         },
@@ -104,22 +108,41 @@ export default function TermsPage() {
           title: "The code and the name.",
           body: (
             <p>
-              The source is on GitHub for anyone to read. We have not chosen a licence, so reading the code does not give you the
-              right to copy or reuse it, and we do not call it open source. The Trilsy name and the drawings on this site are not
-              covered by any licence either.
+              Trilsy is open source under the{" "}
+              <TextLink href="https://opensource.org/license/mit" external>
+                MIT licence
+              </TextLink>
+              , and the source is on{" "}
+              <TextLink href={site.github} external>
+                GitHub
+              </TextLink>
+              . You may use, copy, change and share the code, even commercially, as long as the licence notice stays with it. The
+              Trilsy name and the drawings on this site are not part of that grant: do not use them to suggest your own work is
+              Trilsy. The two models the app downloads have their own licences.
             </p>
           ),
         },
         {
+          id: "imprint",
+          title: "Who provides Trilsy.",
+          body: (
+            <>
+              <p>
+                Trilsy and this website are provided by {operator.name}, <span className="whitespace-nowrap">{operator.street}</span>. This is the site’s imprint.
+              </p>
+              <p>
+                To reach the provider, <TextLink href={`${site.github}/issues`} external>open an issue on GitHub</TextLink>. Issues there
+                are public, so do not put anything private in one.
+              </p>
+            </>
+          ),
+        },
+        {
           id: "changes",
-          title: "Changes and questions.",
+          title: "Changes.",
           body: (
             <p>
-              If these terms change, the history of this page is in the repository on GitHub. For a question,{" "}
-              <TextLink href={`${site.github}/issues`} external>
-                open an issue there
-              </TextLink>
-              .
+              If these terms change, the history of this page is in the repository on GitHub, next to the code.
             </p>
           ),
         },

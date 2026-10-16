@@ -2,32 +2,33 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m, useInView } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Search01Icon } from "@hugeicons/core-free-icons";
 import { MockWindow, ViewControl } from "@/components/how-it-works/mock";
 import { transition, transitionBase, useMotionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { AppBody, AudioSourcesButton, NotesDoc, RecordingHeader, SidebarRow } from "./app-chrome";
 
 // The search word, and a student's recordings. The app's search keeps a recording
-// when the word is in its title, transcript or notes, and shows the list that is
-// left, so the list is all the search changes. Titles and dates are illustration.
+// when the word is in its title, transcript or notes, and the sidebar then lists
+// the matches ("Matches" instead of "Recent"), so the list is all the search
+// changes. Titles and dates are illustration.
 const word = "elasticity";
 
 const recordings = [
-  { title: "Microeconomics, lecture 8", date: "14 Oct 2026", match: false },
-  { title: "Modern History, lecture 5", date: "13 Oct 2026", match: false, wide: true },
-  { title: "Statistics 110, lecture 7", date: "9 Oct 2026", match: false, wide: true },
-  { title: "Microeconomics, lecture 6", date: "7 Oct 2026", match: true },
-  { title: "Microeconomics, lecture 3", date: "23 Sep 2026", match: true },
+  { title: "Economics, lecture 8", match: false },
+  { title: "History, lecture 5", match: false, wide: true },
+  { title: "Statistics, lecture 7", match: false, wide: true },
+  { title: "Economics, lecture 6", match: true },
+  { title: "Economics, lecture 3", match: true },
 ] as const;
 
-// The notes of the first match, the way the app writes them: plain Markdown, an
-// overview on top, then a section each. A timestamp inside the notes is text,
-// not a link. No checkbox glyphs: action items are not a feature.
+// The notes of the first match, the way the app shows them: rendered, an overview
+// on top, then a section each. The Edit button opens the Markdown. A timestamp
+// inside the notes is text, not a link. No checkbox glyphs: action items are not
+// a feature.
 const notes = [
   {
     h: "Overview",
-    p: "Elasticity measures how far the quantity people buy moves when the price moves. Demand is elastic when buyers react a lot and inelastic when they barely react. The lecture ends on what that means for a seller’s revenue.",
+    p: "Elasticity measures how far the quantity people buy moves when the price moves. Demand is elastic when buyers react a lot and inelastic when they barely react. The lecture ends on what that means for a seller\u2019s revenue.",
   },
   {
     h: "Price elasticity of demand",
@@ -43,10 +44,10 @@ const notes = [
   },
 ] as const;
 
-// One recording row is 56px (h-14). The list keeps the height of every row it
-// starts with, so filtering moves nothing: five rows from md up, three on a phone
+// One sidebar row is 32px (h-8). The list keeps the height of every row it
+// starts with, so filtering moves nothing: five rows from 640px up, three on a phone
 // (the `wide` rows are left out there, so the stacked window is not mostly blank).
-const ROW = 56;
+const ROW = 32;
 const TYPE_MS = 90;
 const T_FILTER = 400 + word.length * TYPE_MS + 250; // after the last letter
 const T_OPEN = T_FILTER + 600; // the filter has finished closing the rows
@@ -89,58 +90,41 @@ export function LecturesDemo() {
       title="Trilsy"
       role="img"
       aria-label={`The recording list filtered by the search word ${word}. Two lectures match, Microeconomics lecture 6 and lecture 3, and the notes of lecture 6 are open: an overview, then a section on price elasticity of demand, one on what makes demand inelastic and one on revenue.`}
+      toolbar={<AudioSourcesButton />}
     >
-      <div aria-hidden className="grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div className="flex flex-col gap-3 border-b border-border px-4 py-4 md:border-r md:border-b-0">
-          <div className="flex items-center gap-2 rounded-md border border-border bg-card px-2.5 py-1.5">
-            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-3.5 shrink-0 text-muted-foreground" />
-            <span className={cn("min-h-[1lh]", typed === 0 && "text-muted-foreground")}>
-              {typed === 0 ? "Search your recordings" : word.slice(0, typed)}
-            </span>
-          </div>
-          <ul className="flex h-[168px] flex-col overflow-hidden md:h-[280px]">
-            {recordings.map((r) => {
-              const gone = filtered && !r.match;
-              const selected = opened && r.title === "Microeconomics, lecture 6";
-              return (
-                <m.li
-                  key={r.title}
-                  initial={false}
-                  animate={{ height: gone ? 0 : ROW, opacity: gone ? 0 : 1 }}
-                  transition={tBase}
-                  className={cn("shrink-0 overflow-hidden", "wide" in r && "max-md:hidden")}
-                >
-                  <div
-                    className={cn(
-                      "flex h-14 flex-col justify-center rounded-md px-2.5 transition-colors duration-(--duration-base) ease-trilsy",
-                      selected && "bg-field",
-                    )}
-                  >
-                    <p className="truncate font-semibold">{r.title}</p>
-                    <p className="text-xs text-muted-foreground">{r.date}</p>
-                  </div>
-                </m.li>
-              );
-            })}
-          </ul>
-        </div>
-        <m.div
-          initial={false}
-          animate={{ opacity: opened ? 1 : 0, y: opened ? 0 : 6 }}
-          transition={slow}
-          className="flex flex-col gap-4 px-4 py-4"
+      <div aria-hidden>
+        <AppBody
+          search={typed === 0 ? undefined : word.slice(0, typed)}
+          label={typed === 0 ? "Recent" : "Matches"}
+          allSelected={!opened}
+          collapse={false}
+          list={recordings.map((r) => {
+            const gone = filtered && !r.match;
+            return (
+              <m.li
+                key={r.title}
+                initial={false}
+                animate={{ height: gone ? 0 : ROW, opacity: gone ? 0 : 1 }}
+                transition={tBase}
+                className={cn("shrink-0 overflow-hidden", "wide" in r && "max-sm:hidden")}
+              >
+                <SidebarRow title={r.title} selected={opened && r.title === "Economics, lecture 6"} />
+              </m.li>
+            );
+          })}
+          listClassName="h-24 overflow-hidden sm:h-40"
         >
-          <p className="font-display text-lg leading-tight font-semibold">Microeconomics, lecture 6</p>
-          <ViewControl active="Notes" />
-          <div className="flex flex-col gap-3.5 text-[13px] leading-[1.55]">
-            {notes.map((n) => (
-              <div key={n.h}>
-                <p className="font-semibold">## {n.h}</p>
-                <p>{n.p}</p>
-              </div>
-            ))}
-          </div>
-        </m.div>
+          <m.div
+            initial={false}
+            animate={{ opacity: opened ? 1 : 0, y: opened ? 0 : 6 }}
+            transition={slow}
+            className="flex flex-col gap-4 px-4 py-4"
+          >
+            <RecordingHeader title="Economics, lecture 6" date="7 Oct, 10:15" length="52 min" status="Ready" />
+            <ViewControl active="Notes" />
+            <NotesDoc sections={notes} />
+          </m.div>
+        </AppBody>
       </div>
     </MockWindow>
   );

@@ -19,7 +19,7 @@ Requires Apple silicon, macOS 15+, Xcode 26 (the project builds in Swift 5 langu
 open build/Build/Products/Debug/Trilsy.app
 ```
 
-Or run `xcodegen generate`, open `Trilsy.xcodeproj`, select your development team, and Run. The script makes an ad-hoc signed local debug build, not a distributable release. Enable model downloads in Settings, then generate notes. First use downloads Whisper small and Qwen2.5 3B 4-bit from Hugging Face. No audio is uploaded. Network may still be used for model resolution/cache checks; fully offline behavior must be verified on the target Mac.
+Or run `xcodegen generate`, open `Trilsy.xcodeproj`, select your development team, and Run. The script makes an ad-hoc signed local debug build, not a distributable release. Enable model downloads in Settings, then generate notes. First use downloads Whisper small and Qwen2.5 3B 4-bit from Hugging Face. No audio is uploaded. Once the models are downloaded the app works offline (confirmed by the owner, 2026-10-16); only the first download needs a connection.
 
 On a first build, resolve compiler or SDK API issues, then verify one complete recording-to-notes flow before anything else. The Mac CI job builds the app and passes the five native tests, which cover storage, recovery, note chunking and export order; none of them exercises recording, transcription or notes. No code-signing credentials, model weights or recordings are included in the repo.
 

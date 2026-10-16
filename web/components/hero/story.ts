@@ -56,8 +56,9 @@ export const settings: Record<SettingKey, Setting> = {
     title: "Biology 201, lecture 9",
     system: false,
     figures: [
-      // The professor is not in the SVG pack; this is the approved cast sheet's figure.
-      { src: "/characters/professor.png", w: 163, x: 249, alt: "A professor with grey hair and clasped hands, speaking" },
+      // The professor is not in the SVG pack; this is a vector trace of the approved cast sheet's
+      // figure, drawn on its own 165 by 505 canvas (the pack's are 280 by 520), so its box is narrower.
+      { src: "/characters/professor.svg", w: 163, x: 249, alt: "A professor with grey hair and clasped hands, speaking" },
       pack("04-blue-wave", 964, "A student with her hair in a bun, raising a hand to ask a question"),
       pack("11-blue-headscarf", 1164, "A student in a headscarf, listening"),
     ],
@@ -129,14 +130,14 @@ export const chapters = [
   },
   {
     heading: "Get the transcript.",
-    body: "When you stop, Trilsy transcribes on your Mac. Every line has a timestamp that plays the audio from that point.",
+    body: "When you press Create notes, Trilsy transcribes on your Mac. Every line has a timestamp that plays the audio from that point.",
     photo: "story-transcribe.jpg",
     alt: "Someone speaking, caught sharp while the room blurs around them.",
     tint: "bg-sage/45",
   },
   {
     heading: "Read the notes.",
-    body: "Notes come section by section with a short overview on top. They are plain text, so you edit them like any note.",
+    body: "Notes come section by section with a short overview on top. You can edit them: press Edit to open the Markdown.",
     photo: "story-notes.jpg",
     alt: "The same person alone by a window afterwards, reading.",
     tint: "bg-dusty-blue/45",
@@ -152,8 +153,11 @@ export const SPEAK: readonly [number, number][] = [
   [2.9, 4.7],
   [5.0, 7.0],
 ];
+/** "Stop & save" is pressed; the strip becomes the recorded length and a Create notes button. */
 export const T_STOP = 7.4;
-export const T_TRANSCRIBE = 7.8;
+/** Create notes is pressed (transcription never starts by itself). */
+export const T_CREATE = 7.9;
+export const T_TRANSCRIBE = 8.1;
 export const T_LINES = 9.4;
 export const T_NOTES = 10.2;
 export const T_DONE = 12.2;
@@ -172,7 +176,7 @@ export function reducedFrame(chapter: Chapter) {
 /** Storyboard time for a chapter after `c` seconds on it. */
 export function chapterTime(chapter: Chapter, c: number, heroT: number) {
   if (chapter === 0) return c % 7.6; // Record: the recording beat loops
-  if (chapter === 1) return 7.2 + Math.min(c, 2.98); // Transcribe: Stop, Transcribing, the lines
+  if (chapter === 1) return 7.2 + Math.min(c, 2.98); // Transcribe: Stop & save, Create notes, Transcribing, the lines
   if (chapter === 2) return 10.0 + Math.min(c, 2.8); // Notes: written, then held
   return heroT;
 }

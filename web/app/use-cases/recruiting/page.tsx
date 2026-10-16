@@ -37,7 +37,7 @@ const questions: Faq[] = [
     id: "names",
     question: "Can I make sure a candidate’s name is spelled right?",
     answer:
-      "Add the name to Names and specialist vocabulary in Trilsy’s settings before you record. It goes to the transcription as a hint, not a guarantee, so check the name afterwards. The notes are plain text you can correct.",
+      "Add the name to Names & vocabulary in Trilsy’s Settings before you record. It goes to the transcription as a hint, not a guarantee, so check the name afterwards. The notes are Markdown you can correct with the Edit button.",
   },
 ];
 

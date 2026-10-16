@@ -49,7 +49,7 @@ export default function HowItWorksPage() {
 
       <Block id="the-transcript" number={3} title="How the transcript is made." visual={<TranscriptDemo />}>
         <Text>
-          After you stop, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.
+          After you stop and press Create notes, Trilsy transcribes on your Mac with Whisper (the small model). Language is detected, or you pick one. You can add words it should know.
         </Text>
       </Block>
 
