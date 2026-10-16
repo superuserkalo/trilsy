@@ -4,10 +4,11 @@ permissions:
   contents: read
 jobs:
   mac:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - run: xcodebuild -version
       - run: brew install xcodegen
       - run: ./scripts/build-mac.sh
       - uses: actions/upload-artifact@v4
