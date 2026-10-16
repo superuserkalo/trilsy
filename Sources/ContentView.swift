@@ -412,12 +412,21 @@ struct NativeActionStyle: ViewModifier {
     var prominent = false
 
     @ViewBuilder func body(content: Content) -> some View {
+        // The glass styles exist only in the macOS 26 SDK (Xcode 26, Swift 6.2), so older toolchains compile the fallback alone.
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *) {
             if prominent { content.buttonStyle(.glassProminent) }
             else { content.buttonStyle(.glass) }
         } else {
-            if prominent { content.buttonStyle(.borderedProminent) }
-            else { content.buttonStyle(.bordered) }
+            fallback(content)
         }
+        #else
+        fallback(content)
+        #endif
+    }
+
+    @ViewBuilder private func fallback(_ content: Content) -> some View {
+        if prominent { content.buttonStyle(.borderedProminent) }
+        else { content.buttonStyle(.bordered) }
     }
 }

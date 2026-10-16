@@ -16,7 +16,7 @@ The feel is warm, hand-drawn and editorial. References I provide: a hand-drawn m
 
 ## B3. Page structure
 
-**Trust band, its own topic with me.** The band under the hero is a row of company logos, not a strip of capabilities or product facts (see `04-phase-d-build.md`). The creative work is the line above the logos: word it so the biggest and best-known companies can stand under it truthfully. Bring me 3 directions, each a line plus the companies it lets us show, each rendered as the fading marquee from `~/forwardpass-web/src/components/trust-band.tsx` (see `04-phase-d-build.md`). Every direction must be true of every logo in it. I pick; do not settle the set alone.
+**Trust band, its own topic with me.** The band (originally under the hero; since 2026-10-15 it follows the merged hero and pinned story) is a row of company logos, not a strip of capabilities or product facts (see `04-phase-d-build.md`). The creative work is the line above the logos: word it so the biggest and best-known companies can stand under it truthfully. Bring me 3 directions, each a line plus the companies it lets us show, each rendered as the fading marquee from `~/forwardpass-web/src/components/trust-band.tsx` (see `04-phase-d-build.md`). Every direction must be true of every logo in it. I pick; do not settle the set alone.
 One job per section. Do not keep the current order by default. Justify each choice from the teardown. Say which sections below the hero carry one of my photographs (see Images in `00-master.md`); the hero carries none.
 
 ## B4. Type and color
