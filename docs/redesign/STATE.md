@@ -81,7 +81,7 @@ Read this at the start of every session, after `docs/redesign-brief/00-master.md
 7. ~~Which languages are tested~~ Closed 2026-10-16, owner confirmed.
 8. ~~Pause, menu-bar and browser-tab claims~~ Closed 2026-10-16, owner confirmed.
 9. Privacy and Terms exist now. Legal entity, address, contact email and governing law closed 2026-10-16. Still open: trade licence or GISA number and authority, VAT number, company register entry (if any exist), effective dates, the liability wording, Vercel log settings.
-10. The logo: wordmark, favicon (`app/icon.svg` is the old mark), app icon, share-image version (`TODO: logo`).
+10. The logo: wordmark, favicon (`app/icon.svg` is a stand-in "T" from the wordmark since 2026-10-16), app icon, share-image version (`TODO: logo`).
 11. Photographs: `story-record.jpg`, `story-transcribe.jpg`, `story-notes.jpg`, `closing-band.jpg` (requests below). Since 2026-10-16 the boxes are plain colour fields with no visible label; `TODO: image` lives in code comments only.
 12. New copy written under the no-review instruction (use-case titles, questions, window content; the longer FAQ answers; "Skip to content"): the owner may still want to read it.
 13. Owner-pending tests: a real trackpad and wheel on the hero scroll; Safari and Firefox.
