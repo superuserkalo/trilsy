@@ -98,6 +98,12 @@ export function HeroSection({ copy }: { copy: ReactNode }) {
         (b) => b.getBoundingClientRect().top + window.scrollY - trackTop,
       );
       geo.current = { vh: window.innerHeight, blocks, desktop: wide.matches };
+      // The stage scale, min(1, 100vw / 1440px). The CSS on the section gives it for the
+      // first paint; this repeats it for engines that read neither form correctly
+      // (WebKit before typed division returns tan(atan2(vw, px)) with the angle taken
+      // as radians when it was degrees, a negative scale that throws the stage off screen).
+      if (wide.matches) root.current?.style.setProperty("--stage-s", String(Math.min(1, window.innerWidth / 1440)));
+      else root.current?.style.removeProperty("--stage-s");
       top.set(trackTop);
       vh.set(window.innerHeight);
       sync();
@@ -126,10 +132,12 @@ export function HeroSection({ copy }: { copy: ReactNode }) {
 
   return (
     <StoryClock chapter={chapter} rootRef={root}>
+      {/* --stage-s: typed division where supported (Chrome 140+, Safari 26+), else
+          tan(atan2()), which WebKit resolves wrongly for viewport units. */}
       <section
         ref={root}
         aria-label="Trilsy"
-        className="relative [--stage-s:1] lg:[--stage-s:min(1,tan(atan2(100vw,1440px)))]"
+        className="relative [--stage-s:1] lg:[--stage-s:min(1,tan(atan2(100vw,1440px)))] lg:supports-[scale:calc(1px/1px)]:[--stage-s:min(1,100vw/1440px)]"
       >
         {/* The track starts at the top of the page on desktop: the 96px header sits over it. */}
         <div ref={track} className="relative lg:-mt-24">

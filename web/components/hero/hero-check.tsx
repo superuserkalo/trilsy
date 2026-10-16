@@ -82,7 +82,7 @@ export function HeroCheck() {
 
       <div
         ref={root}
-        className="relative mt-4 hidden h-[calc(900px*var(--stage-s))] overflow-hidden border-y border-border [--stage-s:min(1,tan(atan2(100vw,1440px)))] lg:block"
+        className="relative mt-4 hidden h-[calc(900px*var(--stage-s))] overflow-hidden border-y border-border [--stage-s:min(1,tan(atan2(100vw,1440px)))] supports-[scale:calc(1px/1px)]:[--stage-s:min(1,100vw/1440px)] lg:block"
       >
         <div className="absolute inset-x-0 top-24" style={{ transform: `translateY(${-p * 0.95 * 900}px)` }}>
           <HeroCopy />
